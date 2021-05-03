@@ -44,10 +44,10 @@
                         </select>
                         <input type="number" name="bought-price" id="bought-price" placeholder="Buying(ksh)"
                             class="dr_input">
-                        <input type="number" name="sales-cash" id="sales-cash" placeholder="sell..cash"
-                            class="dr_input">
-                        <input type="number" name="sales-till" id="sales-till" placeholder="sell..till/other"
-                            class="dr_input">
+                        <input autocomplete="off" type="number" name="sales-cash" id="sales-cash"
+                            placeholder="sell..cash" class="dr_input">
+                        <input autocomplete="off" type="number" name="sales-till" id="sales-till"
+                            placeholder="sell..till/other" class="dr_input">
                         <input type="number" name="sales-profit" id="sales-profit" placeholder="profit"
                             class="dr_input">
                         <button class="add-product">Add</button>

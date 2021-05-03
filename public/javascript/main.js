@@ -80,13 +80,55 @@ chuoni = {
       const movieTill = document.getElementById("movie-till");
       const salesCash = document.getElementById("sales-cash");
       const salesTill = document.getElementById("sales-till");
+      const boughtPrice = document.getElementById("bought-price");
       const salesProfit = document.getElementById("sales-profit");
       const expensesValue = document.getElementById("expense-value");
 
       //calculate pofit
-
+      salesCash.addEventListener("input", function () {
+        //check if till has a value and forbid
+        if (salesTill.value !== "") {
+          salesTill.style.border = "2px solid red";
+          salesTill.style.outline = "none";
+          //error
+          document.getElementsByName("sales-till")[0].placeholder =
+            "fill one only";
+          sleep(1000).then(() => {
+            document.getElementsByName("sales-till")[0].placeholder =
+              "sell..till/other";
+            salesTill.style.border = "";
+            salesTill.style.outline = "";
+            salesTill.value = "";
+          });
+        } else {
+          if (salesCash.value == "") {
+            salesProfit.value = 0;
+          } else {
+            salesProfit.value = salesCash.value - boughtPrice.value;
+          }
+        }
+      });
+      salesTill.addEventListener("input", function () {
+        //check if till has a value and forbid
+        if (salesCash.value !== "") {
+          salesCash.style.border = "2px solid red";
+          salesCash.style.outline = "none";
+          //error
+          document.getElementsByName("sales-cash")[0].placeholder =
+            "fill one only";
+          sleep(1000).then(() => {
+            document.getElementsByName("sales-till")[0].placeholder =
+              "sell..cash";
+            salesCash.style.border = "";
+            salesCash.style.outline = "";
+            salesCash.value = "";
+          });
+        } else {
+          salesProfit.value = salesTill.value - boughtPrice.value;
+        }
+      });
       //get all values and sum in total input
-      [
+      /*     [
         cyberCash.value,
         cyberTill.value,
         psCash.value,
@@ -98,8 +140,9 @@ chuoni = {
       ].forEach((item) => {
         item.addEventListener("input", function () {
           //add values in total
+          console.log(item++);
         });
-      });
+      }); */
     },
   },
   __verify: {
