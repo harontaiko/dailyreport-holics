@@ -623,6 +623,161 @@ blockquote {
   font-size: 14px;
   font-weight: 500;
   line-height: 24px;
+  cursor: pointer;
+}
+
+.save-record {
+  float: right;
+  display: block;
+  background-color: #68c950;
+  border-radius: 4px;
+  color: #fff;
+  box-shadow: none;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 24px;
+  cursor: pointer;
+  margin-right: 5%;
+  outline: none;
+  border: none;
+}
+
+.save-record:hover {
+  background-color: #6fd854;
+}
+
+/**movie shop**/
+
+$breakpoint-alpha: 480px; // adjust to your needs
+
+.rwd-table {
+  margin: 1em 0;
+  min-width: 300px; // adjust to your needs
+
+  tr {
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+  }
+
+  th {
+    display: none; // for accessibility, use a visually hidden method here instead! Thanks, reddit!
+  }
+
+  td {
+    display: block;
+
+    &:first-child {
+      padding-top: 0.5em;
+    }
+    &:last-child {
+      padding-bottom: 0.5em;
+    }
+
+    &:before {
+      content: attr(data-th) ": "; // who knew you could do this? The internet, that's who.
+      font-weight: bold;
+
+      // optional stuff to make it look nicer
+      width: 6.5em; // magic number :( adjust according to your own content
+      display: inline-block;
+      // end options
+
+      @media (min-width: $breakpoint-alpha) {
+        display: none;
+      }
+    }
+  }
+
+  th,
+  td {
+    text-align: left;
+
+    @media (min-width: $breakpoint-alpha) {
+      display: table-cell;
+      padding: 0.25em 0.5em;
+
+      &:first-child {
+        padding-left: 0;
+      }
+
+      &:last-child {
+        padding-right: 0;
+      }
+    }
+  }
+}
+
+/* h1 {
+  font-weight: normal;
+  letter-spacing: -1px;
+  color: #34495e;
+} */
+
+.movie-title {
+  text-align: center;
+  margin: 2rem;
+  font-size: 2rem;
+}
+
+.movieshop main,
+.playstation main,
+.cyber main {
+  padding: 1rem;
+}
+
+.rwd-table {
+  padding: 1rem;
+  background: #34495e;
+  color: #fff;
+  border-radius: 0.4em;
+  overflow: hidden;
+  padding: 1rem;
+  tr {
+    border-color: lighten(#34495e, 10%);
+  }
+  th,
+  td {
+    margin: 0.5em 1em;
+    @media (min-width: $breakpoint-alpha) {
+      padding: 1em !important;
+    }
+  }
+  th,
+  td:before {
+    color: #dd5;
+  }
+}
+
+#fiter-movieshop,
+#filter-playstation,
+#filter-cyber,
+#filter-filterReport {
+  width: 50vw;
+}
+
+.todo {
+  margin-bottom: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+}
+
+.todo label {
+  margin-top: 3.5rem;
+  color: rgb(27, 24, 24);
+}
+
+fieldset {
+  border: none;
+  width: 100%;
+  height: 100px;
+  margin: auto;
+  display: flex;
+}
+
+#filter-movie-date {
+  display: flex;
 }
 
 /**error 404 page*/
@@ -714,4 +869,170 @@ svg {
     margin-left: -190px;
     text-align: center;
   }
+}
+
+.addItem main {
+  background-color: #f9f9f9;
+  font-family: "Raleway";
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.payment-title {
+  width: 100%;
+  text-align: center;
+}
+
+.payment-title {
+  width: 100%;
+  text-align: center;
+}
+
+.form-container .field-container:first-of-type {
+  grid-area: name;
+}
+
+.form-container .field-container:nth-of-type(2) {
+  grid-area: number;
+}
+
+.form-container .field-container:nth-of-type(3) {
+  grid-area: expiration;
+}
+
+.form-container .field-container:nth-of-type(4) {
+  grid-area: security;
+}
+
+.field-container input {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.field-container {
+  position: relative;
+}
+
+.form-container {
+  display: grid;
+  grid-column-gap: 10px;
+  grid-template-columns: auto auto;
+  grid-template-rows: 90px 90px 90px;
+  grid-template-areas: "name name" "number number" "expiration security";
+  max-width: 400px;
+  padding: 20px;
+  color: #707070;
+}
+
+.addItem label {
+  padding-bottom: 5px;
+  font-size: 13px;
+}
+
+.addItem input {
+  margin-top: 3px;
+  padding: 15px;
+  font-size: 16px;
+  width: 100%;
+  border-radius: 3px;
+  border: 1px solid #dcdcdc;
+}
+
+.ccicon {
+  height: 38px;
+  position: absolute;
+  right: 6px;
+  top: calc(50% - 17px);
+  width: 60px;
+}
+
+/* CREDIT CARD IMAGE STYLING */
+
+.container {
+  width: 100%;
+  max-width: 400px;
+  max-height: 251px;
+  height: 54vw;
+  padding: 20px;
+}
+
+#ccsingle {
+  position: absolute;
+  right: 15px;
+  top: 20px;
+}
+
+#ccsingle svg {
+  width: 100px;
+  max-height: 60px;
+}
+
+.creditcard svg#cardfront,
+.creditcard svg#cardback {
+  width: 100%;
+  -webkit-box-shadow: 1px 5px 6px 0px black;
+  box-shadow: 1px 5px 6px 0px black;
+  border-radius: 22px;
+}
+
+#generatecard {
+  cursor: pointer;
+  float: right;
+  font-size: 12px;
+  color: #fff;
+  padding: 2px 4px;
+  background-color: #909090;
+  border-radius: 4px;
+  cursor: pointer;
+  float: right;
+}
+
+/* FLIP ANIMATION */
+.container {
+  perspective: 1000px;
+}
+
+.add-inventory {
+  width: 100% !important;
+  display: block !important;
+  background: black !important;
+}
+
+.creditcard {
+  width: 100%;
+  max-width: 400px;
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  transition: -webkit-transform 0.6s;
+  -webkit-transition: -webkit-transform 0.6s;
+  transition: transform 0.6s;
+  transition: transform 0.6s, -webkit-transform 0.6s;
+  cursor: pointer;
+}
+
+.creditcard .front,
+.creditcard .back {
+  position: absolute;
+  width: 100%;
+  max-width: 400px;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+  color: #47525d;
+}
+
+.creditcard .back {
+  -webkit-transform: rotateY(180deg);
+  transform: rotateY(180deg);
+}
+
+.creditcard.flipped {
+  -webkit-transform: rotateY(180deg);
+  transform: rotateY(180deg);
+}
+
+#product-avatar {
+  width: 40%;
 }

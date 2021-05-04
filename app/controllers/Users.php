@@ -11,6 +11,12 @@ class Users extends Controller
     public function index()
     {
 
+      if($this->isLoggedIn())
+      {
+        redirect('pages/index');
+      }
+
+
       $data = ['title' => 'Daily Report'];
 
       $this->view('users/index', $data);
@@ -18,6 +24,11 @@ class Users extends Controller
 
     public function reset($email)
     {
+      if($this->isLoggedIn())
+      {
+        redirect('pages/index');
+      }
+
       
       $data = ['title' => 'Daily Report', 'email'=>$email];
 
@@ -26,6 +37,11 @@ class Users extends Controller
 
     public function resetPassword()
     {
+      if($this->isLoggedIn())
+      {
+        redirect('pages/index');
+      }
+
       
       $data = ['title' => 'Daily Report'];
 
@@ -80,6 +96,11 @@ class Users extends Controller
 
     public function verify($token, $email)
     {
+      if($this->isLoggedIn())
+      {
+        redirect('pages/index');
+      }
+
       //let user change their password
       $row = $this->userModel->VerifyTokenAndMail($email);
 

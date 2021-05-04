@@ -124,7 +124,11 @@ chuoni = {
             salesCash.value = "";
           });
         } else {
-          salesProfit.value = salesTill.value - boughtPrice.value;
+          if (salesTill.value == "") {
+            salesProfit.value = 0;
+          } else {
+            salesProfit.value = salesTill.value - boughtPrice.value;
+          }
         }
       });
       //get all values and sum in total input

@@ -21,6 +21,91 @@ class Pages extends Controller
         $this->view('pages/index', $data);
     }
 
+    public function movieShop()
+    {
+      if (!isset($_SESSION["user_id"])) {
+        $data = [
+          "title" => "Daily Report",
+        ];
+        redirect("users/index");
+      }
+
+      date_default_timezone_set('Africa/Nairobi');
+      $currentdate = date('M/Y/d h:i:s A', time());
+
+      $data = ['title'=>'Daily Report', 'date'=>$currentdate];
+
+      $this->view('pages/movieShop', $data);
+    }
+
+    public function cyber()
+    {
+      if (!isset($_SESSION["user_id"])) {
+        $data = [
+          "title" => "Daily Report",
+        ];
+        redirect("users/index");
+      }
+
+      date_default_timezone_set('Africa/Nairobi');
+      $currentdate = date('M/Y/d h:i:s A', time());
+
+      $data = ['title'=>'Daily Report', 'date'=>$currentdate];
+
+      $this->view('pages/cyber', $data);
+    }
+
+    public function playstation()
+    {
+      if (!isset($_SESSION["user_id"])) {
+        $data = [
+          "title" => "Daily Report",
+        ];
+        redirect("users/index");
+      }
+
+      date_default_timezone_set('Africa/Nairobi');
+      $currentdate = date('M/Y/d h:i:s A', time());
+
+      $data = ['title'=>'Daily Report', 'date'=>$currentdate];
+
+      $this->view('pages/playstation', $data);
+    }
+
+    public function filterReport()
+    {
+      if (!isset($_SESSION["user_id"])) {
+        $data = [
+          "title" => "Daily Report",
+        ];
+        redirect("users/index");
+      }
+
+      date_default_timezone_set('Africa/Nairobi');
+      $currentdate = date('M/Y/d h:i:s A', time());
+
+      $data = ['title'=>'Daily Report', 'date'=>$currentdate];
+
+      $this->view('pages/filterReport', $data);
+    }
+
+    public function addItem()
+    {
+      if (!isset($_SESSION["user_id"])) {
+        $data = [
+          "title" => "Daily Report",
+        ];
+        redirect("users/index");
+      }
+
+      date_default_timezone_set('Africa/Nairobi');
+      $currentdate = date('M/Y/d h:i:s A', time());
+
+      $data = ['title'=>'Daily Report', 'date'=>$currentdate];
+
+      $this->view('pages/addItem', $data);
+    }
+
     public function add()
     {
       if (!isset($_SESSION["user_id"])) {
