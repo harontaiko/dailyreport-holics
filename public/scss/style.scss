@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Zen+Dots&display=swap");
-
 :root {
   --hackstore-bg: rgb(17, 141, 172);
 }
@@ -10,7 +8,6 @@ html {
   font-size: 12px;
   height: 100vh;
   margin: 0;
-  font-family: "Zen Dots", cursive;
 }
 
 /**home**/
@@ -721,7 +718,8 @@ $breakpoint-alpha: 480px; // adjust to your needs
 
 .movieshop main,
 .playstation main,
-.cyber main {
+.cyber main,
+.sales main {
   padding: 1rem;
 }
 
@@ -751,7 +749,8 @@ $breakpoint-alpha: 480px; // adjust to your needs
 #fiter-movieshop,
 #filter-playstation,
 #filter-cyber,
-#filter-filterReport {
+#filter-filterReport,
+#filter-sales {
   width: 50vw;
 }
 

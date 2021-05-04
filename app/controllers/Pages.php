@@ -106,6 +106,57 @@ class Pages extends Controller
       $this->view('pages/addItem', $data);
     }
 
+    public function sales()
+    {
+      if (!isset($_SESSION["user_id"])) {
+        $data = [
+          "title" => "Daily Report",
+        ];
+        redirect("users/index");
+      }
+
+      date_default_timezone_set('Africa/Nairobi');
+      $currentdate = date('M/Y/d h:i:s A', time());
+
+      $data = ['title'=>'Daily Report', 'date'=>$currentdate];
+
+      $this->view('pages/sales', $data);
+    }
+
+    public function expenses()
+    {
+      if (!isset($_SESSION["user_id"])) {
+        $data = [
+          "title" => "Daily Report",
+        ];
+        redirect("users/index");
+      }
+
+      date_default_timezone_set('Africa/Nairobi');
+      $currentdate = date('M/Y/d h:i:s A', time());
+
+      $data = ['title'=>'Daily Report', 'date'=>$currentdate];
+
+      $this->view('pages/expenses', $data);
+    }
+
+    public function total()
+    {
+      if (!isset($_SESSION["user_id"])) {
+        $data = [
+          "title" => "Daily Report",
+        ];
+        redirect("users/index");
+      }
+
+      date_default_timezone_set('Africa/Nairobi');
+      $currentdate = date('M/Y/d h:i:s A', time());
+
+      $data = ['title'=>'Daily Report', 'date'=>$currentdate];
+
+      $this->view('pages/total', $data);
+    }
+
     public function add()
     {
       if (!isset($_SESSION["user_id"])) {

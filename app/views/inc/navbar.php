@@ -14,6 +14,7 @@
                 <li><a href="<?php echo URLROOT; ?>/pages/playstation">Playstation</a></li>
             </ul>
         </li>
+        <li><a href="<?php echo URLROOT; ?>/pages/add">Add record</a></li>
         <li><a href="<?php echo URLROOT; ?>/pages/filterReport">Filter Reports</a></li>
         <li><a href="<?php echo URLROOT; ?>/pages/addItem">Add item to inventory</a></li>
         <li><a href="<?php echo URLROOT; ?>/pages/sales">Items Sold</a></li>
