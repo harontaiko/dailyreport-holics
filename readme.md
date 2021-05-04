@@ -1,34 +1,19 @@
-### dailyreport base for holics ENT
+#### **_dailyreport base for holics ENT_**
 
-### cloudflare for DDOS
+Inventory management and daily record keeping system, built on PHP OOP and Js, DB used, `SQL`
 
-### change htps in all js
+- cloudflare for DDOS
 
-### change htacces in public, adjust timezone when day comes
+#### **_INSTALL_**
 
-### all static js fetched thru jsdeliver,
+- Head to the config file and fil in the database params
+- Change url toot to your default url
+- Go to the public folder, and change the `htaccess` if its on an online server, change it to `/public` otherwise use `/rootfolder/public`, replace **root folder** with the name of ur folder
 
-### daily report
+### To do
 
-```html template
+- change htps in all js
 
-<?php require(APPROOT . '/views/inc/header.php'); ?>
+- change htacces in public, adjust timezone when day comes
 
-
-<body class="home __home site-wrap">
-    <?php require(APPROOT . '/views/inc/navbar.php'); ?>
-    <main>
-    </main>
-</body>
-<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
-<script src="<?php echo URLROOT; ?>/public/javascript/main.min.js"></script>
-
-</html>
-
-        <?php
-        $mail = $data['mail'];
-        $verify =  password_verify(hex2bin($data['token']), $data['mail']['reset_link']);
-
-        if ($verify == false) : ?>
-
-```
+- all static js fetched thru jsdeliver,
