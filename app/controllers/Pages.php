@@ -181,7 +181,7 @@ class Pages extends Controller
     {  
       if($_SERVER['REQUEST_METHOD'] == 'POST'){
       $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-      $data = $_POST['serialize'];
+      echo json_encode(array("statusCode"=>200));
       
     }else{
       //throw not found
