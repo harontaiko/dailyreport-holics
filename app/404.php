@@ -11,8 +11,8 @@
     <link rel="canonical" href="<?php echo "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; ?>" />
     <meta name="og:url" content="<?php echo "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; ?>" />
     <link rel="stylesheet" href="<?php echo URLROOT; ?>/public/stylesheets/css/style.css" />
-    <link rel="icon" href="<?php echo URLROOT; ?>/public/images/icons/favicon.ico" type="image/ico" />
-    <link rel="shortcut icon" href="<?php echo URLROOT; ?>/public/images/icons/favicon.ico" type="image/ico" />
+    <link rel="icon" href="<?php echo URLROOT; ?>/public/images/icons/dailyhackstore.ico" type="image/ico" />
+    <link rel="shortcut icon" href="<?php echo URLROOT; ?>/public/images/icons/dailyhackstore.ico" type="image/ico" />
     <title>Daily Report - Page Not Found </title>
 </head>
 

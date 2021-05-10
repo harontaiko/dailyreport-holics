@@ -8,7 +8,7 @@
 /**MARKUP BASED JAVASCRIPT, BASED ON PAUL IRISH'S DOM INTRUBUSIVE JS */
 UTIL = {
   fire: function (func, funcname, args) {
-    var namespace = chuoni;
+    var namespace = dailyreport;
 
     funcname = funcname === undefined ? "init" : funcname;
     if (
@@ -36,17 +36,75 @@ UTIL = {
   },
 };
 
+function readURL(input) {
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+
+    reader.onload = function (e) {
+      $("#product-avatar").attr("src", e.target.result);
+    };
+
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+
 function sleep(time) {
   return new Promise((resolve) => setTimeout(resolve, time));
+}
+
+function FilterInventory() {
+  //JS table filter
+  (function (document) {
+    "use strict";
+
+    var LightTableFilter = (function (Arr) {
+      var _input;
+
+      function _onInputEvent(e) {
+        _input = e.target;
+        var tables = document.getElementsByClassName(
+          _input.getAttribute("data-table")
+        );
+        Arr.forEach.call(tables, function (table) {
+          Arr.forEach.call(table.tBodies, function (tbody) {
+            Arr.forEach.call(tbody.rows, _filter);
+          });
+        });
+      }
+
+      function _filter(row) {
+        var text = row.textContent.toLowerCase(),
+          val = _input.value.toLowerCase();
+        row.style.display = text.indexOf(val) === -1 ? "none" : "table-row";
+      }
+
+      return {
+        init: function () {
+          var inputs = document.getElementsByClassName("light-table-filter");
+          Arr.forEach.call(inputs, function (input) {
+            input.oninput = _onInputEvent;
+          });
+        },
+      };
+    })(Array.prototype);
+
+    document.addEventListener("readystatechange", function () {
+      if (document.readyState === "complete") {
+        LightTableFilter.init();
+      }
+    });
+  })(document);
+  //Filter Table
 }
 
 // kick it all off here
 $(document).ready(UTIL.loadEvents);
 
 //BEGIN EXECUTION HERE BASED ON PAGE
-chuoni = {
+dailyreport = {
   __home: {
     init: function _homepage() {
+      FilterInventory();
       //main page js
       $("#toggler").click(function () {
         $("#vertical-navigation").toggleClass("v-nav-expand");
@@ -65,6 +123,12 @@ chuoni = {
   },
   __login: {
     init: function _login() {
+      //disable password pasting
+      const pasteBox = document.getElementById("login-pwd");
+      pasteBox.onpaste = (e) => {
+        e.preventDefault();
+        return false;
+      };
       $(".message a").click(function () {
         $("form").animate({ height: "toggle", opacity: "toggle" }, "slow");
       });
@@ -72,6 +136,7 @@ chuoni = {
   },
   __add: {
     init: function _add() {
+      FilterInventory();
       const cyberCash = document.getElementById("cyber-cash");
       const cyberTill = document.getElementById("cyber-till");
       const psCash = document.getElementById("ps-cash");
@@ -132,21 +197,42 @@ chuoni = {
         }
       });
       //get all values and sum in total input
-      /*     [
-        cyberCash.value,
-        cyberTill.value,
-        psCash.value,
-        psTill.value,
-        movieCash.value,
-        movieTill.value,
-        salesProfit.value,
-        expensesValue.value,
-      ].forEach((item) => {
-        item.addEventListener("input", function () {
-          //add values in total
-          console.log(item++);
+      let incomeRecords = [
+        cyberCash,
+        cyberTill,
+        psCash,
+        psTill,
+        movieCash,
+        movieTill,
+        salesProfit,
+        expensesValue,
+      ];
+
+      //real time income total(ksh)
+      $(document).on("input", ".income-calc", function () {
+        var sum = 0;
+        $(".income-calc").each(function () {
+          sum += +$(this).val();
         });
-      }); */
+        $("#total-cash").val(sum);
+        var totalCash = $("#total-cash").val(sum);
+        document.getElementById(
+          "total-sales-out-cash"
+        ).innerHTML = `cash total: ${sum}`;
+      });
+
+      //real time income total(till)
+      $(document).on("input", ".income-calc-till", function () {
+        var sum = 0;
+        $(".income-calc-till").each(function () {
+          sum += +$(this).val();
+        });
+        $("#total-till").val(sum);
+        var totalTill = $("#total-till").val(sum);
+        document.getElementById(
+          "total-sales-out-till"
+        ).innerHTML = `till total: ${sum}`;
+      });
     },
   },
   __verify: {
@@ -197,6 +283,115 @@ chuoni = {
           pwd_.style.border = "";
         }
       }
+    },
+  },
+  __plastation: {
+    init: function _ps() {
+      FilterInventory();
+    },
+  },
+  __cyber: {
+    init: function _ps() {
+      FilterInventory();
+    },
+  },
+  __addItem: {
+    init: function _ps() {
+      FilterInventory();
+
+      //save item to inventory
+      $(document).ready(function () {
+        $("form").on("submit", function (e) {
+          e.preventDefault();
+          //get values including file if exists
+          var itemName = document.querySelector("#item-name");
+          var itemQt = document.querySelector("#item-quantity");
+          var itemBp = document.querySelector("#item-bp");
+          var itemModel = document.querySelector("#model");
+
+          [itemName, itemQt, itemBp, itemModel].forEach((item) => {
+            if (item.value == "") {
+              item.style.border = "1px solid red";
+              item.focus();
+              sleep(3500).then(() => {
+                item.style.border = "";
+              });
+            }
+          });
+
+          //product image
+          var fd = new FormData();
+          var files = $("#img_profile")[0].files[0];
+          fd.append("profile-input-img", files);
+
+          $.ajax({
+            url: "http://localhost/dailyreport-holics/saveInventory",
+            type: "POST",
+            contentType: false,
+            processData: false,
+            data: {
+              name: itemName,
+              quantity: itemQt,
+              buying: itemBp,
+              model: itemModel,
+            },
+            cache: false,
+            success: function (dataResult) {
+              var dataResult = JSON.parse(dataResult);
+              if (dataResult.statusCode == 200) {
+                $("#butsave").removeAttr("disabled");
+                $("#fupForm").find("input:text").val("");
+                $("#success").show();
+                $("#success").html("Data added successfully !");
+                document.getElementsByClassName("loader")[0].style.display =
+                  "block";
+
+                sleep(2100).then(() => {
+                  document.getElementsByClassName("loader")[0].style.display =
+                    "none";
+                  document.getElementById("inventory-alert").style.display =
+                    "block";
+                  document.getElementById("inventory-alert").innerHTML =
+                    "item added successfully!";
+                });
+
+                sleep(1500).then(() => {
+                  document.getElementById("inventory-alert").style.display =
+                    "none";
+                  document.getElementById("inventory-alert").innerHTML = "";
+                });
+              } else if (dataResult.statusCode == 201) {
+                alert("Error occured !");
+              }
+            },
+          });
+        });
+      });
+    },
+  },
+  __expense: {
+    init: function _ps() {
+      FilterInventory();
+    },
+  },
+  __filterReport: {
+    init: function _ps() {
+      FilterInventory();
+    },
+  },
+  __movieshop: {
+    init: function _ps() {
+      FilterInventory();
+    },
+  },
+  __sales: {
+    init: function _ps() {
+      FilterInventory();
+    },
+  },
+  __total: {
+    init: function _ps() {
+      FilterInventory();
     },
   },
 };

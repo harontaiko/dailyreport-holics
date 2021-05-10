@@ -16,22 +16,36 @@
                     <div class="cyber-record">
                         <p>Cyber <i class="fas fa-tv"></i></p>
                         <input required type="number" name="cyber-cash" id="cyber-cash" placeholder="cash"
-                            class="dr_input">
+                            class="income-calc dr_input">
                         <input required type="number" name="cyber-till" id="cyber-till" placeholder="till/other"
-                            class="dr_input">
+                            class="income-calc-till dr_input">
                     </div>
                     <div class="ps-record">
                         <p>Playstation <i class="fab fa-playstation"></i></p>
-                        <input required type="number" name="ps-cash" id="ps-cash" placeholder="cash" class="dr_input">
+                        <input required type="number" name="ps-cash" id="ps-cash" placeholder="cash"
+                            class="income-calc dr_input">
                         <input required type="number" name="ps-till" id="ps-till" placeholder="till/other"
-                            class="dr_input">
+                            class="income-calc-till dr_input">
                     </div>
                     <div class="movie-record">
                         <p>Movie Shop<i class="fas fa-compact-disc"></i></p>
                         <input required type="number" name="movie-cash" id="movie-cash" placeholder="cash"
-                            class="dr_input">
+                            class="income-calc dr_input">
                         <input required type="number" name="movie-till" id="movie-till" placeholder="till/other"
-                            class="dr_input">
+                            class="income-calc-till dr_input">
+                    </div>
+                </div>
+                <div class="total">
+                    <h3>Total (Income)</h3>
+                    <hr>
+                    <div class="total-record">
+                        <p>Net total(excluding sales and expenses)<i class="fas fa-layer-group"></i></p>
+                        <input required type="number" readonly name="total-cash" placeholder="Total cash"
+                            class="dr_input" id="total-cash">
+                        <input required type="number" readonly name="total-till" placeholder="till/other"
+                            class="dr_input" id="total-till">
+                        <p id="total-sales-out-cash"></p>
+                        <p id="total-sales-out-till"></p>
                     </div>
                 </div>
                 <div class="sales">
@@ -69,23 +83,9 @@
                         <button class="add-expense" type="button">Add</button>
                     </div>
                 </div>
-                <div class="total">
-                    <h3>Net Total</h3>
-                    <hr>
-                    <div class="total-record">
-                        <p>Net total<i class="fas fa-layer-group"></i></p>
-                        <input required type="number" readonly name="total-cash" placeholder="Total cash"
-                            class="dr_input">
-                        <input required type="number" readonly name="total-till" placeholder="till/other"
-                            class="dr_input">
-                    </div>
-                </div>
             </div>
         </form>
-        <form action="<?php echo URLROOT; ?>/users/logout" method="POST">
-            <button id="add-record" type="submit" name="logout" title="logout"><i title="logout"
-                    class="fas fa-sign-out-alt"></i></button>
-        </form>
+
     </main>
 
 </body>

@@ -7,7 +7,52 @@
     </div>
 
     <ul>
-        <li class="active"><a href="<?php echo URLROOT; ?>/pages/inventory">Inventory</a>
+        <li class="active">
+            <a href="#open-modal">Inventory</a>
+            <div id="open-modal" class="modal-window">
+                <div>
+                    <a href="#" title="Close" class="modal-close">Close</a>
+                    <h1 class="inventory-title">Inventory</h1>
+                    <input type="search" class="light-table-filter dr_input" data-table="order-table"
+                        placeholder="Filter" />
+                    <section class="table-box">
+                        <table class="order-table">
+                            <thead>
+                                <tr>
+                                    <th>Item</th>
+                                    <th>Bought(Ksh)</th>
+                                    <th>Sold(Ksh)</th>
+                                    <th>In Stock</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>San disk</td>
+                                    <td>1500</td>
+                                    <td>1700</td>
+                                    <td>9</td>
+                                </tr>
+                                <tr>
+                                    <td>San disk</td>
+                                    <td>1500</td>
+                                    <td><i class="fas fa-times"></i></td>
+                                    <td>9</td>
+                                </tr>
+                                <tr>
+                                    <td>San disk</td>
+                                    <td>1500</td>
+                                    <td><i class="fas fa-times"></i></td>
+                                    <td>9</td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </section>
+
+                </div>
+
+            </div>
+            </div>
             <ul>
                 <li><a href="<?php echo URLROOT; ?>/pages/movieShop">Movie shop</a></li>
                 <li><a href="<?php echo URLROOT; ?>/pages/cyber">Cyber</a></li>

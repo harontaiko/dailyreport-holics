@@ -47,7 +47,7 @@ class User
         
         try {
             Update($queryToken, $bindersToken, $valuesToken, 'dr_user', $this->db);
-        } catch (\Throwable $th) {
+        } catch (Error $e) {
             return false;
         }
 
@@ -62,7 +62,7 @@ class User
 
          try {
             Update($queryTokenSave, $bindersTokenSave, $valuesTokenSave, 'dr_user', $this->db);
-         } catch (\Throwable $th) {
+         } catch (Error $e) {
             return false;
          }
      }
@@ -83,7 +83,7 @@ class User
 
       try {
         return $row;
-      } catch (\Throwable $th) {
+      } catch (Error $e) {
         return false;
       }
      }

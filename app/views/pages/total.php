@@ -1,11 +1,11 @@
 <?php require(APPROOT . '/views/inc/header.php'); ?>
 
 
-<body class="sales __sales site-wrap">
+<body class="total __total site-wrap">
     <?php require(APPROOT . '/views/inc/navbar.php'); ?>
     <main>
         <h2 class="movie-title">Gross <i class="fas fa-plus-circle fa-2x"></i></h2>
-        <select name="filter-sales" id="filter-sales" class="dr_input">
+        <select name="filter-total" id="filter-total" class="dr_input">
             <option value="default">Filter</option>
             <option value="today">Today</option>
             <option value="this-month">This month</option>

@@ -4,6 +4,7 @@
 <body class="login __login">
     <div class="login-page">
         <?php flash('resetsuccess'); ?>
+
         <h2 class="login-title">Daily Report</h2>
         <div class="form">
             <form action="<?php echo URLROOT; ?>/users/recover" method="POST" class="register-form">
@@ -13,10 +14,11 @@
                 <p class="message">wrong place? <a href="#" title="back to login">back</a></p>
             </form>
             <form action="<?php echo URLROOT; ?>/users/login" method="POST" class="login-form">
+                <i class="fas fa-lock fa-3x"></i>
                 <p class="login-err"><?php echo isset($data['err']) ? $data['err'] : ''; ?></p>
                 <input name="username" type="text" placeholder="username" required
                     value="<?php echo isset($data['username']) ? $data['username'] : ''; ?>" />
-                <input name="password" type="password" placeholder="password" required />
+                <input name="password" id="login-pwd" type="password" placeholder="password" required />
                 <button type="submit" title="login" title="login" name="login">login</button>
                 <p class="message" title="reset password">Forgot password? <a href="#">reset</a></p>
             </form>

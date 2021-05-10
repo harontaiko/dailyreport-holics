@@ -175,4 +175,19 @@ class Pages extends Controller
       
     }
 
-}
+
+    //handle ajax POST & GET submission
+    public function saveInventory()
+    {  
+      if($_SERVER['REQUEST_METHOD'] == 'POST'){
+      $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+      $data = $_POST['serialize'];
+      
+    }else{
+      //throw not found
+      http_response_code(404);
+      include('../app/404.php');
+      die();
+    }    
+    }
+}    
