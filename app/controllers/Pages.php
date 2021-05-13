@@ -179,12 +179,133 @@ class Pages extends Controller
     //handle ajax POST & GET submission
     public function saveInventory()
     {  
+
       if($_SERVER['REQUEST_METHOD'] == 'POST'){
-      $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-      echo json_encode(array("statusCode"=>200));
+      
+      $file = $_FILES['product-image'];
+      $fileName = $file['name'];
+      $fileTmpName = $file['tmp_name'];
+      $fileSize = $file['size'];
+      $fileError = $file['error'];
+      $fileType = $file['type'];
+      $fileExtension = explode('.', $fileName);
+      $fileActualExtension = strtolower(end($fileExtension));
+      $allowedExtensions = array('jpg', 'jpeg', 'png', 'gif', 'psd', 'svg');
+      //saved in the users route
+      $fileDestination = '../app/uploads/' . preg_replace('/[^A-Za-z0-9. -]/', '', $fileName);
+      $photo = preg_replace('/[^A-Za-z0-9. -]/', '', $fileName);
+      
+      if ($file) {
+        if (in_array($fileActualExtension, $allowedExtensions)) {
+          $itemName = $_POST['item-name'];
+          $itemquantity = $_POST['item-quantity'];
+          $itemBp = $_POST['item-bp'];
+          $itemModel = $_POST['item-model'];
+
+          
+          $date = date('Y-m-d', time());
+          
+          $time = date('H:i:s T', time());
+
+          $ip = get_ip_address();
+
+          $inventory = [
+            'date' => $date,
+            'time' => $time,
+            'ip' => $ip,
+            'itemName' => $itemName,
+            'itemquantity' => $itemquantity,
+            'bp' => $itemBp,
+            'model' => $itemModel,
+            'imagename' => $photo,
+            'creator' => $_SESSION['user_name'],
+            'destination' => $fileDestination,
+            'tempname' => $fileTmpName,
+          ];
+
+          move_uploaded_file($fileTmpName, $fileDestination);
+        
+          $save = $this->pageModel->saveToInventory($inventory);
+          
+          if($save)
+          {
+            echo json_encode(array("statusCode"=>200));
+          }
+          else{
+            echo json_encode(array("statusCode"=>417));
+          }
+
+        }
+        else
+        {
+          $itemName = $_POST['item-name'];
+          $itemquantity = $_POST['item-quantity'];
+          $itemBp = $_POST['item-bp'];
+          $itemModel = $_POST['item-model'];
+  
+          $date = date('Y-m-d', time());
+            
+          $time = date('H:i:s T', time());
+  
+          $ip = get_ip_address();
+
+          $inventory = [
+            'date' => $date,
+            'time' => $time,
+            'ip' => $ip,
+            'itemName' => $itemName,
+            'itemquantity' => $itemquantity,
+            'bp' => $itemBp,
+            'model' => $itemModel,
+            'creator' => $_SESSION['user_name'],
+          ];
+        
+  
+          $save = $this->pageModel->saveToInventoryNull($inventory);
+          if($save)
+          {
+            echo json_encode(array("statusCode"=>200));
+          }
+          else{
+            echo json_encode(array("statusCode"=>417));
+          }
+        }
+      }
+      else{
+        
+        $itemName = $_POST['item-name'];
+        $itemquantity = $_POST['item-quantity'];
+        $itemBp = $_POST['item-bp'];
+        $itemModel = $_POST['item-model'];
+
+        $date = date('Y-m-d', time());
+          
+        $time = date('H:i:s T', time());
+
+        $ip = get_ip_address();
+
+        $inventory = [
+          'date' => $date,
+          'time' => $time,
+          'ip' => $ip,
+          'itemName' => $itemName,
+          'itemquantity' => $itemquantity,
+          'bp' => $itemBp,
+          'model' => $itemModel,
+          'creator' => $_SESSION['user_name'],
+        ];
+
+        $save = $this->pageModel->saveToInventoryNull($inventory);
+        if($save)
+        {
+          echo json_encode(array("statusCode"=>200));
+        }
+        else{
+          echo json_encode(array("statusCode"=>417));
+        }
+      }
       
     }else{
-      //throw not found
       http_response_code(404);
       include('../app/404.php');
       die();

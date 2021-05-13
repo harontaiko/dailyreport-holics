@@ -10,6 +10,7 @@ Inventory management and daily record keeping system, built on PHP OOP and Js, D
 - Change `URLROOT` to your default url
 - Go to the public folder, and change the `htaccess` if its on an online server, change it to `/public` otherwise use `/rootfolder/public`, replace **root folder** with the name of ur folder
 - Change `root url` in `main.js file`
+- `uploads moved to app folder` to avoid errors
 
 ### To do
 

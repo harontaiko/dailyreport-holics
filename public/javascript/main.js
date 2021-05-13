@@ -243,7 +243,8 @@ dailyreport = {
       function validatepassword() {
         const pwd = document.getElementById("passwordnew");
         const output_pwd_err = document.querySelector("#passwordnew-err");
-        const reg_valid_pwd = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/; //1 num, 1 ucase char, 1 Lcase char and atleast 8 chars
+        const reg_valid_pwd =
+          /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/; //1 num, 1 ucase char, 1 Lcase char and atleast 8 chars
         //create an illusion when the only thing being done, is checking char length
         if (pwd.value.length < 8) {
           pwd.style.border = "2px solid red";
@@ -308,80 +309,95 @@ dailyreport = {
           var itemQt = document.querySelector("#item-quantity");
           var itemBp = document.querySelector("#item-bp");
           var itemModel = document.querySelector("#model");
+          itemImage = document.querySelector("#product-image");
 
-          [itemName, itemQt, itemBp, itemModel].forEach((item) => {
+          /*           var check = [itemName, itemQt, itemBp, itemModel].forEach((item) => {
             if (item.value == "") {
               item.style.border = "1.2px solid red";
               sleep(3500).then(() => {
                 item.style.border = "";
               });
-            } else {
-              //product image
-              var fd = new FormData();
-              var files = $("#product-image")[0].files[0];
-              fd.append("product-image", files);
+            }
+            return false;
+          }); */
 
-              $.ajax({
-                url: "http://localhost/dailyreport-holics/pages/saveInventory",
-                type: "POST",
-                contentType: false,
-                processData: false,
-                data: {
-                  name: itemName,
-                  quantity: itemQt,
-                  buying: itemBp,
-                  model: itemModel,
-                },
-                cache: false,
-                success: function (dataResult) {
-                  var dataResult = JSON.parse(dataResult);
-                  if (dataResult.statusCode == 200) {
-                    //remove alerts
+          //product image
+          var fd = new FormData();
+          var files = $("#product-image")[0].files[0];
+          fd.append("product-image", files);
+
+          $.ajax({
+            url: "http://localhost/dailyreport-holics/pages/saveInventory",
+            type: "POST",
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false,
+            dataType: "json",
+            success: function (dataResult) {
+              if (dataResult.statusCode == 200) {
+                //remove alerts
+                document.querySelector(".alert_success").style.display = "none";
+                document.getElementsByClassName("loader")[0].style.display =
+                  "block";
+
+                sleep(2100).then(() => {
+                  document.getElementsByClassName("loader")[0].style.display =
+                    "none";
+                  document.querySelector(".alert").style.display = "block";
+                  document.getElementById("inventory-alert").style.display =
+                    "block";
+                  document.getElementById("inventory-alert").style.color =
+                    "#fff";
+                  document.getElementById("inventory-alert").innerHTML =
+                    "item added successfully!";
+
+                  //clear all inputs
+                  [itemName, itemQt, itemBp, itemModel, itemImage].forEach(
+                    (item) => {
+                      item.value = "";
+                    }
+                  );
+
+                  $("#product-avatar").attr(
+                    "src",
+                    "http://localhost/dailyreport-holics/public/images/images/open-box.png"
+                  );
+                  document.getElementById("product-image").value = "";
+                  sleep(3500).then(() => {
                     document.querySelector(".alert_success").style.display =
                       "none";
-                    document.getElementsByClassName("loader")[0].style.display =
-                      "block";
+                    document.getElementById("inventory-alert").innerHTML = "";
+                  });
+                });
+              } else if (dataResult.statusCode == 201) {
+                document.querySelector(".alert").style.display = "block";
+                document.getElementById("inventory-alert").style.color =
+                  "#f85f5f";
+                $("#inventory-alert").html(
+                  "invalid file or missing field, please try again"
+                );
 
-                    sleep(2100).then(() => {
-                      document.getElementsByClassName(
-                        "loader"
-                      )[0].style.display = "none";
-                      document.querySelector(".alert").style.display = "block";
-                      document.getElementById("inventory-alert").style.display =
-                        "block";
-                      document.getElementById("inventory-alert").style.color =
-                        "#fff";
-                      document.getElementById("inventory-alert").innerHTML =
-                        "item added successfully!";
+                sleep(1500).then(() => {
+                  document.querySelector(".alert_success").style.display =
+                    "none";
+                  document.getElementById("inventory-alert").innerHTML = "";
+                });
+              } else if (dataResult.statusCode == 417) {
+                document.querySelector(".alert").style.display = "block";
+                document.getElementById("inventory-alert").style.color =
+                  "#f85f5f";
+                $("#inventory-alert").html(
+                  "request could not be completed, check your connection"
+                );
 
-                      //clear all inputs
-                      [itemName, itemQt, itemBp, itemModel].forEach((item) => {
-                        item.value = "";
-                      });
-                    });
-
-                    sleep(1500).then(() => {
-                      document.querySelector(".alert_success").style.display =
-                        "none";
-                      document.getElementById("inventory-alert").innerHTML = "";
-                    });
-                  } else if (dataResult.statusCode == 201) {
-                    document.querySelector(".alert").style.display = "block";
-                    document.getElementById("inventory-alert").style.color =
-                      "#f85f5f";
-                    $("#inventory-alert").html(
-                      "an error occured, please try again"
-                    );
-
-                    sleep(1500).then(() => {
-                      document.querySelector(".alert_success").style.display =
-                        "none";
-                      document.getElementById("inventory-alert").innerHTML = "";
-                    });
-                  }
-                },
-              });
-            }
+                sleep(1500).then(() => {
+                  document.querySelector(".alert_success").style.display =
+                    "none";
+                  document.getElementById("inventory-alert").innerHTML = "";
+                });
+              }
+            },
           });
         });
       });

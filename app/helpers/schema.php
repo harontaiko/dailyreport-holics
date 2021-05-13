@@ -120,6 +120,25 @@ reset_link varchar(256) NULL
 )ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci
 ';
 
+$inventory_table = 
+'
+CREATE TABLE ' .
+  $this->DB_PREFIX .
+  '_inventory( 
+item_id int(11) AUTO_INCREMENT PRIMARY KEY NOT NULL,
+item_name varchar(64) NOT NULL,
+item_quantity varchar(64) NOT NULL,
+item_buying varchar(64) NOT NULL,
+item_model varchar(64) NOT NULL,
+image varchar(64) NULL,
+date_created varchar(64) NOT NULL,
+time_created varchar(64) NOT NULL,
+created_by varchar(256) NOT NULL,
+edited_by varchar(256) NULL,
+creator_ip varchar(256) NULL
+)ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci
+';
+
 $login_table =
 '
 CREATE TABLE ' .

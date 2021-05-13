@@ -19,19 +19,19 @@
 
                 <div class="field-container">
                     <label for="name">Item Name</label>
-                    <input id="item-name" maxlength="20" type="text">
+                    <input id="item-name" name="item-name" maxlength="20" type="text" required>
                 </div>
                 <div class="field-container">
                     <label for="name">Quantity</label>
-                    <input id="item-quantity" type="number" max="10" inputmode="numeric">
+                    <input id="item-quantity" name="item-quantity" type="number" max="10" inputmode="numeric" required>
                 </div>
                 <div class="field-container">
                     <label for="expirationdate">Buying (Ksh)</label>
-                    <input id="item-bp" type="number" inputmode="numeric">
+                    <input id="item-bp" type="number" name="item-bp" inputmode="numeric" required>
                 </div>
                 <div class="field-container">
                     <label for="model">Model/Manufacturer</label>
-                    <input id="model" type="text">
+                    <input id="model" name="item-model" type="text" required>
                 </div>
                 <div class="field-container">
                     <img src="<?php echo URLROOT; ?>/public/images/images/open-box.png" alt="product-avatar"

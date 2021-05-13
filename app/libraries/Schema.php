@@ -62,6 +62,7 @@ class Schema extends Database
         $expenses_table,
         $nettotal_table,
         $user_table,
+        $inventory_table,
         $login_table
       ];
 
@@ -74,6 +75,7 @@ class Schema extends Database
         "" . $this->DB_PREFIX . "_sales",
         "" . $this->DB_PREFIX . "_nettotal",
         "" . $this->DB_PREFIX . "_user",
+        "" . $this->DB_PREFIX . "_inventory",
         "" . $this->DB_PREFIX . "_login",
       ];
 
