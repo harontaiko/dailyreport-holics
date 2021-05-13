@@ -54,14 +54,14 @@
                     <div class="sales-record">
                         <p>Product Sales <i class="fas fa-cash-register"></i></p>
                         <select name="product" id="product" class="dr_input">
-                            <option value="pr-1">san disk usb 25gb</option>
-                            <option value="pr-1">san disk usb 4gb</option>
-                            <option value="pr-1">san disk flash 25gb</option>
-                            <option value="pr-1">boost 25gb</option>
-                            <option value="pr-1">san disk usb 25gb</option>
+                            <?php while ($sales = $data['inventoryAdd']->fetch_assoc()) : ?>
+                            <option value="<?php echo isset($sales['item_id']) ? $sales['item_id']: ''; ?>">
+                                <?php echo isset($sales['item_name']) ? $sales['item_name']: ''; ?></option>
+                            <?php endwhile ?>
                         </select>
-                        <input required type="number" name="bought-price" id="bought-price" placeholder="Buying(ksh)"
-                            class="dr_input">
+                        <div id="sc"></div>
+                        <input required type="text" readonly name="bought-price" id="bought-price"
+                            placeholder="Buying(ksh)" class="dr_input">
                         <input required autocomplete="off" type="number" name="sales-cash" id="sales-cash"
                             placeholder="sell..cash" class="dr_input">
                         <input required autocomplete="off" type="number" name="sales-till" id="sales-till"

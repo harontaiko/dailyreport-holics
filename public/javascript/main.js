@@ -233,6 +233,20 @@ dailyreport = {
           "total-sales-out-till"
         ).innerHTML = `till total: ${sum}`;
       });
+
+      //get buying price of selected item in sales
+      var salesOptions = document.getElementById("product");
+
+      salesOptions.addEventListener("change", function LoadBuying() {
+        currentOption = salesOptions.value;
+
+        $("#sc").load(
+          `loadBuying/${currentOption}`,
+          function (res, status, http) {
+            document.getElementById("bought-price").value = res;
+          }
+        );
+      });
     },
   },
   __verify: {
@@ -378,7 +392,7 @@ dailyreport = {
                   "invalid file or missing field, please try again"
                 );
 
-                sleep(1500).then(() => {
+                sleep(4700).then(() => {
                   document.querySelector(".alert_success").style.display =
                     "none";
                   document.getElementById("inventory-alert").innerHTML = "";
@@ -391,7 +405,20 @@ dailyreport = {
                   "request could not be completed, check your connection"
                 );
 
-                sleep(1500).then(() => {
+                sleep(4700).then(() => {
+                  document.querySelector(".alert_success").style.display =
+                    "none";
+                  document.getElementById("inventory-alert").innerHTML = "";
+                });
+              } else if (dataResult.statusCode == 317) {
+                document.querySelector(".alert").style.display = "block";
+                document.getElementById("inventory-alert").style.color =
+                  "#f85f5f";
+                $("#inventory-alert").html(
+                  "please change the item name or image name, a similar record already exists"
+                );
+
+                sleep(4700).then(() => {
                   document.querySelector(".alert_success").style.display =
                     "none";
                   document.getElementById("inventory-alert").innerHTML = "";

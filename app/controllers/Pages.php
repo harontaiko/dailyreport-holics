@@ -12,11 +12,15 @@ class Pages extends Controller
     {
       if (!isset($_SESSION["user_id"])) {
         $data = [
-          "title" => "Daily Report",
+          "title" => "Daily Report",  
         ];
         redirect("users/index");
       }
-        $data = ['title'=>'Daily Report'];
+        $inventoryData = $this->pageModel->getInventoryData();
+
+        $db = $this->pageModel->getDatabaseConnection();
+
+        $data = ['title'=>'Daily Report', "inventory" => $inventoryData, 'db'=>$db];
 
         $this->view('pages/index', $data);
     }
@@ -33,7 +37,11 @@ class Pages extends Controller
       date_default_timezone_set('Africa/Nairobi');
       $currentdate = date('M/Y/d h:i:s A', time());
 
-      $data = ['title'=>'Daily Report', 'date'=>$currentdate];
+      $inventoryData = $this->pageModel->getInventoryData();
+
+      $db = $this->pageModel->getDatabaseConnection();
+
+      $data = ['title'=>'Daily Report', 'date'=>$currentdate,"inventory" => $inventoryData, 'db'=>$db];
 
       $this->view('pages/movieShop', $data);
     }
@@ -50,7 +58,11 @@ class Pages extends Controller
       date_default_timezone_set('Africa/Nairobi');
       $currentdate = date('M/Y/d h:i:s A', time());
 
-      $data = ['title'=>'Daily Report', 'date'=>$currentdate];
+      $inventoryData = $this->pageModel->getInventoryData();
+
+      $db = $this->pageModel->getDatabaseConnection();
+
+      $data = ['title'=>'Daily Report', 'date'=>$currentdate, "inventory" => $inventoryData, 'db'=>$db];
 
       $this->view('pages/cyber', $data);
     }
@@ -67,7 +79,11 @@ class Pages extends Controller
       date_default_timezone_set('Africa/Nairobi');
       $currentdate = date('M/Y/d h:i:s A', time());
 
-      $data = ['title'=>'Daily Report', 'date'=>$currentdate];
+      $inventoryData = $this->pageModel->getInventoryData();
+
+      $db = $this->pageModel->getDatabaseConnection();
+
+      $data = ['title'=>'Daily Report', 'date'=>$currentdate, "inventory" => $inventoryData, 'db'=>$db];
 
       $this->view('pages/playstation', $data);
     }
@@ -84,7 +100,11 @@ class Pages extends Controller
       date_default_timezone_set('Africa/Nairobi');
       $currentdate = date('M/Y/d h:i:s A', time());
 
-      $data = ['title'=>'Daily Report', 'date'=>$currentdate];
+      $inventoryData = $this->pageModel->getInventoryData();
+
+      $db = $this->pageModel->getDatabaseConnection();
+
+      $data = ['title'=>'Daily Report', 'date'=>$currentdate, "inventory" => $inventoryData, 'db'=>$db];
 
       $this->view('pages/filterReport', $data);
     }
@@ -101,7 +121,11 @@ class Pages extends Controller
       date_default_timezone_set('Africa/Nairobi');
       $currentdate = date('M/Y/d h:i:s A', time());
 
-      $data = ['title'=>'Daily Report', 'date'=>$currentdate];
+      $inventoryData = $this->pageModel->getInventoryData();
+
+      $db = $this->pageModel->getDatabaseConnection();
+
+      $data = ['title'=>'Daily Report', 'date'=>$currentdate, "inventory" => $inventoryData, 'db'=>$db];
 
       $this->view('pages/addItem', $data);
     }
@@ -118,7 +142,11 @@ class Pages extends Controller
       date_default_timezone_set('Africa/Nairobi');
       $currentdate = date('M/Y/d h:i:s A', time());
 
-      $data = ['title'=>'Daily Report', 'date'=>$currentdate];
+      $inventoryData = $this->pageModel->getInventoryData();
+
+      $db = $this->pageModel->getDatabaseConnection();
+
+      $data = ['title'=>'Daily Report', 'date'=>$currentdate, "inventory" => $inventoryData, 'db'=>$db];
 
       $this->view('pages/sales', $data);
     }
@@ -135,7 +163,11 @@ class Pages extends Controller
       date_default_timezone_set('Africa/Nairobi');
       $currentdate = date('M/Y/d h:i:s A', time());
 
-      $data = ['title'=>'Daily Report', 'date'=>$currentdate];
+      $inventoryData = $this->pageModel->getInventoryData();
+
+      $db = $this->pageModel->getDatabaseConnection();
+
+      $data = ['title'=>'Daily Report', 'date'=>$currentdate, "inventory" => $inventoryData, 'db'=>$db];
 
       $this->view('pages/expenses', $data);
     }
@@ -152,7 +184,11 @@ class Pages extends Controller
       date_default_timezone_set('Africa/Nairobi');
       $currentdate = date('M/Y/d h:i:s A', time());
 
-      $data = ['title'=>'Daily Report', 'date'=>$currentdate];
+      $inventoryData = $this->pageModel->getInventoryData();
+
+      $db = $this->pageModel->getDatabaseConnection();
+
+      $data = ['title'=>'Daily Report', 'date'=>$currentdate, "inventory" => $inventoryData, 'db'=>$db];
 
       $this->view('pages/total', $data);
     }
@@ -168,8 +204,17 @@ class Pages extends Controller
 
       date_default_timezone_set('Africa/Nairobi');
       $currentdate = date('Y-m-d h:i:s A', time());
+
+      $inventoryData = $this->pageModel->getInventoryData();
+      
+      $inventoryDataAdd = $this->pageModel->getInventoryData();
+
+      $db = $this->pageModel->getDatabaseConnection();
+
+      $dbAdd = $this->pageModel->getDatabaseConnection();
+
       //add store record
-      $data = ['title' => 'Add record', 'date'=>$currentdate];
+      $data = ['title' => 'Add Sale Record', 'date'=>$currentdate, "inventoryAdd" => $inventoryDataAdd, "inventory" => $inventoryData, 'db'=>$db, 'db2' => $dbAdd];
 
       $this->view('pages/add',$data);
       
@@ -197,12 +242,16 @@ class Pages extends Controller
       
       if ($file) {
         if (in_array($fileActualExtension, $allowedExtensions)) {
+          
           $itemName = $_POST['item-name'];
           $itemquantity = $_POST['item-quantity'];
           $itemBp = $_POST['item-bp'];
           $itemModel = $_POST['item-model'];
 
-          
+          if($this->pageModel->getItemByName($itemName) || $this->pageModel->getImageByName($photo)){
+            echo json_encode(array("statusCode"=>317));
+          }else{
+        
           $date = date('Y-m-d', time());
           
           $time = date('H:i:s T', time());
@@ -234,7 +283,7 @@ class Pages extends Controller
           else{
             echo json_encode(array("statusCode"=>417));
           }
-
+        }
         }
         else
         {
@@ -310,5 +359,25 @@ class Pages extends Controller
       include('../app/404.php');
       die();
     }    
+  }
+
+    public function loadBuying($id)
+    {
+      if($_SERVER['REQUEST_METHOD'] == 'GET')
+      {
+          $itemId = htmlspecialchars($id);
+
+          $bp = $this->pageModel->getBuyingByName($itemId);
+
+          $data = ['bp' => $bp];
+
+          $this->view("pages/loadBuying", $data);
+      }
+      else
+      {
+        http_response_code(404);
+        include('../app/404.php');
+        die();
+      }
     }
 }    

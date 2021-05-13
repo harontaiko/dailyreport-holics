@@ -571,3 +571,26 @@ function ResetToken($table, $id, $newTokenVal, $db)
 
   return $stmt;
 }
+
+function getItemSoldCountInventory($name, $db)
+{
+  $query = 'SELECT COUNT(*) AS cnt FROM dr_sales WHERE sales_item = ?';
+
+  $binders = "s";
+
+  $parameters = array($name);
+
+  $result = SelectCond($query, $binders, $parameters, $db);
+
+  $row = $result->get_result();
+
+  $rowItem = $row->fetch_assoc();
+  
+  $count = $rowItem['cnt'];
+
+  try {
+      return $count;
+  } catch (Error $e) {
+      return false;
+  }
+}

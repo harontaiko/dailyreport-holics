@@ -6,7 +6,7 @@
     <main>
         <a id="add-record" title="add record" href="<?php echo URLROOT; ?>/pages/add"><i class="fas fa-plus"></i></a>
         <header>
-            <h1 class="title">Pipeline</h1>
+            <h1 class="title">Pipeline </h1>
             <table>
                 <thead>
                     <tr>

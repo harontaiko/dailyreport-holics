@@ -20,31 +20,26 @@
                             <thead>
                                 <tr>
                                     <th>Item</th>
-                                    <th>Bought(Ksh)</th>
-                                    <th>Sold(Ksh)</th>
+                                    <th>Item No.</th>
+                                    <th>Quantity</th>
                                     <th>In Stock</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                <?php while ($inventory = $data['inventory']->fetch_assoc()) : 
+                                    $instock = $inventory['item_quantity'];
+                                    $sold = getItemSoldCountInventory($inventory['item_name'],$data['db']);
+                                    ?>
                                 <tr>
-                                    <td>San disk</td>
-                                    <td>1500</td>
-                                    <td>1700</td>
-                                    <td>9</td>
+                                    <td><?php echo isset($inventory['item_name']) ? $inventory['item_name']: ''; ?></td>
+                                    <td>DR0<?php echo isset($inventory['item_id']) ? $inventory['item_id']: ''; ?>
+                                    </td>
+                                    <td><?php echo isset($inventory['item_quantity']) ? $inventory['item_quantity']: ''; ?>
+                                    </td>
+                                    <td><?php echo ($instock - $sold); ?>
+                                    </td>
                                 </tr>
-                                <tr>
-                                    <td>San disk</td>
-                                    <td>1500</td>
-                                    <td><i class="fas fa-times"></i></td>
-                                    <td>9</td>
-                                </tr>
-                                <tr>
-                                    <td>San disk</td>
-                                    <td>1500</td>
-                                    <td><i class="fas fa-times"></i></td>
-                                    <td>9</td>
-                                </tr>
-
+                                <?php endwhile ?>
                             </tbody>
                         </table>
                     </section>
@@ -59,7 +54,7 @@
                 <li><a href="<?php echo URLROOT; ?>/pages/playstation">Playstation</a></li>
             </ul>
         </li>
-        <li><a href="<?php echo URLROOT; ?>/pages/add">Add record</a></li>
+        <li><a href="<?php echo URLROOT; ?>/pages/add">Add sale</a></li>
         <li><a href="<?php echo URLROOT; ?>/pages/filterReport">Filter Reports</a></li>
         <li><a href="<?php echo URLROOT; ?>/pages/addItem">Add item to inventory</a></li>
         <li><a href="<?php echo URLROOT; ?>/pages/sales">Items Sold</a></li>

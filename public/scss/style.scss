@@ -226,7 +226,7 @@ table {
 
   thead tr {
     height: 60px;
-    background: #ffed86;
+    background: rgb(20, 170, 163);
     font-size: 16px;
   }
 
@@ -1519,4 +1519,8 @@ th {
   100% {
     transform: rotate(360deg);
   }
+}
+
+#sc {
+  display: none;
 }
