@@ -324,7 +324,7 @@ dailyreport = {
                   document.querySelector(".alert").style.display = "block";
                   document.getElementById("add-alert").style.color = "#f85f5f";
                   $("#add-alert").html(
-                    "the item is currently not in stock, please add it more to the invnetory"
+                    "the item is currently not in stock, add it to the inventory first"
                   );
 
                   sleep(4700).then(() => {

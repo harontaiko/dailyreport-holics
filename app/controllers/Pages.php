@@ -237,14 +237,18 @@ class Pages extends Controller
         ];
 
         $inventoryData = $this->pageModel->getItemInventoryCount($data['name']);
+        $sold = getItemSoldCountInventory($data['name'],$this->pageModel->getDatabaseConnection());
 
         while($state = $inventoryData->fetch_assoc()){
           $instock = $state['item_quantity'];
         }
 
-        if($instock < 1){
-          $this->pageModel->saveToSales($data);
+        if(($instock - $sold) > 1){
+          if($this->pageModel->saveToSales($data)){
           echo json_encode(array("statusCode"=>200, "name"=>$data['name']));
+          }else{
+            echo json_encode(array("statusCode"=>317));
+          }
         }
         else
         {

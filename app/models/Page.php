@@ -29,11 +29,8 @@ class Page
 
         $row = $result->get_result();
 
-        $rowItem = $row->fetch_assoc();
-            
-        $x = isset($rowItem['sales_item']) ? $rowItem['sales_item'] : 'id:not found';
         try {
-            return $x;
+            return $row;
         } catch (Error $e) {
             return false;
         } 
