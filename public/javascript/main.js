@@ -239,13 +239,104 @@ dailyreport = {
 
       salesOptions.addEventListener("change", function LoadBuying() {
         currentOption = salesOptions.value;
+        currentOptionText = this.options[this.selectedIndex].text;
 
         $("#sc").load(
           `loadBuying/${currentOption}`,
           function (res, status, http) {
             document.getElementById("bought-price").value = res;
+            document.getElementById("bought-item").value = currentOptionText;
           }
         );
+      });
+
+      //add sale
+      $(document).ready(function () {
+        $("form").on("submit", function (e) {
+          e.preventDefault();
+
+          var form = $(this);
+
+          //validate
+          if (salesProfit.value == "") {
+            document.getElementById("sales-cash").style.border =
+              "1.5px solid red";
+            document.getElementById("bought-item").style.border =
+              "1.5px solid red";
+            document.getElementById("bought-price").style.border =
+              "1.5px solid red";
+            document.getElementById("sales-till").style.border =
+              "1.5px solid red";
+            sleep(2500).then(() => {
+              document.getElementById("bought-item").style.border = "";
+              document.getElementById("bought-price").style.border = "";
+              document.getElementById("sales-cash").style.border = "";
+              document.getElementById("sales-till").style.border = "";
+            });
+          } else {
+            //add to db, item == itemId
+            var boughtsales = document.getElementById("bought-price").value;
+            var boughtItems = document.getElementById("bought-item").value;
+            var cashsales = document.getElementById("sales-cash").value;
+            var tillsales = document.getElementById("sales-till").value;
+            var profitsales = document.getElementById("sales-profit").value;
+            var itemsales = document.getElementById("product").value;
+
+            //save cash sales
+            $.ajax({
+              url: "http://localhost/dailyreport-holics/pages/saveSaleCash",
+              type: "POST",
+              data: form.serialize(),
+              dataType: "json",
+              success: function (dataResult) {
+                if (dataResult.statusCode == 200) {
+                  //success
+                  //clear all inputs
+                  [
+                    document.getElementById("bought-price"),
+                    document.getElementById("bought-item"),
+                    document.getElementById("sales-cash"),
+                    document.getElementById("sales-till"),
+                    document.getElementById("sales-profit"),
+                  ].forEach((item) => {
+                    item.value = "";
+                  });
+                  $("#product").prop("selected", function () {
+                    return this.defaultSelected;
+                  });
+                  //load sold i=onto DOM
+                  $("#sc").load(`loadLatestSold`);
+                  //update inventory real time
+                  $("#open-modal").load(`loadInventoryData`);
+                } else if (dataResult.statusCode == 317) {
+                  document.querySelector(".alert").style.display = "block";
+                  document.getElementById("add-alert").style.color = "#f85f5f";
+                  $("#add-alert").html(
+                    "connection error, check database or internet connection"
+                  );
+
+                  sleep(4700).then(() => {
+                    document.querySelector(".alert_success").style.display =
+                      "none";
+                    document.getElementById("add-alert").innerHTML = "";
+                  });
+                } else if (dataResult.statusCode == 318) {
+                  document.querySelector(".alert").style.display = "block";
+                  document.getElementById("add-alert").style.color = "#f85f5f";
+                  $("#add-alert").html(
+                    "the item is currently not in stock, please add it more to the invnetory"
+                  );
+
+                  sleep(4700).then(() => {
+                    document.querySelector(".alert_success").style.display =
+                      "none";
+                    document.getElementById("add-alert").innerHTML = "";
+                  });
+                }
+              },
+            });
+          }
+        });
       });
     },
   },
@@ -313,7 +404,6 @@ dailyreport = {
   __addItem: {
     init: function _ps() {
       FilterInventory();
-
       //save item to inventory
       $(document).ready(function () {
         $("form").on("submit", function (e) {
@@ -365,6 +455,9 @@ dailyreport = {
                     "#fff";
                   document.getElementById("inventory-alert").innerHTML =
                     "item added successfully!";
+
+                  //load new data to inventory UI
+                  $("#open-modal").load(`loadInventoryData`);
 
                   //clear all inputs
                   [itemName, itemQt, itemBp, itemModel, itemImage].forEach(

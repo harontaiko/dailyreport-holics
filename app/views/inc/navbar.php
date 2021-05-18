@@ -14,7 +14,7 @@
                     <a href="#" title="Close" class="modal-close">Close</a>
                     <h1 class="inventory-title">Inventory</h1>
                     <input type="search" class="light-table-filter dr_input" data-table="order-table"
-                        placeholder="Filter" />
+                        placeholder="Filter (name/creator/no.)" />
                     <section class="table-box">
                         <table class="order-table">
                             <thead>
@@ -23,6 +23,10 @@
                                     <th>Item No.</th>
                                     <th>Quantity</th>
                                     <th>In Stock</th>
+                                    <th>Sold</th>
+                                    <th>Created on</th>
+                                    <th>Creator</th>
+                                    <th>edit</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -38,6 +42,22 @@
                                     </td>
                                     <td><?php echo ($instock - $sold); ?>
                                     </td>
+                                    <td><?php echo $sold ?>
+                                    </td>
+                                    <td> <?php echo date(
+                                  'jS M Y',
+                                  strtotime(
+                                    htmlspecialchars($inventory["date_created"])
+                                  )
+                                ); ?> at <?php echo date(
+                                    'h:iA',
+                                    strtotime(
+                                      htmlspecialchars($inventory["time_created"])
+                                    )
+                                  ); ?></td>
+                                    <td><?php echo isset($inventory['created_by']) ? $inventory['created_by']: ''; ?>
+                                    </td>
+                                    <td><i class="fas fa-pencil"></i></td>
                                 </tr>
                                 <?php endwhile ?>
                             </tbody>

@@ -1,3 +1,3 @@
 <?php
 
-echo $data['bp'];
+echo isset($data['bp']) ? $data['bp'] : '';

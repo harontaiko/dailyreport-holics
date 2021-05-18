@@ -220,6 +220,47 @@ class Pages extends Controller
       
     }
 
+    public function saveSaleCash()
+    {
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+
+        $data = [
+          'name' =>$_POST['bought-item'],
+          'bought'=>$_POST['bought-price'],
+          'cash'=>$_POST['sales-cash'], 
+          'till'=>$_POST['sales-till'], 
+          'profit'=>$_POST['sales-profit'],
+          'date'=>date('Y-m-d', time()), 
+          'time'=>date('H:i:s T', time()), 
+          'ip'=>get_ip_address(), 
+          'creator'=>$_SESSION['user_name']
+        ];
+
+        $inventoryData = $this->pageModel->getItemInventoryCount($data['name']);
+
+        while($state = $inventoryData->fetch_assoc()){
+          $instock = $state['item_quantity'];
+        }
+
+        if($instock < 1){
+          $this->pageModel->saveToSales($data);
+          echo json_encode(array("statusCode"=>200, "name"=>$data['name']));
+        }
+        else
+        {
+          echo json_encode(array("statusCode"=>318));
+        }
+      
+      }
+      else{
+        http_response_code(404);
+        include('../app/404.php');
+        die();
+      }
+      
+    }
+
+
 
     //handle ajax POST & GET submission
     public function saveInventory()
@@ -252,16 +293,11 @@ class Pages extends Controller
             echo json_encode(array("statusCode"=>317));
           }else{
         
-          $date = date('Y-m-d', time());
-          
-          $time = date('H:i:s T', time());
-
-          $ip = get_ip_address();
 
           $inventory = [
-            'date' => $date,
-            'time' => $time,
-            'ip' => $ip,
+            'date' => date('Y-m-d', time()),
+            'time' => date('H:i:s T', time()),
+            'ip' => get_ip_address(),
             'itemName' => $itemName,
             'itemquantity' => $itemquantity,
             'bp' => $itemBp,
@@ -363,7 +399,7 @@ class Pages extends Controller
 
     public function loadBuying($id)
     {
-      if($_SERVER['REQUEST_METHOD'] == 'GET')
+      if($_SERVER['REQUEST_METHOD'] == 'GET' && isset($id))
       {
           $itemId = htmlspecialchars($id);
 
@@ -372,6 +408,46 @@ class Pages extends Controller
           $data = ['bp' => $bp];
 
           $this->view("pages/loadBuying", $data);
+      }
+      else
+      {
+        http_response_code(404);
+        include('../app/404.php');
+        die();
+      }
+    }
+
+    public function loadInventoryData()
+    {
+      if($_SERVER['REQUEST_METHOD'] == 'GET')
+      {
+        $inventoryData = $this->pageModel->getInventoryData();
+
+        $db = $this->pageModel->getDatabaseConnection();
+
+        $data = ['title'=>'Daily Report', "inventory" => $inventoryData, 'db'=>$db];
+
+        $this->view('pages/loadInventoryData', $data);
+      }
+      else
+      {
+        http_response_code(404);
+        include('../app/404.php');
+        die();
+      }
+    }
+
+    public function loadLatestSold()
+    {
+      if($_SERVER['REQUEST_METHOD'] == 'GET')
+      {
+        $latestData = $this->pageModel->getLatestSold();
+
+        $db = $this->pageModel->getDatabaseConnection();
+
+        $data = ['title'=>'Daily Report', "latest" => $latestData, 'db'=>$db];
+
+        $this->view('pages/loadLatestSold', $data);
       }
       else
       {

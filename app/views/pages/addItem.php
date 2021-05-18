@@ -31,7 +31,7 @@
                 </div>
                 <div class="field-container">
                     <label for="model">Model/Manufacturer</label>
-                    <input id="model" name="item-model" type="text" required>
+                    <input id="model" name="item-model" type="text" placeholder="write N/A if unavailable" required>
                 </div>
                 <div class="field-container">
                     <img src="<?php echo URLROOT; ?>/public/images/images/open-box.png" alt="product-avatar"
