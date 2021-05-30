@@ -16,21 +16,27 @@ class Page
 
     public function getLatestSold(){
         //get last id to be inserted, cause we can never know the exact id, since its a cosed app this flaw can be ignored but documented
-        $db = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-        $lastId = mysqli_insert_id($db);
 
-        $query ="SELECT sales_id, sales_item FROM dr_sales WHERE sales_id=?";
+        $query ="SELECT MAX(sales_id) AS id FROM dr_sales";
 
-        $bindersId = "s";
-
-        $params = [$lastId];
-
-        $result = SelectCond($query, $bindersId, $params, $this->db);
+        $result = SelectCondFree($query, 'dr_sales',$this->db);
 
         $row = $result->get_result();
 
+        $data = $row->fetch_assoc();
+
+        $q = 'SELECT sales_id, sales_item FROM dr_sales WHERE sales_id=?';
+
+        $b = "s";
+
+        $p = array($data['id']);
+
+        $result2 = SelectCond($q, $b, $p, $this->db);
+
+        $row2 = $result2->get_result();
+
         try {
-            return $row;
+            return $row2;
         } catch (Error $e) {
             return false;
         } 

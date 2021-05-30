@@ -304,8 +304,8 @@ dailyreport = {
                   $("#product").prop("selected", function () {
                     return this.defaultSelected;
                   });
-                  //load sold i=onto DOM
-                  $("#sc").load(`loadLatestSold`);
+                  //load sold i==onto DOM
+                  $("#sl").load(`loadLatestSold`);
                   //update inventory real time
                   $("#open-modal").load(`loadInventoryData`);
                 } else if (dataResult.statusCode == 317) {
@@ -324,7 +324,7 @@ dailyreport = {
                   document.querySelector(".alert").style.display = "block";
                   document.getElementById("add-alert").style.color = "#f85f5f";
                   $("#add-alert").html(
-                    "the item is currently not in stock, add it to the inventory first"
+                    "the item is currently not in stock, add it to the inventory first!"
                   );
 
                   sleep(4700).then(() => {

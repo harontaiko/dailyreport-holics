@@ -19,3 +19,5 @@ Inventory management and daily record keeping system, built on PHP OOP and Js, D
 - change htacces in public, adjust timezone when day comes
 
 - all static js fetched thru jsdeliver,
+
+- load sales in real time

@@ -243,7 +243,7 @@ class Pages extends Controller
           $instock = $state['item_quantity'];
         }
 
-        if(($instock - $sold) > 1){
+        if(($instock - $sold) >= 1){
           if($this->pageModel->saveToSales($data)){
           echo json_encode(array("statusCode"=>200, "name"=>$data['name']));
           }else{

@@ -57,6 +57,10 @@
                     <div class="sales-record">
                         <form name="sales-form-rec" id="sales-form-rec">
                             <p>Product Sales <i class="fas fa-cash-register"></i></p>
+                            <div id="sc">
+                            </div>
+                            <div id="sl">
+                            </div>
                             <select name="product" id="product" class="dr_input">
                                 <?php while ($sales = $data['inventoryAdd']->fetch_assoc()) : ?>
                                 <option value="<?php echo isset($sales['item_id']) ? $sales['item_id']: ''; ?>">
@@ -74,7 +78,6 @@
                             <input readonly type="number" name="sales-profit" id="sales-profit" placeholder="profit"
                                 class="dr_input">
                             <input class="add-product" id="add-sale-btn" type="submit" value="Add">
-                            <div id="sc"></div>
                         </form>
                     </div>
                 </div>
