@@ -8,7 +8,7 @@
         <form action="" method="POST" id="form-add">
             <input type="datetime" name="date" id="date"
                 value="<?php echo isset($data['date']) ? $data['date'] : ''; ?>" readonly>
-            <div class="alert alert_success">
+            <div class="alert alert_success" id="alert_add">
                 <p id="add-alert"></p>
             </div>
             <input type="submit" class="save-record" value="create record">
@@ -47,8 +47,9 @@
                             id="total-cash">
                         <input type="number" readonly name="total-till" placeholder="till/other" class="dr_input"
                             id="total-till">
-                        <p id="total-sales-out-cash"></p>
-                        <p id="total-sales-out-till"></p>
+                        <p class="total-sales-out-cash" id="total-sales-out-cash"></p>
+                        <p class="total-sales-out-till" id="total-sales-out-till"></p>
+                        <p class="total-sales-out-net" id="total-sales-out-net"></p>
                     </div>
                 </div>
                 <div class="sales">

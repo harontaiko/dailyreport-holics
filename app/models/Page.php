@@ -14,6 +14,25 @@ class Page
       return $this->db;
     }
 
+    public function getSoldToday()
+    {
+        $query = 'SELECT sales_id, sales_item FROM dr_sales WHERE date_created=?';
+
+        $binders = "s";
+
+        $parameters = array(date('Y-m-d', time()));
+
+        $result = SelectCond($query, $binders, $parameters, $this->db);
+
+        $row = $result->get_result();
+
+        try {
+            return $row;
+        } catch (Error $e) {
+            return false;
+        } 
+    }
+
     public function getLatestSold(){
         //get last id to be inserted, cause we can never know the exact id, since its a cosed app this flaw can be ignored but documented
 

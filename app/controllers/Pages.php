@@ -445,13 +445,28 @@ class Pages extends Controller
     {
       if($_SERVER['REQUEST_METHOD'] == 'GET')
       {
-        $latestData = $this->pageModel->getLatestSold();
-
-        $db = $this->pageModel->getDatabaseConnection();
-
-        $data = ['title'=>'Daily Report', "latest" => $latestData, 'db'=>$db];
+        $data = ['title'=>'Daily Report', "latest" => $this->pageModel->getSoldToday()];
 
         $this->view('pages/loadLatestSold', $data);
+      }
+      else
+      {
+        http_response_code(404);
+        include('../app/404.php');
+        die();
+      }
+    }
+
+    public function DeleteSaleNow($id){
+      if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($id))
+      {
+          $itemId = htmlspecialchars($id);
+
+          $bp = $this->pageModel->getBuyingByName($itemId);
+
+          $data = ['bp' => $bp];
+
+          $this->view("pages/loadBuying", $data);
       }
       else
       {

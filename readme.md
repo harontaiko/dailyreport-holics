@@ -21,3 +21,14 @@ Inventory management and daily record keeping system, built on PHP OOP and Js, D
 - all static js fetched thru jsdeliver,
 
 - load sales in real time
+
+```js
+this.parentElement.style.display = "none";
+<span
+  title="cancel sale"
+  style="cursor: pointer;float: right;font-weight: bolder;margin-right: 0.2rem;"
+  class="closebtn-clipboard"
+>
+  &times;
+</span>;
+```

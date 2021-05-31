@@ -91,7 +91,7 @@
 
     <div class="note">
         <h3>Daily, Annual & Monthly Report</h3>
-        <p>Reports from different stations @holics</p>
+        <i>Simplicity is the Ultimate Sophistication</i>
     </div>
 
 </nav>

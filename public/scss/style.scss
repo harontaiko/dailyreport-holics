@@ -526,6 +526,16 @@ blockquote {
   text-align: center;
 }
 
+#alert_add {
+  position: fixed;
+  top: 50%;
+  width: 99%;
+  opacity: 0.789;
+  color: #fff;
+  font-weight: bold;
+  font-size: larger;
+}
+
 .alert_fail {
   background-color: #f44336;
   padding: 20px;
@@ -1488,9 +1498,14 @@ th {
   color: #111;
 }
 
-#total-sales-out-cash {
+.total-sales-out-cash,
+.total-sales-out-till,
+.total-sales-out-net {
+  padding: 0.1rem 0.1rem;
   color: #000000;
-  font-weight: bold;
+  font-weight: bold !important;
+  text-align: left !important;
+  background: yellow;
 }
 
 .loader {
@@ -1527,4 +1542,23 @@ th {
 
 #sl {
   display: block;
+}
+
+#sales-made-p {
+  background: #000000;
+  color: #fff;
+  width: 100%;
+  padding: 0.5rem 0.4rem;
+}
+
+.close-sale {
+  display: flex;
+  flex-direction: row;
+  float: right;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  vertical-align: baseline;
+  align-items: center;
+  justify-content: center;
 }

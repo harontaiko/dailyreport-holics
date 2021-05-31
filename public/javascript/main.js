@@ -252,6 +252,10 @@ dailyreport = {
 
       //add sale
       $(document).ready(function () {
+        //load sold i==onto DOM
+        $("#sl").load(`loadLatestSold`);
+        //delete loaded item from db
+
         $("form").on("submit", function (e) {
           e.preventDefault();
 
@@ -309,6 +313,15 @@ dailyreport = {
                   //update inventory real time
                   $("#open-modal").load(`loadInventoryData`);
                 } else if (dataResult.statusCode == 317) {
+                  [
+                    document.getElementById("bought-price"),
+                    document.getElementById("bought-item"),
+                    document.getElementById("sales-cash"),
+                    document.getElementById("sales-till"),
+                    document.getElementById("sales-profit"),
+                  ].forEach((item) => {
+                    item.value = "";
+                  });
                   document.querySelector(".alert").style.display = "block";
                   document.getElementById("add-alert").style.color = "#f85f5f";
                   $("#add-alert").html(
@@ -321,8 +334,17 @@ dailyreport = {
                     document.getElementById("add-alert").innerHTML = "";
                   });
                 } else if (dataResult.statusCode == 318) {
+                  [
+                    document.getElementById("bought-price"),
+                    document.getElementById("bought-item"),
+                    document.getElementById("sales-cash"),
+                    document.getElementById("sales-till"),
+                    document.getElementById("sales-profit"),
+                  ].forEach((item) => {
+                    item.value = "";
+                  });
                   document.querySelector(".alert").style.display = "block";
-                  document.getElementById("add-alert").style.color = "#f85f5f";
+                  document.getElementById("add-alert").style.color = "#fff";
                   $("#add-alert").html(
                     "the item is currently not in stock, add it to the inventory first!"
                   );
