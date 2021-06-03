@@ -14,6 +14,84 @@ class Page
       return $this->db;
     }
 
+    public function DeleteExpenseById($id)
+    {
+        $query = 'DELETE FROM dr_expenses WHERE expense_id=?';
+
+        $binders ="s";
+
+        $parameters = array($id);
+
+        if(Delete($query, $binders, $parameters, 'dr_expenses', $this->db)){
+            return true;
+        }
+        else{
+            return false;
+        }
+
+    }
+
+    public function SaveExpenseToday($data)
+    {
+        $fields = array('expense_item', 'expense_cost', 'date_created', 'time_created', 'created_by', 'creator_ip');
+
+        $placeholders = array('?', '?', '?', '?', '?', '?');
+  
+        $bindersCountNew = "ssssss";
+  
+        $values = array($data['name'], $data['amount'], $data['date'], $data['time'], $data['creator'], $data['ip']);
+  
+        try {
+            Insert(
+                $fields,
+                $placeholders,
+                $bindersCountNew,
+                $values,
+                'dr_expenses',
+                $this->db
+            );      
+            return true;
+        } catch (Error $e) {
+            return false;
+        }
+    }
+
+    public function getExpenseToday()
+    {
+        $query = 'SELECT expense_id, expense_item, expense_cost FROM dr_expenses WHERE date_created=?';
+
+        $binders = "s";
+
+        $parameters = array(date('Y-m-d', time()));
+
+        $result = SelectCond($query, $binders, $parameters, $this->db);
+
+        $row = $result->get_result();
+
+        try {
+            return $row;
+        } catch (Error $e) {
+            return false;
+        }  
+    }
+
+    public function DeleteSaleById($id)
+    {
+        $query = 'DELETE FROM dr_sales WHERE sales_id=?';
+
+        $binders ="s";
+
+        $parameters = array($id);
+
+        if(Delete($query, $binders, $parameters, 'dr_sales', $this->db)){
+            return true;
+        }
+        else{
+            return false;
+        }
+
+    }
+
     public function getSoldToday()
     {
         $query = 'SELECT sales_id, sales_item FROM dr_sales WHERE date_created=?';

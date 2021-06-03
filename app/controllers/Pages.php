@@ -457,16 +457,13 @@ class Pages extends Controller
       }
     }
 
-    public function DeleteSaleNow($id){
-      if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($id))
+    public function loadLatestExpense()
+    {
+      if($_SERVER['REQUEST_METHOD'] == 'GET')
       {
-          $itemId = htmlspecialchars($id);
+        $data = ['title'=>'Daily Report', "latest" => $this->pageModel->getExpenseToday()];
 
-          $bp = $this->pageModel->getBuyingByName($itemId);
-
-          $data = ['bp' => $bp];
-
-          $this->view("pages/loadBuying", $data);
+        $this->view('pages/loadLatestExpense', $data);
       }
       else
       {
@@ -475,4 +472,57 @@ class Pages extends Controller
         die();
       }
     }
+
+    public function DeleteSaleNow(){
+       if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id']))
+      {
+        $this->pageModel->DeleteSaleById(htmlspecialchars($_POST['id']));
+        echo json_encode(array("statusCode"=>200));
+      }
+      else
+      {
+        http_response_code(404);
+        include('../app/404.php');
+        die();
+      } 
+    }
+
+    public function SaveExpense(){
+      if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['expense']) && isset($_POST['amount']))
+      {
+        $data = [
+          'name'=>htmlspecialchars($_POST['expense']), 
+          'amount'=>htmlspecialchars($_POST['amount']),
+          'date' => date('Y-m-d', time()),
+          'time' => date('H:i:s T', time()),
+          'creator'=>$_SESSION['user_name'],
+          'ip'=>get_ip_address(),
+        ];
+        if($this->pageModel->SaveExpenseToday($data)){
+          echo json_encode(array("statusCode"=>200));
+        }else{
+          echo json_encode(array("statusCode"=>317));
+        }
+      }
+      else
+      {
+        http_response_code(404);
+        include('../app/404.php');
+        die();
+      } 
+    }
+
+    public function DeleteExpenseNow(){
+      if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id']))
+     {
+       $this->pageModel->DeleteExpenseById(htmlspecialchars($_POST['id']));
+       echo json_encode(array("statusCode"=>200));
+     }
+     else
+     {
+       http_response_code(404);
+       include('../app/404.php');
+       die();
+     } 
+   }
 }    

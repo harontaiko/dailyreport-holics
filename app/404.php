@@ -46,7 +46,7 @@
     </div>
 
     <script type="text/javascript" src="<?php echo URLROOT; ?>/public/javascript/jquery.js"></script>
-    <script type="text/javascript" src="<?php echo URLROOT; ?>/public/javascript/chuoni.min.js"></script>
+    <script type="text/javascript" src="<?php echo URLROOT; ?>/public/javascript/main.min.js"></script>
 </body>
 
 </html>

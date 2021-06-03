@@ -136,6 +136,14 @@ dailyreport = {
   },
   __add: {
     init: function _add() {
+      //throw confirm window b4 user reloads
+      /*       window.onbeforeunload = function (e) {
+        return window.confirm();
+      };
+
+      $(document).on("submit", "form", function (event) {
+        window.onbeforeunload = null;
+      }); */
       FilterInventory();
       const cyberCash = document.getElementById("cyber-cash");
       const cyberTill = document.getElementById("cyber-till");
@@ -250,11 +258,61 @@ dailyreport = {
         );
       });
 
+      //auto load first items details onto text
+
       //add sale
       $(document).ready(function () {
+        //load expense onto DOM
+        $("#exp").load(`loadLatestExpense`);
         //load sold i==onto DOM
         $("#sl").load(`loadLatestSold`);
         //delete loaded item from db
+
+        //add expense
+        $("#n-expense").click(function (e) {
+          //validate expense input
+          if (
+            document.getElementById("expense_n").value == "" ||
+            document.getElementById("expense-value").value == ""
+          ) {
+            document.getElementById("expense_n").style.border =
+              "1.5px solid red";
+            document.getElementById("expense-value").style.border =
+              "1.5px solid red";
+            sleep(2250).then(() => {
+              document.getElementById("expense_n").style.border = "";
+              document.getElementById("expense-value").style.border = "";
+            });
+          } else {
+            //submit expense
+            var expense_name = document.getElementById("expense_n").value;
+            var expense_val = document.getElementById("expense-value").value;
+            $.ajax({
+              url: `http://localhost/dailyreport-holics/pages/SaveExpense`,
+              type: "POST",
+              data: {
+                expense: expense_name,
+                amount: expense_val,
+              },
+              dataType: "json",
+              success: function (dataResult) {
+                if (dataResult.statusCode == 200) {
+                  //clear inputs
+                  [
+                    document.getElementById("expense_n"),
+                    document.getElementById("expense-value"),
+                  ].forEach((item) => {
+                    item.value = "";
+                  });
+                  //load expense onto DOM
+                  $("#exp").load(`loadLatestExpense`);
+                } else if (dataResult.statusCode == 317) {
+                  //error,
+                }
+              },
+            });
+          }
+        });
 
         $("form").on("submit", function (e) {
           e.preventDefault();

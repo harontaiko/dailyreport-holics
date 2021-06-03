@@ -22,13 +22,8 @@ Inventory management and daily record keeping system, built on PHP OOP and Js, D
 
 - load sales in real time
 
-```js
-this.parentElement.style.display = "none";
-<span
-  title="cancel sale"
-  style="cursor: pointer;float: right;font-weight: bolder;margin-right: 0.2rem;"
-  class="closebtn-clipboard"
->
-  &times;
-</span>;
-```
+- delete sale and expense record, if user leave spage without saving record
+
+- change url root in `main.js & Loadlatestsold`
+
+- change jquery, bootstrap to cdn, all resources in header must use fast cdn

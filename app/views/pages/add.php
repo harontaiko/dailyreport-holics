@@ -57,7 +57,7 @@
                     <hr>
                     <div class="sales-record">
                         <form name="sales-form-rec" id="sales-form-rec">
-                            <p>Product Sales <i class="fas fa-cash-register"></i></p>
+                            <p>Product Sales <i class="fa fa-cash-register"></i></p>
                             <div id="sc">
                             </div>
                             <div id="sl">
@@ -85,13 +85,16 @@
                 <div class="expenses">
                     <h3>Expenses</h3>
                     <hr>
+
                     <div class="expenses-record">
                         <p>Expenses <i class="fas fa-money-bill-alt"></i></p>
-                        <input type="text" placeholder="expense (short description)" name="expense-name"
+                        <div id="exp">
+                        </div>
+                        <input type="text" placeholder="expense (description)" id="expense_n" name="expense-name"
                             class="dr_input">
                         <input type="number" name="expense-value" id="expense-value" placeholder="used(ksh)"
                             class="dr_input">
-                        <button class="add-expense" type="button">Add</button>
+                        <button class="add-expense" id="n-expense" type="button">Add</button>
                     </div>
                 </div>
             </div>
@@ -100,7 +103,7 @@
     </main>
 
 </body>
-<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+
 <script src="<?php echo URLROOT; ?>/public/javascript/main.min.js"></script>
 
 </html>

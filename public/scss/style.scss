@@ -1500,7 +1500,8 @@ th {
 
 .total-sales-out-cash,
 .total-sales-out-till,
-.total-sales-out-net {
+.total-sales-out-net,
+.total-expense {
   padding: 0.1rem 0.1rem;
   color: #000000;
   font-weight: bold !important;
@@ -1544,6 +1545,10 @@ th {
   display: block;
 }
 
+#exp {
+  display: block;
+}
+
 #sales-made-p {
   background: #000000;
   color: #fff;
@@ -1551,7 +1556,8 @@ th {
   padding: 0.5rem 0.4rem;
 }
 
-.close-sale {
+.close-sale,
+.close-expense {
   display: flex;
   flex-direction: row;
   float: right;

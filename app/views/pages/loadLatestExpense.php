@@ -1,23 +1,24 @@
-<p id="sales-made-p">Sales made today</p>
+<p id="sales-made-p">Today's Expenses</p>
 <?php  while ($latest = $data['latest']->fetch_assoc()) :   ?>
-<p id="<?php echo $latest['sales_id']; ?>" class="total-sales-out-cash"><?php echo $latest['sales_item'];?>
-    <button class="close-sale" type="button">&times;</button>
+<p id="<?php echo $latest['expense_id']; ?>" class="total-expense"><?php echo $latest['expense_item'];?> -
+    <?php echo $latest['expense_cost'];?>
+    <button class="close-expense" type="button">&times;</button>
 </p>
 
 <?php  endwhile   ?>
 <script>
-cancelSale = document.querySelectorAll(".close-sale");
+cancelExpense = document.querySelectorAll(".close-expense");
 
-for (var i = 0; i < cancelSale.length; i++) {
-    cancelSale[i].addEventListener("click", function(event) {
-        if (!confirm("Cancel this sale?")) {
+for (var i = 0; i < cancelExpense.length; i++) {
+    cancelExpense[i].addEventListener("click", function(event) {
+        if (!confirm("delete expense?")) {
             event.preventDefault();
         } else {
             //del from db
             currentId = this.parentNode.id;
             hideParent = this.parentElement.style.display = "none";
             $.ajax({
-                url: `http://localhost/dailyreport-holics/pages/DeleteSaleNow`,
+                url: `http://localhost/dailyreport-holics/pages/DeleteExpenseNow`,
                 type: "POST",
                 data: {
                     id: currentId
