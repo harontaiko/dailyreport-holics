@@ -104,6 +104,8 @@ $(document).ready(UTIL.loadEvents);
 dailyreport = {
   __home: {
     init: function _homepage() {
+      $("#latest-record").animate({ opacity: 0 }, 1000);
+      $("#latest-record").animate({ opacity: 1 }, 1000);
       FilterInventory();
       //main page js
       $("#toggler").click(function () {
@@ -266,7 +268,147 @@ dailyreport = {
         $("#exp").load(`loadLatestExpense`);
         //load sold i==onto DOM
         $("#sl").load(`loadLatestSold`);
-        //delete loaded item from db
+
+        //create record of all sale
+        $(".save-record").click(function (e) {
+          e.preventDefault();
+          //validate relevant inputs
+          if (
+            cyberCash.value == "" ||
+            cyberTill.value == "" ||
+            movieCash.value == "" ||
+            movieTill.value == "" ||
+            psCash.value == "" ||
+            psTill.value == ""
+          ) {
+            cyberTill.style.border = "1.5px solid red";
+            cyberCash.style.border = "1.5px solid red";
+            movieTill.style.border = "1.5px solid red";
+            movieCash.style.border = "1.5px solid red";
+            psCash.style.border = "1.5px solid red";
+            psTill.style.border = "1.5px solid red";
+            sleep(2500).then(() => {
+              cyberTill.style.border = "";
+              cyberCash.style.border = "";
+              movieTill.style.border = "";
+              movieCash.style.border = "";
+              psCash.style.border = "";
+              psTill.style.border = "";
+            });
+          } else {
+            //check for atleast one sale & expense
+            //if none, proceed but with warning
+            $.ajax({
+              url: `http://localhost/dailyreport-holics/pages/CheckSaleExpense`,
+              type: "GET",
+              dataType: "json",
+              success: function (dataResult) {
+                if (dataResult.statusCode == 200) {
+                  //status==okay, proceed
+                  result1 = confirm(
+                    "do u confirm that the sale data is correct, click ok to seed and save record"
+                  );
+                  if (!result1) {
+                  } else {
+                    //save to db
+                    $.ajax({
+                      url: `http://localhost/dailyreport-holics/pages/SaveSaleRecord`,
+                      type: "POST",
+                      data: {
+                        cybercash: cybercash,
+                        cybertill: cyberTill,
+                        moviecash: movieCash,
+                        movietill: movieTill,
+                        pscash: psCash,
+                        pstill: psTill,
+                      },
+                      dataType: "json",
+                      success: function (dataResult) {
+                        if (dataResult.statusCode == 200) {
+                          //save net total
+                          $.ajax({
+                            url: `http://localhost/dailyreport-holics/pages/SaveNetTotal`,
+                            type: "POST",
+                            dataType: "json",
+                            success: function (dataResult) {
+                              if (dataResult.statusCode == 200) {
+                                //success, redirect to home page
+                                location.replace(
+                                  "http://localhost/dailyreport-holics/pages/index"
+                                );
+                              } else if (dataResult.statusCode == 317) {
+                                document.querySelector(".alert").style.display =
+                                  "block";
+                                document.getElementById(
+                                  "add-alert"
+                                ).style.color = "#fff";
+                                $("#add-alert").html(
+                                  "an error occurred, record could not be saved, please check your connection"
+                                );
+
+                                sleep(4700).then(() => {
+                                  document.querySelector(
+                                    ".alert_success"
+                                  ).style.display = "none";
+                                  document.getElementById(
+                                    "add-alert"
+                                  ).innerHTML = "";
+                                });
+                              }
+                            },
+                          });
+                        } else if (dataResult.statusCode == 317) {
+                          //not okay
+                          document.querySelector(".alert").style.display =
+                            "block";
+                          document.getElementById("add-alert").style.color =
+                            "#fff";
+                          $("#add-alert").html(
+                            "an error occurred, record could not be saved, please check your connection"
+                          );
+
+                          sleep(4700).then(() => {
+                            document.querySelector(
+                              ".alert_success"
+                            ).style.display = "none";
+                            document.getElementById("add-alert").innerHTML = "";
+                          });
+                        }
+                      },
+                    });
+                  }
+                } else if (dataResult.statusCode == 317) {
+                  //status=not ok, proceed with warning, no sale
+                  result2 = confirm(
+                    "No sale made, do you still want to continue?"
+                  );
+                  if (!result2) {
+                  } else {
+                    //proceed to confirm sale page
+                  }
+                } else if (dataResult.statusCode == 318) {
+                  //status=not ok, proceed with warning, no expense
+                  result2 = confirm(
+                    "No expenses added, do you still want to continue?"
+                  );
+                  if (!result2) {
+                  } else {
+                    //proceed to confirm sale page
+                  }
+                } else if (dataResult.statusCode == 319) {
+                  //status=not ok, proceed with warning, no expense and sale
+                  result2 = confirm(
+                    "No sale or expense today, do you still want to continue?"
+                  );
+                  if (!result2) {
+                  } else {
+                    //proceed to confirm sale page
+                  }
+                }
+              },
+            });
+          }
+        });
 
         //add expense
         $("#n-expense").click(function (e) {

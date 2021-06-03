@@ -78,6 +78,7 @@ CREATE TABLE ' .
   '_expenses( 
 expense_id int(11) AUTO_INCREMENT PRIMARY KEY NOT NULL,
 expense_item varchar(64) NULL,
+expense_cost int(11) NULL,
 date_created varchar(64) NOT NULL,
 time_created varchar(64) NOT NULL,
 created_by varchar(256) NOT NULL,
@@ -93,6 +94,9 @@ CREATE TABLE ' .
   '_nettotal( 
 sales_id int(11) AUTO_INCREMENT PRIMARY KEY NOT NULL,
 total_sales varchar(64) NULL,
+totalprofit varchar(256) NULL,
+totalincome varchar(256) NULL,
+totalexpense varchar(256) NULL,
 cash_sales varchar(64) NULL,
 till_sales varchar(64) NULL,
 date_created varchar(64) NOT NULL,

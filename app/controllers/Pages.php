@@ -525,4 +525,93 @@ class Pages extends Controller
        die();
      } 
    }
+
+    public function CheckSaleExpense(){
+      if($_SERVER['REQUEST_METHOD'] == 'GET')
+     {
+       if($this->pageModel->CheckSaleExpenseNow(date('Y-m-d', time())) == 1){
+        echo json_encode(array("statusCode"=>200));
+       }
+       else if($this->pageModel->CheckSaleExpenseNow(date('Y-m-d', time())) == 2){
+        echo json_encode(array("statusCode"=>318));
+       }
+       else if($this->pageModel->CheckSaleExpenseNow(date('Y-m-d', time())) == 3){
+        echo json_encode(array("statusCode"=>317));
+       }
+       else if($this->pageModel->CheckSaleExpenseNow(date('Y-m-d', time())) == 4){
+        echo json_encode(array("statusCode"=>319));
+       }
+     }
+     else
+     {
+       http_response_code(404);
+       include('../app/404.php');
+       die();
+     } 
+   }
+   
+   public function SaveSaleRecord(){
+    if($_SERVER['REQUEST_METHOD'] == 'POST')
+    {
+      $cyber = [
+        'cash'=>htmlspecialchars($_POST['cybercash']), 
+        'till'=>htmlspecialchars($_POST['cybertill']),
+        'date' => date('Y-m-d', time()),
+        'time' => date('H:i:s T', time()),
+        'creator'=>$_SESSION['user_name'],
+        'ip'=>get_ip_address(),
+      ];
+
+      $ps = [
+        'cash'=>htmlspecialchars($_POST['pscash']), 
+        'till'=>htmlspecialchars($_POST['pstill']),
+        'date' => date('Y-m-d', time()),
+        'time' => date('H:i:s T', time()),
+        'creator'=>$_SESSION['user_name'],
+        'ip'=>get_ip_address(),
+      ];
+
+      $movie = [
+        'cash'=>htmlspecialchars($_POST['moviecash']), 
+        'till'=>htmlspecialchars($_POST['movietill']),
+        'date' => date('Y-m-d', time()),
+        'time' => date('H:i:s T', time()),
+        'creator'=>$_SESSION['user_name'],
+        'ip'=>get_ip_address(),
+      ];
+
+      if($this->pageModel->saveSaleRecordNow($cyber, $ps, $movie)){
+        echo json_encode(array("statusCode"=>200));
+      }else{
+        echo json_encode(array("statusCode"=>317));
+      }
+   
+    }
+    else
+    {
+      http_response_code(404);
+      include('../app/404.php');
+      die();
+    } 
+  }
+  
+  public function SaveNetTotal(){
+    if($_SERVER['REQUEST_METHOD']=='POST'){
+      $data = [
+        'date' => date('Y-m-d', time()),
+        'time' => date('H:i:s T', time()),
+        'creator'=>$_SESSION['user_name'],
+        'ip'=>get_ip_address(),
+      ];
+      if($this->pageModel->saveNetTotalNow($data)){
+        echo json_encode(array("statusCode"=>200));
+      }else{
+        echo json_encode(array("statusCode"=>317));
+      }
+    }else{
+      http_response_code(404);
+      include('../app/404.php');
+      die();
+    }
+  }
 }    

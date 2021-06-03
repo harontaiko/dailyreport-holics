@@ -14,6 +14,103 @@ class Page
       return $this->db;
     }
 
+    public function saveNetTotalNow($data)
+    {
+        
+    }
+
+    public function saveSaleRecordNow($cyber, $ps, $shop)
+    {
+        $fields = array('cash', 'till', 'date_created', 'time_created', 'created_by', 'creator_ip');
+
+        $placeholders = array('?', '?', '?', '?', '?', '?');
+  
+        $bindersCountNew = "ssssss";
+  
+        $values = array($cyber['cash'], $cyber['till'], $cyber['date'], $cyber['time'], $cyber['creator'], $cyber['ip']);
+  
+        $fieldsp = array('cash', 'till', 'date_created', 'time_created', 'created_by', 'creator_ip');
+
+        $placeholdersp = array('?', '?', '?', '?', '?', '?');
+  
+        $bindersCountNewp = "ssssss";
+  
+        $valuesp = array($ps['cash'], $ps['till'], $ps['date'], $ps['time'], $ps['creator'], $ps['ip']);
+
+        $fieldsm = array('cash', 'till', 'date_created', 'time_created', 'created_by', 'creator_ip');
+
+        $placeholdersm = array('?', '?', '?', '?', '?', '?');
+  
+        $bindersCountNewm = "ssssss";
+  
+        $valuesm = array($shop['cash'], $shop['till'], $shop['date'], $shop['time'], $shop['creator'], $shop['ip']);
+  
+        
+        try {
+            Insert(
+                $fields,
+                $placeholders,
+                $bindersCountNew,
+                $values,
+                'dr_cybershop',
+                $this->db
+            );      
+            Insert(
+                $fieldsp,
+                $placeholdersp,
+                $bindersCountNewp,
+                $valuesp,
+                'dr_playstation',
+                $this->db
+            );      
+            Insert(
+                $fieldsm,
+                $placeholdersm,
+                $bindersCountNewm,
+                $valuesm,
+                'dr_movieshop',
+                $this->db
+            );      
+            return true;
+        } catch (Error $e) {
+            return false;
+        }
+    }
+
+    public function CheckSaleExpenseNow($date)
+    {
+        $query = 'SELECT sales_id FROM dr_sales WHERE date_created=?';
+
+        $binders = "s";
+
+        $parameters = array($date);
+
+        $result = SelectCond($query, $binders, $parameters, $this->db);
+
+        $row = $result->get_result();
+
+        $qE = 'SELECT expense_id FROM dr_expenses WHERE date_created=?';
+
+        $bindersE = 's';
+
+        $parametersE = array($date);
+
+        $resultE = SelectCond($qE, $bindersE, $parametersE, $this->db);
+
+        $rowE = $resultE->get_result();
+
+        if($rowE->num_rows >=1 && $row->num_rows >= 1){
+            return 1;
+        }elseif($rowE->num_rows <=1 && $row->num_rows >=1){
+            return 2;
+        }else if($rowE->num_rows >=1 && $row->num_rows <=1){
+            return 3;
+        }else if($rowE->num_rows <=1 && $row->num_rows <= 1){
+            return 4;
+        }
+
+    }
+
     public function DeleteExpenseById($id)
     {
         $query = 'DELETE FROM dr_expenses WHERE expense_id=?';

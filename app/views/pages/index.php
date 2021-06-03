@@ -6,7 +6,9 @@
     <main>
         <a id="add-record" title="add record" href="<?php echo URLROOT; ?>/pages/add"><i class="fas fa-plus"></i></a>
         <header>
-            <h1 class="title">Pipeline </h1>
+            <h1 class="title">Pipeline
+
+            </h1>
             <table>
                 <thead>
                     <tr>
@@ -52,7 +54,7 @@
                             <td style="background-color: #89909f; color:#fff;">till/other</td>
                             <td style="background-color: #89909f; color:#fff;">SEE</td>
                         </tr>
-                        <tr>
+                        <tr id="latest-record" style="background: chartreuse; opacity: 0.8; width: 100vw;">
                             <td>5th may 2019 5pm</td>
                             <td>500</td>
                             <td>1500</td>

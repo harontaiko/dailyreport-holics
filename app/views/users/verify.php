@@ -30,6 +30,12 @@
         <?php endif; ?>
     </div>
 </body>
+
+<noscript>
+    <div id="no_script">This site requires and runs entirely on javascript, please Ensure Javascript
+        is enabled
+        on your browser for smooth & better experience</div>
+</noscript>
 <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 <script src="<?php echo URLROOT; ?>/public/javascript/main.min.js"></script>
 

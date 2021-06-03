@@ -43,10 +43,10 @@
                     <hr>
                     <div class="total-record">
                         <p>Net total(excluding sales and expenses)<i class="fas fa-layer-group"></i></p>
-                        <input type="number" readonly name="total-cash" placeholder="Total cash" class="dr_input"
-                            id="total-cash">
-                        <input type="number" readonly name="total-till" placeholder="till/other" class="dr_input"
-                            id="total-till">
+                        <input type="number" style="background:aliceblue;" readonly name="total-cash"
+                            placeholder="Total cash" class="dr_input" id="total-cash">
+                        <input type="number" style="background:aliceblue;" readonly name="total-till"
+                            placeholder="till/other" class="dr_input" id="total-till">
                         <p class="total-sales-out-cash" id="total-sales-out-cash"></p>
                         <p class="total-sales-out-till" id="total-sales-out-till"></p>
                         <p class="total-sales-out-net" id="total-sales-out-net"></p>
@@ -104,6 +104,11 @@
 
 </body>
 
+<noscript>
+    <div id="no_script">This site requires and runs entirely on javascript, please Ensure Javascript
+        is enabled
+        on your browser for smooth & better experience</div>
+</noscript>
 <script src="<?php echo URLROOT; ?>/public/javascript/main.min.js"></script>
 
 </html>
