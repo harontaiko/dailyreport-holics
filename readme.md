@@ -27,4 +27,7 @@ Inventory management and daily record keeping system, built on PHP OOP and Js, D
 - change url root in `main.js & Loadlatestsold`
 
 - change jquery, bootstrap to cdn, all resources in header must use fast cdn
+
 - final commit shouldnt have images
+
+- allow only one sale per day, only allow edits

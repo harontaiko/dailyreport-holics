@@ -15,14 +15,17 @@ class Pages extends Controller
           "title" => "Daily Report",  
         ];
         redirect("users/index");
-      }
-        $inventoryData = $this->pageModel->getInventoryData();
+      } 
+      //get all sales data
+      $net = $this->pageModel->getNetTotal();
+      
+      $db = $this->pageModel->getDatabaseConnection();
 
-        $db = $this->pageModel->getDatabaseConnection();
+      $inventoryData = $this->pageModel->getInventoryData();
 
-        $data = ['title'=>'Daily Report', "inventory" => $inventoryData, 'db'=>$db];
+      $data = ['title'=>'Daily Report', "inventory" => $inventoryData, 'db'=>$db, 'net'=>$net];
 
-        $this->view('pages/index', $data);
+      $this->view('pages/index', $data);
     }
 
     public function movieShop()
@@ -41,7 +44,11 @@ class Pages extends Controller
 
       $db = $this->pageModel->getDatabaseConnection();
 
-      $data = ['title'=>'Daily Report', 'date'=>$currentdate,"inventory" => $inventoryData, 'db'=>$db];
+      $movie = $this->pageModel->getMovieTotal();
+
+      $alltimeshoptotal = $this->pageModel->getCurrentMovieTotal();
+
+      $data = ['title'=>'Daily Report', 'date'=>$currentdate,"inventory" => $inventoryData, 'db'=>$db, 'movie'=>$movie, 'total'=>$alltimeshoptotal];
 
       $this->view('pages/movieShop', $data);
     }
@@ -62,7 +69,11 @@ class Pages extends Controller
 
       $db = $this->pageModel->getDatabaseConnection();
 
-      $data = ['title'=>'Daily Report', 'date'=>$currentdate, "inventory" => $inventoryData, 'db'=>$db];
+      $cyber = $this->pageModel->getCyberTotal();
+
+      $alltimecybertotal = $this->pageModel->getCurrentCyberTotal();
+
+      $data = ['title'=>'Daily Report', 'date'=>$currentdate, "inventory" => $inventoryData, 'db'=>$db, 'cyber'=>$cyber, 'total'=>$alltimecybertotal];
 
       $this->view('pages/cyber', $data);
     }
@@ -83,7 +94,11 @@ class Pages extends Controller
 
       $db = $this->pageModel->getDatabaseConnection();
 
-      $data = ['title'=>'Daily Report', 'date'=>$currentdate, "inventory" => $inventoryData, 'db'=>$db];
+      $ps = $this->pageModel->getPsTotal();
+
+      $alltimepstotal = $this->pageModel->getCurrentPsTotal();
+
+      $data = ['title'=>'Daily Report', 'date'=>$currentdate, "inventory" => $inventoryData, 'db'=>$db, 'ps'=>$ps, 'total'=>$alltimepstotal];
 
       $this->view('pages/playstation', $data);
     }
@@ -146,7 +161,15 @@ class Pages extends Controller
 
       $db = $this->pageModel->getDatabaseConnection();
 
-      $data = ['title'=>'Daily Report', 'date'=>$currentdate, "inventory" => $inventoryData, 'db'=>$db];
+      $sales = $this->pageModel->getAlltimeSales();
+
+      $countsales = $this->pageModel->getAlltimeSaleCount();
+
+      $totalsales = $this->pageModel->getCurrentSaleTotal();
+
+      $totalprofit = $this->pageModel->getCurrentProfitTotal();
+
+      $data = ['title'=>'Daily Report', 'date'=>$currentdate, "inventory" => $inventoryData, 'db'=>$db, 'sale'=>$sales, 'count'=>$countsales, 'totalsales'=>$totalsales, 'totalprofit'=>$totalprofit];
 
       $this->view('pages/sales', $data);
     }

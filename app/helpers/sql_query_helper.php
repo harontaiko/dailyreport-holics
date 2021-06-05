@@ -594,3 +594,319 @@ function getItemSoldCountInventory($name, $db)
       return false;
   }
 }
+
+function getExpenseTotal($date, $db)
+{
+    //mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+    $query = 'SELECT SUM(expense_cost) AS expense_total FROM dr_expenses WHERE date_created=?';
+
+    $binders="s";
+
+    $param = array($date);
+
+    $result = SelectCond($query, $binders, $param, $db);
+
+    $row = $result->get_result();
+
+    $rowItem = $row->fetch_assoc();
+        
+    $totalexpense = isset($rowItem['expense_total']) ? $rowItem['expense_total'] : 'N/A';
+
+    try {
+        return $totalexpense;
+    } catch (Error $e) {
+        return false;
+    } 
+}
+
+function getExpenseTotalCount($date, $db)
+{
+    //mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+    $query = 'SELECT COUNT(*) AS cnt FROM dr_expenses WHERE date_created=?';
+
+    $binders="s";
+
+    $param = array($date);
+
+    $result = SelectCond($query, $binders, $param, $db);
+
+    $row = $result->get_result();
+
+    $rowItem = $row->fetch_assoc();
+        
+    $totalexpense = isset($rowItem['cnt']) ? $rowItem['cnt'] : 'N/A';
+
+    try {
+        return $totalexpense;
+    } catch (Error $e) {
+        return false;
+    } 
+}
+
+function getNetExpenses($date,$db)
+{
+    $query = 'SELECT expense_item, expense_cost FROM dr_expenses WHERE date_created=?';
+
+    $binders="s";
+
+    $param = array($date);
+
+    $result = SelectCond($query, $binders, $param, $db);
+
+    $row = $result->get_result();
+
+    try {
+        return $row;
+    } catch (Error $e) {
+        return false;
+    } 
+}
+
+function getNetSales($date,$db)
+{
+    $query = 'SELECT sales_item, sales_id, selling_price FROM dr_sales WHERE date_created=?';
+
+    $binders="s";
+
+    $param = array($date);
+
+    $result = SelectCond($query, $binders, $param, $db);
+
+    $row = $result->get_result();
+
+    try {
+        return $row;
+    } catch (Error $e) {
+        return false;
+    } 
+}
+
+function getSalesTotalCount($date, $db)
+{
+    //mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+    $query = 'SELECT COUNT(*) AS cnt FROM dr_sales WHERE date_created=?';
+
+    $binders="s";
+
+    $param = array($date);
+
+    $result = SelectCond($query, $binders, $param, $db);
+
+    $row = $result->get_result();
+
+    $rowItem = $row->fetch_assoc();
+        
+    $totalexpense = isset($rowItem['cnt']) ? $rowItem['cnt'] : 'N/A';
+
+    try {
+        return $totalexpense;
+    } catch (Error $e) {
+        return false;
+    } 
+}
+
+function getSaleTotal($date, $db)
+{
+    //mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+    $query = 'SELECT SUM(selling_price) AS selling_total FROM dr_sales WHERE date_created=?';
+
+    $binders="s";
+
+    $param = array($date);
+
+    $result = SelectCond($query, $binders, $param, $db);
+
+    $row = $result->get_result();
+
+    $rowItem = $row->fetch_assoc();
+        
+    $totalexpense = isset($rowItem['selling_total']) ? $rowItem['selling_total'] : 'N/A';
+
+    try {
+        return $totalexpense;
+    } catch (Error $e) {
+        return false;
+    } 
+}
+
+
+function getBuyingTotal($date, $db)
+{
+    //mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+    $query = 'SELECT SUM(buying_price) AS buying_total FROM dr_sales WHERE date_created=?';
+
+    $binders="s";
+
+    $param = array($date);
+
+    $result = SelectCond($query, $binders, $param, $db);
+
+    $row = $result->get_result();
+
+    $rowItem = $row->fetch_assoc();
+        
+    $totalexpense = isset($rowItem['buying_total']) ? $rowItem['buying_total'] : 'N/A';
+
+    try {
+        return $totalexpense;
+    } catch (Error $e) {
+        return false;
+    } 
+}
+
+
+function getNetProfit($date, $db)
+{
+    //mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+    $query = 'SELECT SUM(profit) AS profit_total FROM dr_sales WHERE date_created=?';
+
+    $binders="s";
+
+    $param = array($date);
+
+    $result = SelectCond($query, $binders, $param, $db);
+
+    $row = $result->get_result();
+
+    $rowItem = $row->fetch_assoc();
+        
+    $totalexpense = isset($rowItem['profit_total']) ? $rowItem['profit_total'] : 'N/A';
+
+    try {
+        return $totalexpense;
+    } catch (Error $e) {
+        return false;
+    } 
+}
+
+function getMovieshopDate($date, $db)
+{
+  $query = 'SELECT cash, till FROM dr_movieshop WHERE date_created=?';
+
+  $binders="s";
+
+  $param = array($date);
+
+  $result = SelectCond($query, $binders, $param, $db);
+
+  $row = $result->get_result();
+
+  $rowItem = $row->fetch_assoc();
+
+  try {
+      return $rowItem;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getPsDate($date, $db)
+{
+  $query = 'SELECT cash, till FROM dr_playstation WHERE date_created=?';
+
+  $binders="s";
+
+  $param = array($date);
+
+  $result = SelectCond($query, $binders, $param, $db);
+
+  $row = $result->get_result();
+
+  $rowItem = $row->fetch_assoc();
+
+  try {
+      return $rowItem;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getCyberDate($date, $db)
+{
+  $query = 'SELECT cash, till FROM dr_cybershop WHERE date_created=?';
+
+  $binders="s";
+
+  $param = array($date);
+
+  $result = SelectCond($query, $binders, $param, $db);
+
+  $row = $result->get_result();
+
+  $rowItem = $row->fetch_assoc();
+
+  try {
+      return $rowItem;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getMovieshopTotal($date, $db)
+{
+  $query = 'SELECT SUM(cash + till) AS movieshop_net FROM dr_movieshop WHERE date_created=?';
+
+  $binders="s";
+
+  $param = array($date);
+
+  $result = SelectCond($query, $binders, $param, $db);
+
+  $row = $result->get_result();
+
+  $rowItem = $row->fetch_assoc();
+
+  $totalmovie = isset($rowItem['movieshop_net']) ? $rowItem['movieshop_net'] : 'N/A';
+
+  try {
+      return $totalmovie;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getCybershopTotal($date, $db)
+{
+  $query = 'SELECT SUM(cash + till) AS cybershop_net FROM dr_cybershop WHERE date_created=?';
+
+  $binders="s";
+
+  $param = array($date);
+
+  $result = SelectCond($query, $binders, $param, $db);
+
+  $row = $result->get_result();
+
+  $rowItem = $row->fetch_assoc();
+
+  $totalcyber = isset($rowItem['cybershop_net']) ? $rowItem['cybershop_net'] : 'N/A';
+
+  try {
+      return $totalcyber;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getPsTotal($date, $db)
+{
+  $query = 'SELECT SUM(cash + till) AS ps_net FROM dr_playstation WHERE date_created=?';
+
+  $binders="s";
+
+  $param = array($date);
+
+  $result = SelectCond($query, $binders, $param, $db);
+
+  $row = $result->get_result();
+
+  $rowItem = $row->fetch_assoc();
+
+  $totalplaystation = isset($rowItem['ps_net']) ? $rowItem['ps_net'] : 'N/A';
+
+  try {
+      return $totalplaystation;
+  } catch (Error $e) {
+      return false;
+  } 
+}

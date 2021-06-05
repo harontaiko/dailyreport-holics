@@ -30,33 +30,19 @@
                 <th>Till/other</th>
                 <th>Net Total</th>
             </tr>
+            <?php while ($ps = $data['ps']->fetch_assoc()) :  ?>
             <tr>
-                <td data-th="date-movie">5th March 2021</td>
-                <td data-th="date-movie">222</td>
-                <td data-th="date-movie">1977</td>
-                <td data-th="date-movie">3500</td>
+                <td data-th="date-movie"><?php echo date('jS F Y', strtotime($ps['date_created'])); ?></td>
+                <td data-th="cash-movie"><?php echo number_format($ps['cash']); ?></td>
+                <td data-th="till-movie"><?php echo number_format($ps['till']); ?></td>
+                <td data-th="net-movie">
+                    <?php echo number_format(getPsTotal($ps['date_created'], $data['db'])) . '/='; ?></td>
             </tr>
-            <tr>
-                <td data-th="cash-movie">20th June 2019</td>
-                <td data-th="cash-movie">190</td>
-                <td data-th="cash-movie">710</td>
-                <td data-th="cash-movie">4135</td>
-            </tr>
-            <td data-th="till-movie">1997</td>
-            <td data-th="till-movie">1900</td>
-            <td data-th="till-movie">7100</td>
-            <td data-th="till-movie">4135</td>
-            </tr>
-            <tr>
-                <td data-th="movie-net">5th April 2021</td>
-                <td data-th="movie-net">3100</td>
-                <td data-th="movie-net">452</td>
-                <td data-th="movie-net">489</td>
-            </tr>
+            <?php endwhile ?>
         </table>
 
-        <p>&larr; Total up to <?php echo isset($data['date']) ? $data['date']: ''; ?>
-            <span class="login-err">=25000</span> &rarr;
+        <p>&larr; All Time Total:
+            <span class="login-err"><?php echo number_format($data['total']); ?></span> &rarr;
         </p>
     </main>
 

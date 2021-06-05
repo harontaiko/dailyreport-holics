@@ -32,38 +32,21 @@
                 <th>Sold(ksh)</th>
                 <th>Net profit</th>
             </tr>
+            <?php while ($sale = $data['sale']->fetch_assoc()) :  ?>
             <tr>
-                <td data-th="date-movie">5th March 2021</td>
-                <td data-th="item-name">san disk cruzer</td>
-                <td data-th="date-movie">500</td>
-                <td data-th="date-movie">1977</td>
-                <td data-th="date-movie">3500</td>
+                <td data-th="date-sold"><?php echo date('jS F Y', strtotime($sale['date_created']));  ?></td>
+                <td data-th="item-name"><?php echo $sale['sales_item'] ?></td>
+                <td data-th="item-buying"><?php echo $sale['buying_price'] ?></td>
+                <td data-th="item-selling"><?php echo $sale['selling_price'] ?></td>
+                <td data-th="sold-profit"><?php echo $sale['profit'] ?></td>
             </tr>
-            <tr>
-                <td data-th="cash-movie">20th June 2019</td>
-                <td data-th="item-name">san mem card</td>
-                <td data-th="cash-movie">190</td>
-                <td data-th="cash-movie">710</td>
-                <td data-th="cash-movie">4135</td>
-            </tr>
-            <td data-th="till-movie">1997</td>
-            <td data-th="item-name">boost usb</td>
-            <td data-th="till-movie">1900</td>
-            <td data-th="till-movie">7100</td>
-            <td data-th="till-movie">4135</td>
-            </tr>
-            <tr>
-                <td data-th="movie-net">5th April 2021</td>
-                <td data-th="item-name">mouse dell</td>
-                <td data-th="movie-net">450</td>
-                <td data-th="movie-net">3100</td>
-                <td data-th="movie-net">489</td>
-            </tr>
+            <?php endwhile ?>
         </table>
 
-        <p>&larr; Sold a total of <span class="login-err">15</span> items up to
+        <p>&larr; Sold a total of <span class="login-err"><?php echo number_format($data['count']); ?></span> items up
+            to
             <?php echo isset($data['date']) ? $data['date']: ''; ?> For a total of <span
-                class="login-err">15,000</span>&rarr;
+                class="login-err"><?php echo number_format($data['totalsales']); ?></span>&rarr;
         </p>
     </main>
 

@@ -306,7 +306,7 @@ dailyreport = {
                 if (dataResult.statusCode == 200) {
                   //status==okay, proceed
                   result1 = confirm(
-                    "do u confirm that the sale data is correct, click ok to seed and save record"
+                    "do you confirm that the sale data is correct, click ok to seed and save record"
                   );
                   if (!result1) {
                   } else {
@@ -315,12 +315,12 @@ dailyreport = {
                       url: `http://localhost/dailyreport-holics/pages/SaveSaleRecord`,
                       type: "POST",
                       data: {
-                        cybercash: cybercash,
-                        cybertill: cyberTill,
-                        moviecash: movieCash,
-                        movietill: movieTill,
-                        pscash: psCash,
-                        pstill: psTill,
+                        cybercash: cyberCash.value,
+                        cybertill: cyberTill.value,
+                        moviecash: movieCash.value,
+                        movietill: movieTill.value,
+                        pscash: psCash.value,
+                        pstill: psTill.value,
                       },
                       dataType: "json",
                       success: function (dataResult) {

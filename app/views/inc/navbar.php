@@ -80,6 +80,7 @@
         <li><a href="<?php echo URLROOT; ?>/pages/sales">Items Sold</a></li>
         <li><a href="<?php echo URLROOT; ?>/pages/expenses">Expenses</a></li>
         <li><a href="<?php echo URLROOT; ?>/pages/total">Total</a></li>
+        <li><a href="<?php echo URLROOT; ?>/pages/total">Trends</a></li>
         <?php if (strpos($_SERVER['REQUEST_URI'], "pages/index") !== false) :  ?>
         <?php else: ?>
         <form action="<?php echo URLROOT; ?>/users/logout" method="POST">

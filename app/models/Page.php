@@ -14,9 +14,336 @@ class Page
       return $this->db;
     }
 
+    public function getCurrentProfitTotal()
+    {
+        $query = 'SELECT SUM(profit) AS current_total FROM dr_sales';
+
+        $result = SelectCondFree($query, 'dr_sales', $this->db);
+
+        $row = $result->get_result();
+
+        $rowItem = $row->fetch_assoc();
+        
+        $salescurrentprofit = isset($rowItem['current_total']) ? $rowItem['current_total'] : '';
+
+        try {
+            return $salescurrentprofit;
+        } catch (Error $e) {
+            return false;
+        } 
+    }
+
+    public function getCurrentSaleTotal()
+    {
+        $query = 'SELECT SUM(selling_price) AS current_total FROM dr_sales';
+
+        $result = SelectCondFree($query, 'dr_sales', $this->db);
+
+        $row = $result->get_result();
+
+        $rowItem = $row->fetch_assoc();
+        
+        $salescurrenttotal = isset($rowItem['current_total']) ? $rowItem['current_total'] : '';
+
+        try {
+            return $salescurrenttotal;
+        } catch (Error $e) {
+            return false;
+        } 
+    }
+
+    public function getAlltimeSaleCount()
+    {
+    //mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+        $query = 'SELECT COUNT(*) AS cnt FROM dr_sales';
+
+        $result = SelectCondFree($query, 'dr_sales', $this->db);
+
+        $row = $result->get_result();
+
+        $rowItem = $row->fetch_assoc();
+            
+        $alltimesalecount = isset($rowItem['cnt']) ? $rowItem['cnt'] : 'N/A';
+
+        try {
+            return $alltimesalecount;
+        } catch (Error $e) {
+            return false;
+        } 
+    }
+
+    public function getAlltimeSales()
+    {
+        $query = 'SELECT sales_item, sales_id, selling_price, buying_price, profit, date_created FROM dr_sales';
+    
+        $result = SelectCondFree($query, 'dr_sales', $this->db);
+    
+        $row = $result->get_result();
+    
+        try {
+            return $row;
+        } catch (Error $e) {
+            return false;
+        } 
+    }
+
+    public function getCurrentCyberTotal()
+    {
+        $query = 'SELECT SUM(cash) + SUM(till) AS current_total FROM dr_cybershop';
+
+        $result = SelectCondFree($query, 'dr_cybershop', $this->db);
+
+        $row = $result->get_result();
+
+        $rowItem = $row->fetch_assoc();
+        
+        $cybercurrenttotal = isset($rowItem['current_total']) ? $rowItem['current_total'] : '';
+
+        try {
+            return $cybercurrenttotal;
+        } catch (Error $e) {
+            return false;
+        } 
+    }
+
+    public function getCurrentPsTotal()
+    {
+        $query = 'SELECT SUM(cash) + SUM(till) AS current_total FROM dr_playstation';
+
+        $result = SelectCondFree($query, 'dr_playstation', $this->db);
+
+        $row = $result->get_result();
+
+        $rowItem = $row->fetch_assoc();
+        
+        $pscurrenttotal = isset($rowItem['current_total']) ? $rowItem['current_total'] : '';
+
+        try {
+            return $pscurrenttotal;
+        } catch (Error $e) {
+            return false;
+        } 
+    }
+
+    public function getCurrentMovieTotal()
+    {
+        $query = 'SELECT SUM(cash) + SUM(till) AS current_total FROM dr_movieshop';
+
+        $result = SelectCondFree($query, 'dr_movieshop', $this->db);
+
+        $row = $result->get_result();
+
+        $rowItem = $row->fetch_assoc();
+        
+        $shopcurrenttotal = isset($rowItem['current_total']) ? $rowItem['current_total'] : '';
+
+        try {
+            return $shopcurrenttotal;
+        } catch (Error $e) {
+            return false;
+        } 
+    }
+
+    public function getNetTotal()
+    {
+        $query = 'SELECT date_created, time_created, cash_sales, till_sales FROM dr_nettotal ORDER BY sales_id DESC';
+
+        $result = SelectCondFree($query, 'dr_nettotal', $this->db);
+
+        $row = $result->get_result();
+
+        try {
+            return $row;
+        } catch (Error $e) {
+            return false;
+        } 
+    }
+
+    public function getMovieTotal()
+    {
+        $query = 'SELECT date_created, cash, till FROM dr_movieshop ORDER BY record_id DESC';
+
+        $result = SelectCondFree($query, 'dr_movieshop', $this->db);
+
+        $row = $result->get_result();
+
+        try {
+            return $row;
+        } catch (Error $e) {
+            return false;
+        } 
+    }
+
+    public function getCyberTotal()
+    {
+        $query = 'SELECT date_created, cash, till FROM dr_cybershop ORDER BY record_id DESC';
+
+        $result = SelectCondFree($query, 'dr_cybershop', $this->db);
+
+        $row = $result->get_result();
+
+        try {
+            return $row;
+        } catch (Error $e) {
+            return false;
+        } 
+    }
+
+    public function getPsTotal()
+    {
+        $query = 'SELECT date_created, cash, till FROM dr_playstation ORDER BY record_id DESC';
+
+        $result = SelectCondFree($query, 'dr_playstation', $this->db);
+
+        $row = $result->get_result();
+
+        try {
+            return $row;
+        } catch (Error $e) {
+            return false;
+        } 
+    }
+
     public function saveNetTotalNow($data)
     {
+        //get total sales
+        $query = 'SELECT SUM(cash) + SUM(till) AS total_sales FROM dr_sales WHERE date_created = ?';
+
+        $binders = "s";
+
+        $parameters = array($data['date']);
+
+        $result = SelectCond($query, $binders, $parameters, $this->db);
+
+        $row = $result->get_result();
+
+        $rowItem = $row->fetch_assoc();
         
+        $totalsales = isset($rowItem['total_sales']) ? $rowItem['total_sales'] : '';
+        //total profit
+        $query2 = 'SELECT SUM(profit) AS total_profit FROM dr_sales WHERE date_created = ?';
+
+        $binders2 = "s";
+
+        $parameters2 = array($data['date']);
+
+        $result2 = SelectCond($query2, $binders2, $parameters2, $this->db);
+
+        $row2 = $result2->get_result();
+
+        $rowItem2 = $row2->fetch_assoc();
+         
+        $totalprofit = isset($rowItem2['total_profit']) ? $rowItem2['total_profit'] : '';
+        //total cyber
+        $query3 = 'SELECT SUM(cash + till) AS cybertotal FROM dr_cybershop WHERE date_created=?';
+
+        $binders3 = "s";
+
+        $parameters3 = array($data['date']);
+
+        $result3 = SelectCond($query3, $binders3, $parameters3, $this->db);
+
+        $row3 = $result3->get_result();
+
+        $rowItem3 = $row3->fetch_assoc();
+        
+        $cyberTotal = isset($rowItem3['cybertotal']) ? $rowItem3['cybertotal'] : '';
+        //total shop
+        $query4 = 'SELECT SUM(cash + till) AS movieshop_total FROM dr_movieshop WHERE date_created=?';
+
+        $binders4 = "s";
+
+        $parameters4 = array($data['date']);
+
+        $result4 = SelectCond($query4, $binders4, $parameters4, $this->db);
+
+        $row4 = $result4->get_result();
+
+        $rowItem4 = $row4->fetch_assoc();
+        
+        $shopTotal = isset($rowItem4['movieshop_total']) ? $rowItem4['movieshop_total'] : '';
+        //total ps
+        $query5 = 'SELECT SUM(cash + till) AS ps_total FROM dr_playstation WHERE date_created=?';
+
+        $binders5 = "s";
+
+        $parameters5 = array($data['date']);
+
+        $result5 = SelectCond($query5, $binders5, $parameters5, $this->db);
+
+        $row5 = $result5->get_result();
+
+        $rowItem5 = $row5->fetch_assoc();
+        
+        $psTotal = isset($rowItem5['ps_total']) ? $rowItem5['ps_total'] : '';
+        //total income
+        $TotalIncome = $cyberTotal + $shopTotal + $psTotal;
+        //total expense
+        $query6 = 'SELECT SUM(expense_cost) AS exp_total FROM dr_expenses WHERE date_created=?';
+
+        $binders6 = "s";
+
+        $parameters6 = array($data['date']);
+
+        $result6 = SelectCond($query6, $binders6, $parameters6, $this->db);
+
+        $row6 = $result6->get_result();
+
+        $rowItem6 = $row6->fetch_assoc();
+        
+        $expTotal = isset($rowItem6['exp_total']) ? $rowItem6['exp_total'] : '';
+        //total till
+        $qtill = 'SELECT SUM(tbl.till) AS total_till FROM(SELECT till FROM dr_cybershop WHERE date_created=? UNION ALL SELECT till FROM dr_movieshop WHERE date_created=? UNION ALL SELECT till FROM dr_playstation WHERE date_created=?) tbl';
+
+        $binderstill = "sss";
+
+        $parameterstill = array($data['date'], $data['date'], $data['date']);
+
+        $resulttill = SelectCond($qtill, $binderstill, $parameterstill, $this->db);
+
+        $rowtill = $resulttill->get_result();
+
+        $rowItemtill = $rowtill->fetch_assoc();
+        
+        $totalTill = isset($rowItemtill['total_till']) ? $rowItemtill['total_till'] : '';
+
+        //total cash
+        $qc = 'SELECT SUM(tbl.cash) AS total_cash FROM(SELECT cash FROM dr_cybershop WHERE date_created=? UNION ALL SELECT cash FROM dr_movieshop WHERE date_created=? UNION ALL SELECT cash FROM dr_playstation WHERE date_created=?) tbl';
+
+        $bindersc = "sss";
+
+        $parametersc = array($data['date'], $data['date'], $data['date']);
+
+        $resultc = SelectCond($qc, $bindersc, $parametersc, $this->db);
+
+        $rowc = $resultc->get_result();
+
+        $rowItemc = $rowc->fetch_assoc();
+        
+        $totalCash = isset($rowItemc['total_cash']) ? $rowItemc['total_cash'] : '';
+
+        //create 
+        $fields = array('total_sales', 'totalprofit', 'totalincome', 'totalexpense', 'cash_sales', 'till_sales', 'date_created', 'time_created', 'created_by', 'creator_ip');
+
+        $placeholders = array('?', '?', '?', '?', '?', '?', '?', '?', '?', '?');
+  
+        $bindersCountNew = "ssssssssss";
+  
+        $values = array($totalsales, $totalprofit, $TotalIncome, $expTotal, $totalCash, $totalTill, $data['date'], $data['time'], $data['creator'], $data['ip']);
+  
+        try {
+            Insert(
+                $fields,
+                $placeholders,
+                $bindersCountNew,
+                $values,
+                'dr_nettotal',
+                $this->db
+            );          
+            return true;
+        } catch (Error $e) {
+            return false;
+        }
     }
 
     public function saveSaleRecordNow($cyber, $ps, $shop)
@@ -102,7 +429,7 @@ class Page
         if($rowE->num_rows >=1 && $row->num_rows >= 1){
             return 1;
         }elseif($rowE->num_rows <=1 && $row->num_rows >=1){
-            return 2;
+            return 3;
         }else if($rowE->num_rows >=1 && $row->num_rows <=1){
             return 3;
         }else if($rowE->num_rows <=1 && $row->num_rows <= 1){
