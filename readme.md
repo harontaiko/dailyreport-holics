@@ -31,3 +31,5 @@ Inventory management and daily record keeping system, built on PHP OOP and Js, D
 - final commit shouldnt have images
 
 - allow only one sale per day, only allow edits
+
+- loss from expense

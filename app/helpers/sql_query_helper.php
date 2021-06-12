@@ -910,3 +910,370 @@ function getPsTotal($date, $db)
       return false;
   } 
 }
+
+function saleRecord($db, $date)
+{
+  $query = 'SELECT * FROM dr_sales WHERE date_created = ?';
+
+  $binders = "s";
+
+  $parameters = array($date);
+
+  $result = SelectCond($query, $binders, $parameters, $db);
+
+  $row = $result->get_result();
+
+  $numRows = $row->num_rows;
+
+  if ($numRows > 0) {
+      return true;
+  } else {
+      return false;
+  }
+}
+
+function getMovieshopAllDate($date, $db)
+{
+  $query = 'SELECT cash, till, created_by, creator_ip FROM dr_movieshop WHERE date_created=?';
+
+  $binders="s";
+
+  $param = array($date);
+
+  $result = SelectCond($query, $binders, $param, $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getMovieshopAllWeek($db)
+{
+  $query = 'SELECT cash, till, created_by, creator_ip, date_created FROM dr_movieshop WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 week)';
+
+  $result = SelectCondFree($query, 'dr_movieshop', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getMovieshopAllMonth($db)
+{
+  $query = 'SELECT cash, till, created_by, creator_ip, date_created FROM dr_movieshop WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 MONTH)';
+
+  $result = SelectCondFree($query, 'dr_movieshop', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getMovieshopAllYear($db)
+{
+  $query = 'SELECT cash, till, created_by, creator_ip, date_created FROM dr_movieshop WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 YEAR)';
+
+  $result = SelectCondFree($query, 'dr_movieshop', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getMovieshopAllMonthNet($db)
+{
+  $query = 'SELECT DATE_FORMAT(date_created, "%M"), SUM(cash) AS total_cash, SUM(till) AS total_till, SUM(cash + till) AS net_total FROM dr_movieshop WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 MONTH) GROUP BY DATE_FORMAT(date_created, "%M")';
+
+  $result = SelectCondFree($query, 'dr_movieshop', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getMovieshopAllWeekNet($db)
+{
+  $query = 'SELECT DATE_FORMAT(date_created, "%u"), SUM(cash) AS total_cash, SUM(till) AS total_till, SUM(cash + till) AS net_total FROM dr_movieshop WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 WEEK) GROUP BY DATE_FORMAT(date_created, "%u")';
+
+  $result = SelectCondFree($query, 'dr_movieshop', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getMovieshopAllYearNet($db)
+{
+  $query = 'SELECT DATE_FORMAT(date_created, "%Y"), SUM(cash) AS total_cash, SUM(till) AS total_till, SUM(cash + till) AS net_total FROM dr_movieshop WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 YEAR) GROUP BY DATE_FORMAT(date_created, "%Y")';
+
+  $result = SelectCondFree($query, 'dr_movieshop', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getMovieshopTotalYear($db)
+{
+  $query = 'SELECT SUM(cash + till) AS movieshop_net FROM dr_movieshop WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 YEAR)';
+
+  $result = SelectCondFree($query, 'dr_movieshop', $db);
+
+  $row = $result->get_result();
+
+  $rowItem = $row->fetch_assoc();
+
+  $totalmovie = isset($rowItem['movieshop_net']) ? $rowItem['movieshop_net'] : 'N/A';
+
+  try {
+      return $totalmovie;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getMovieshopTotalWeek($db)
+{
+  $query = 'SELECT SUM(cash + till) AS movieshop_net FROM dr_movieshop WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 WEEK)';
+
+  $result = SelectCondFree($query, 'dr_movieshop', $db);
+
+  $row = $result->get_result();
+
+  $rowItem = $row->fetch_assoc();
+
+  $totalmovie = isset($rowItem['movieshop_net']) ? $rowItem['movieshop_net'] : 'N/A';
+
+  try {
+      return $totalmovie;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getMovieshopTotalMonth($db)
+{
+  $query = 'SELECT SUM(cash + till) AS movieshop_net FROM dr_movieshop WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 MONTH)';
+
+  $result = SelectCondFree($query, 'dr_movieshop', $db);
+
+  $row = $result->get_result();
+
+  $rowItem = $row->fetch_assoc();
+
+  $totalmovie = isset($rowItem['movieshop_net']) ? $rowItem['movieshop_net'] : 'N/A';
+
+  try {
+      return $totalmovie;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getMovieshopDatesMonth($db)
+{
+  $query = 'SELECT DATE_FORMAT(date_created, "%M") FROM dr_movieshop WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 MONTH) GROUP BY DATE_FORMAT(date_created, "%M")';
+
+  $result = SelectCondFree($query, 'dr_movieshop', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getMovieshopDatesWeek($db)
+{
+  $query = 'SELECT DATE_FORMAT(date_created, "%u") FROM dr_movieshop WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 WEEK) GROUP BY DATE_FORMAT(date_created, "%u")';
+
+  $result = SelectCondFree($query, 'dr_movieshop', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getMovieshopDatesYear($db)
+{
+  $query = 'SELECT DATE_FORMAT(date_created, "%Y") FROM dr_movieshop WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 YEAR) GROUP BY DATE_FORMAT(date_created, "%Y")';
+
+  $result = SelectCondFree($query, 'dr_movieshop', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getMovieshopCashMonth($db)
+{
+  $query = 'SELECT SUM(cash) AS movieshop_net FROM dr_movieshop WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 MONTH) GROUP BY DATE_FORMAT(date_created, "%M")';
+
+  $result = SelectCondFree($query, 'dr_movieshop', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getMovieshopTillMonth($db)
+{
+  $query = 'SELECT SUM(till) AS movieshop_net FROM dr_movieshop WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 MONTH) GROUP BY DATE_FORMAT(date_created, "%M")';
+
+  $result = SelectCondFree($query, 'dr_movieshop', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getMovieshopGrossYear($db)
+{
+  $query = 'SELECT SUM(cash + till) AS movieshop_net FROM dr_movieshop WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 YEAR) GROUP BY DATE_FORMAT(date_created, "%Y")';
+
+  $result = SelectCondFree($query, 'dr_movieshop', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getMovieshopGrossWeek($db)
+{
+  $query = 'SELECT SUM(cash+till) AS movieshop_net FROM dr_movieshop WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 WEEK) GROUP BY DATE_FORMAT(date_created, "%u")';
+
+  $result = SelectCondFree($query, 'dr_movieshop', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getMovieshopCashWeek($db)
+{
+  $query = 'SELECT SUM(cash) AS movieshop_net FROM dr_movieshop WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 WEEK) GROUP BY DATE_FORMAT(date_created, "%u")';
+
+  $result = SelectCondFree($query, 'dr_movieshop', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getMovieshopTillWeek($db)
+{
+  $query = 'SELECT SUM(till) AS movieshop_net FROM dr_movieshop WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 WEEK) GROUP BY DATE_FORMAT(date_created, "%u")';
+
+  $result = SelectCondFree($query, 'dr_movieshop', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getMovieshopTillYear($db)
+{
+  $query = 'SELECT SUM(till) AS movieshop_net FROM dr_movieshop WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 YEAR) GROUP BY DATE_FORMAT(date_created, "%Y")';
+
+  $result = SelectCondFree($query, 'dr_movieshop', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getMovieshopCashYear($db)
+{
+  $query = 'SELECT SUM(cash) AS movieshop_net FROM dr_movieshop WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 YEAR) GROUP BY DATE_FORMAT(date_created, "%Y")';
+
+  $result = SelectCondFree($query, 'dr_movieshop', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getMovieshopGrossMonth($db)
+{
+  $query = 'SELECT SUM(cash + till) AS movieshop_net FROM dr_movieshop WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 MONTH) GROUP BY DATE_FORMAT(date_created, "%M")';
+
+  $result = SelectCondFree($query, 'dr_movieshop', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}

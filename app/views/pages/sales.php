@@ -4,6 +4,7 @@
 <body class="sales __sales site-wrap">
     <?php require(APPROOT . '/views/inc/navbar.php'); ?>
     <main>
+        <?php flash('add-error'); ?>
         <h2 class="movie-title">Sales <i class="fas fa-shopping-cart fa-2x"></i></h2>
         <select name="filter-sales" id="filter-sales" class="dr_input">
             <option value="default">Filter</option>

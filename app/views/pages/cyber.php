@@ -4,6 +4,7 @@
 <body class="cyber __cyber site-wrap">
     <?php require(APPROOT . '/views/inc/navbar.php'); ?>
     <main>
+        <?php flash('add-error'); ?>
         <h2 class="movie-title">Cyber <i class="fas fa-tv fa-2x"></i></h2>
         <select name="filter-cyber" id="filter-cyber" class="dr_input">
             <option value="default">Filter</option>

@@ -33,6 +33,44 @@ class Page
         } 
     }
 
+    public function getCurrentNetSumTotal()
+    {
+        $query = 'SELECT SUM(totalincome + total_sales) AS currentsum FROM dr_nettotal';
+
+        $result = SelectCondFree($query, 'dr_nettotal', $this->db);
+
+        $row = $result->get_result();
+
+        $rowItem = $row->fetch_assoc();
+        
+        $currentsum = isset($rowItem['currentsum']) ? $rowItem['currentsum'] : '';
+
+        try {
+            return $currentsum;
+        } catch (Error $e) {
+            return false;
+        } 
+    }
+
+    public function getCurrentNetDiffTotal()
+    {
+        $query = 'SELECT SUM(totalexpense) AS currentdiff FROM dr_nettotal';
+
+        $result = SelectCondFree($query, 'dr_nettotal', $this->db);
+
+        $row = $result->get_result();
+
+        $rowItem = $row->fetch_assoc();
+        
+        $currentdiff = isset($rowItem['currentdiff']) ? $rowItem['currentdiff'] : '';
+
+        try {
+            return $currentdiff;
+        } catch (Error $e) {
+            return false;
+        } 
+    }
+
     public function getCurrentSaleTotal()
     {
         $query = 'SELECT SUM(selling_price) AS current_total FROM dr_sales';
@@ -67,6 +105,36 @@ class Page
 
         try {
             return $alltimesalecount;
+        } catch (Error $e) {
+            return false;
+        } 
+    }
+
+    public function getAlltimeExpenses()
+    {
+        $query = 'SELECT expense_id, expense_item, expense_cost, date_created FROM dr_expenses GROUP BY DATE(date_created) ORDER BY expense_id DESC';
+    
+        $result = SelectCondFree($query, 'dr_expenses', $this->db);
+    
+        $row = $result->get_result();
+    
+        try {
+            return $row;
+        } catch (Error $e) {
+            return false;
+        } 
+    }
+
+    public function getAlltimeTotal()
+    {
+        $query = 'SELECT sales_id, total_sales, totalprofit, totalincome, totalexpense, date_created FROM dr_nettotal ORDER BY sales_id';
+    
+        $result = SelectCondFree($query, 'dr_nettotal', $this->db);
+    
+        $row = $result->get_result();
+    
+        try {
+            return $row;
         } catch (Error $e) {
             return false;
         } 
@@ -281,7 +349,7 @@ class Page
         //total expense
         $query6 = 'SELECT SUM(expense_cost) AS exp_total FROM dr_expenses WHERE date_created=?';
 
-        $binders6 = "s";
+        $binders6 = "i";
 
         $parameters6 = array($data['date']);
 

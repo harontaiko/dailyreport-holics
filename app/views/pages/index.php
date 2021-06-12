@@ -6,6 +6,7 @@
     <main>
         <a id="add-record" title="add sale" href="<?php echo URLROOT; ?>/pages/add"><i class="fas fa-plus"></i></a>
         <header>
+            <?php flash('add-error'); ?>
             <h1 class="title">Pipeline
             </h1>
             <table>
@@ -57,7 +58,7 @@
                             <td style="background-color: #89909f; color:#fff;">SEE</td>
                         </tr>
                         <?php while ($net = $data['net']->fetch_assoc()) :  ?>
-                        <tr id="latest-record" style="background: chartreuse; opacity: 0.8; width: 100vw;">
+                        <tr id="latest-record" style="background: chartreuse; width: 100vw;">
                             <td><?php echo date('jS F Y', strtotime($net['date_created'])); ?>
                             </td>
                             <td>

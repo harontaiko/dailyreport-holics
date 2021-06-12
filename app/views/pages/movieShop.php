@@ -4,11 +4,14 @@
 <body class="movieshop __movieshop site-wrap">
     <?php require(APPROOT . '/views/inc/navbar.php'); ?>
     <main>
+        <?php flash('add-error'); ?>
         <h2 class="movie-title">Movie Shop <i class="fas fa-film fa-2x"></i></h2>
         <select name="filter-movieshop" id="fiter-movieshop" class="dr_input">
             <option value="default">Filter</option>
             <option value="today">Today</option>
-            <option value="this-month">This month</option>
+            <option value="week">Weekly</option>
+            <option value="month">Monthly</option>
+            <option value="year">This year</option>
         </select>
         <section class="todo">
             <form id="filter-movie-date">

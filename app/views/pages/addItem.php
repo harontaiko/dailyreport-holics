@@ -4,6 +4,7 @@
 <body class="addItem __addItem site-wrap">
     <?php require(APPROOT . '/views/inc/navbar.php'); ?>
     <main>
+        <?php flash('add-error'); ?>
         <div class="loader">
             <div class="loading">
             </div>

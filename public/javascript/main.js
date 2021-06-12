@@ -106,6 +106,10 @@ dailyreport = {
     init: function _homepage() {
       $("#latest-record").animate({ opacity: 0 }, 1000);
       $("#latest-record").animate({ opacity: 1 }, 1000);
+      sleep(4700).then(() => {
+        $("#latest-record").animate({ opacity: 0 }, 0);
+        $("#latest-record").animate({ opacity: 1 }, 0);
+      });
       FilterInventory();
       //main page js
       $("#toggler").click(function () {
@@ -139,13 +143,13 @@ dailyreport = {
   __add: {
     init: function _add() {
       //throw confirm window b4 user reloads
-      /*       window.onbeforeunload = function (e) {
+      window.onbeforeunload = function (e) {
         return window.confirm();
       };
 
       $(document).on("submit", "form", function (event) {
         window.onbeforeunload = null;
-      }); */
+      });
       FilterInventory();
       const cyberCash = document.getElementById("cyber-cash");
       const cyberTill = document.getElementById("cyber-till");
@@ -758,6 +762,17 @@ dailyreport = {
   __movieshop: {
     init: function _ps() {
       FilterInventory();
+      //filter in select
+      var movieshopOptions = document.getElementById("fiter-movieshop");
+
+      movieshopOptions.addEventListener("change", function LoadBuying() {
+        currentOption = movieshopOptions.value;
+        currentOptionText = this.options[this.selectedIndex].value;
+        //today, month & default
+        location.replace(
+          `http://localhost/dailyreport-holics/pages/reports/movie/${currentOptionText}`
+        );
+      });
     },
   },
   __sales: {
@@ -767,6 +782,11 @@ dailyreport = {
   },
   __total: {
     init: function _ps() {
+      FilterInventory();
+    },
+  },
+  __reports: {
+    init: function _repo() {
       FilterInventory();
     },
   },

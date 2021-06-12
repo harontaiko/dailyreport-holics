@@ -4,6 +4,7 @@
 <body class="total __total site-wrap">
     <?php require(APPROOT . '/views/inc/navbar.php'); ?>
     <main>
+        <?php flash('add-error'); ?>
         <h2 class="movie-title">Gross <i class="fas fa-plus-circle fa-2x"></i></h2>
         <select name="filter-total" id="filter-total" class="dr_input">
             <option value="default">Filter</option>
@@ -29,46 +30,27 @@
                 <th>Date</th>
                 <th>Expense(ksh)</th>
                 <th>Sales(ksh)</th>
-                <th>Income(ksh)</th>
-                <th>Total(ksh)</th>
+                <th>Income(cyber,ps,shop)</th>
+                <th>Net Total(ksh)</th>
                 <th>See</th>
             </tr>
+            <?php while ($net = $data['net']->fetch_assoc()) :  ?>
             <tr>
-                <td data-th="date-movie">5th March 2021</td>
-                <td data-th="item-name">3000</td>
-                <td data-th="date-movie">500</td>
-                <td data-th="date-movie">500</td>
-                <td data-th="date-movie">500</td>
+                <td data-th="date-net"><?php echo date('jS F Y', strtotime($net['date_created'])); ?></td>
+                <td data-th="expense-net"><?php echo number_format($net['totalexpense']); ?></td>
+                <td data-th="sales-net"><?php echo number_format($net['total_sales']); ?></td>
+                <td data-th="income-net"><?php echo number_format($net['totalincome']); ?></td>
+                <td data-th="total-net">
+                    <?php echo number_format($net['totalincome'] + $net['total_sales'] -($net['totalexpense'])).'/='; ?>
+                </td>
                 <td data-th="see"><i class="fas fa-eye"></i></td>
             </tr>
-            <tr>
-                <td data-th="cash-movie">20th June 2019</td>
-                <td data-th="item-name">3000</td>
-                <td data-th="date-movie">500</td>
-                <td data-th="date-movie">500</td>
-                <td data-th="date-movie">500</td>
-                <td data-th="see"><i class="fas fa-eye"></i></td>
-            </tr>
-            <td data-th="till-movie">1997</td>
-            <td data-th="item-name">3000</td>
-            <td data-th="date-movie">500</td>
-            <td data-th="date-movie">500</td>
-            <td data-th="date-movie">500</td>
-            <td data-th="see"><i class="fas fa-eye"></i></td>
-            </tr>
-            <tr>
-                <td data-th="movie-net">5th April 2021</td>
-                <td data-th="item-name">3000</td>
-                <td data-th="date-movie">500</td>
-                <td data-th="date-movie">500</td>
-                <td data-th="date-movie">500</td>
-                <td data-th="see"><i class="fas fa-eye"></i></td>
-            </tr>
+            <?php endwhile ?>
+
         </table>
 
-        <p>&larr; up to
-            <?php echo isset($data['date']) ? $data['date']: ''; ?> net-income @holics exluding expenses is <span
-                class="login-err">15,000</span>&rarr;
+        <p>&larr; All time Income: <span
+                class="login-err"><?php echo number_format($data['sum'] - $data['diff']) . '/='; ?></span>&rarr;
         </p>
     </main>
 

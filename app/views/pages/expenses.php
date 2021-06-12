@@ -4,6 +4,7 @@
 <body class="expense __expense site-wrap">
     <?php require(APPROOT . '/views/inc/navbar.php'); ?>
     <main>
+        <?php flash('add-error'); ?>
         <h2 class="movie-title">Expenses <i class="fas fa-pen fa-2x"></i></h2>
         <select name="filter-expense" id="filter-expense" class="dr_input">
             <option value="default">Filter</option>
@@ -32,38 +33,36 @@
                 <th>Total</th>
                 <th>See</th>
             </tr>
+            <?php while ($exp = $data['expenses']->fetch_assoc()) :  ?>
             <tr>
-                <td data-th="date-movie">5th March 2021</td>
-                <td data-th="item-name">food</td>
-                <td data-th="date-movie">500</td>
-                <td data-th="date-movie">500</td>
+                <td data-th="date-expense"><?php echo date('jS F Y', strtotime($exp['date_created'])); ?></td>
+                <td data-th="expense-item">
+                    <select name="expenses" style="width: 100%; color:#111;">
+                        <option value="total">
+                            <?php echo getExpenseTotalCount($exp['date_created'], $data['db']); ?>
+                            -total(<?php echo number_format(getExpenseTotal($exp['date_created'], $data['db'])); ?>)
+                        </option>
+                        <?php 
+                                    $expense = getNetExpenses($exp['date_created'], $data['db']);
+                                     while ($exp2 = $expense->fetch_assoc()) :  
+                                     ?>
+                        <option value="<?php echo $exp2['expense_item'] ?>">
+                            <?php echo $exp2['expense_item'] ?> @
+                            <?php echo number_format($exp2['expense_cost']); ?></option>
+                        <?php endwhile ?>
+                    </select>
+                </td>
+                <td data-th="expense-total">
+                    <?php echo number_format(getExpenseTotal($exp['date_created'], $data['db'])); ?></td>
+                <td data-th="expense-total">
+                    <?php echo number_format(getExpenseTotal($exp['date_created'], $data['db'])).'/='; ?></td>
                 <td data-th="see"><i class="fas fa-eye"></i></td>
             </tr>
-            <tr>
-                <td data-th="cash-movie">20th June 2019</td>
-                <td data-th="item-name">other..</td>
-                <td data-th="cash-movie">1290</td>
-                <td data-th="cash-movie">1290</td>
-                <td data-th="see"><i class="fas fa-eye"></i></td>
-            </tr>
-            <td data-th="till-movie">1997</td>
-            <td data-th="item-name">mathe/td>
-            <td data-th="till-movie">1900</td>
-            <td data-th="till-movie">1900</td>
-            <td data-th="see"><i class="fas fa-eye"></i></td>
-            </tr>
-            <tr>
-                <td data-th="movie-net">5th April 2021</td>
-                <td data-th="item-name">token</td>
-                <td data-th="movie-net">450</td>
-                <td data-th="movie-net">450</td>
-                <td data-th="see"><i class="fas fa-eye"></i></td>
-            </tr>
+            <?php endwhile ?>
+
         </table>
 
-        <p>&larr; Total expenses up to
-            <?php echo isset($data['date']) ? $data['date']: ''; ?> is a total of <span
-                class="login-err">15,000</span>&rarr;
+        <p>&larr; Net Expenses: <span class="login-err"><?php echo number_format($data['diff']) .'/='; ?></span>&rarr;
         </p>
     </main>
 

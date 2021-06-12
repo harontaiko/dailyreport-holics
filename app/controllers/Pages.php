@@ -28,6 +28,31 @@ class Pages extends Controller
       $this->view('pages/index', $data);
     }
 
+    public function reports($shopname, $reportdate)
+    {
+
+       if(isset($shopname) && isset($reportdate)){
+        if (!isset($_SESSION["user_id"])) {
+          $data = [
+            "title" => "Daily Report",  
+          ];
+          redirect("users/index");
+        } 
+        
+        $db = $this->pageModel->getDatabaseConnection();
+
+        $inventoryData = $this->pageModel->getInventoryData();
+
+        $data = ['title'=>''.htmlspecialchars($reportdate).' Report', "inventory" => $inventoryData, 'db'=>$db, 'shopname'=>htmlspecialchars($shopname), 'reportdate'=>htmlspecialchars($reportdate)];
+
+        $this->view('pages/reports', $data);
+      }else{
+        http_response_code(404);
+        include('../app/404.php');
+        die();
+      }
+    }
+
     public function movieShop()
     {
       if (!isset($_SESSION["user_id"])) {
@@ -190,7 +215,11 @@ class Pages extends Controller
 
       $db = $this->pageModel->getDatabaseConnection();
 
-      $data = ['title'=>'Daily Report', 'date'=>$currentdate, "inventory" => $inventoryData, 'db'=>$db];
+      $expenses = $this->pageModel->getAlltimeExpenses();
+
+      $diff = $this->pageModel->getCurrentNetDiffTotal();
+
+      $data = ['title'=>'Daily Report', 'date'=>$currentdate, "inventory" => $inventoryData, 'db'=>$db, 'expenses'=>$expenses, 'diff'=>$diff];
 
       $this->view('pages/expenses', $data);
     }
@@ -211,7 +240,13 @@ class Pages extends Controller
 
       $db = $this->pageModel->getDatabaseConnection();
 
-      $data = ['title'=>'Daily Report', 'date'=>$currentdate, "inventory" => $inventoryData, 'db'=>$db];
+      $alltimetotal = $this->pageModel->getAlltimeTotal();
+
+      $sum = $this->pageModel->getCurrentNetSumTotal();
+
+      $diff = $this->pageModel->getCurrentNetDiffTotal();
+
+      $data = ['title'=>'Daily Report', 'date'=>$currentdate, "inventory" => $inventoryData, 'db'=>$db, 'net'=>$alltimetotal, 'sum'=>$sum, 'diff'=>$diff];
 
       $this->view('pages/total', $data);
     }
@@ -224,6 +259,18 @@ class Pages extends Controller
         ];
         redirect("users/index");
       }
+      
+      $db = $this->pageModel->getDatabaseConnection();
+
+        if (strpos($_SERVER['REQUEST_URI'], "pages/add") !== false && saleRecord($db, date('Y-m-d',time())) !==false) : 
+          //redirect to history
+          if(isset($_SERVER['HTTP_REFERER'])):
+              header('location:'.$_SERVER['HTTP_REFERER'].'');
+              flash('add-error','You cannot add a new sale, a record already exist for this day, try editing it instead','alert_fail');
+          else:
+              redirect('pages/index');
+          endif;
+      endif;
 
       date_default_timezone_set('Africa/Nairobi');
       $currentdate = date('Y-m-d h:i:s A', time());
@@ -231,8 +278,6 @@ class Pages extends Controller
       $inventoryData = $this->pageModel->getInventoryData();
       
       $inventoryDataAdd = $this->pageModel->getInventoryData();
-
-      $db = $this->pageModel->getDatabaseConnection();
 
       $dbAdd = $this->pageModel->getDatabaseConnection();
 
@@ -628,6 +673,166 @@ class Pages extends Controller
       ];
       if($this->pageModel->saveNetTotalNow($data)){
         echo json_encode(array("statusCode"=>200));
+      }else{
+        echo json_encode(array("statusCode"=>317));
+      }
+    }else{
+      http_response_code(404);
+      include('../app/404.php');
+      die();
+    }
+  }
+
+  public function getMovieShopRepoMonth()
+  {
+    if($_SERVER['REQUEST_METHOD']=='GET'){
+      $data = [
+        'date' => date('Y-m-d', time())
+      ];
+      $db = $this->pageModel->getDatabaseConnection();
+      $mv = getMovieshopDatesMonth($db);
+      if($mv){
+        $arr = array();
+        while($mv2 = $mv->fetch_assoc()){
+          $dates = $mv2['DATE_FORMAT(date_created, "%M")'];
+          array_push($arr, $dates);
+        }
+
+        $totalmonthMovie = getMovieshopGrossMonth($db);
+          $arrtotal = array();
+          while( $mv3 = $totalmonthMovie->fetch_assoc()){
+            $totals = $mv3['movieshop_net'];
+            array_push($arrtotal,$totals);
+          }
+
+        $cashmonthMovie = getMovieshopCashMonth($db);
+          $arrcash = array();
+          while( $mv4 = $cashmonthMovie->fetch_assoc()){
+            $cash = $mv4['movieshop_net'];
+            array_push($arrcash,$cash);
+          }
+
+        $tillmonthMovie = getMovieshopTillMonth($db);
+          $arrtill = array();
+          while( $mv5 = $tillmonthMovie->fetch_assoc()){
+            $cash = $mv5['movieshop_net'];
+            array_push($arrtill,$cash);
+          }
+          
+        echo json_encode(array("statusCode"=>200, 'dates'=>$arr, 'totals'=>$arrtotal, 'cash'=>$arrcash, 'till'=>$arrtill));
+      }else{
+        echo json_encode(array("statusCode"=>317));
+      }
+    }else{
+      http_response_code(404);
+      include('../app/404.php');
+      die();
+    }
+  }
+
+  public function getMovieShopRepoWeek()
+  {
+    if($_SERVER['REQUEST_METHOD']=='GET'){
+      $db = $this->pageModel->getDatabaseConnection();
+      $mv = getMovieshopDatesWeek($db);
+      if($mv){
+        $arr = array();
+        while($mv2 = $mv->fetch_assoc()){
+          $dates = $mv2['DATE_FORMAT(date_created, "%u")'];
+          array_push($arr, 'week '.$dates);
+        }
+
+        $totalTillWeek = getMovieshopTillWeek($db);
+        $arrweektill = array();
+        while( $mv3 = $totalTillWeek->fetch_assoc()){
+          $tillweek = $mv3['movieshop_net'];
+          array_push($arrweektill,$tillweek);
+        }
+
+        $totalCashWeek = getMovieshopCashWeek($db);
+        $arrweekcash = array();
+        while( $mv4 = $totalCashWeek->fetch_assoc()){
+          $cashweek = $mv4['movieshop_net'];
+          array_push($arrweekcash,$cashweek);
+        }
+
+        $totalGrossWeek = getMovieshopGrossWeek($db);
+        $arrweekgross = array();
+        while( $mv4 = $totalGrossWeek->fetch_assoc()){
+          $grossweek = $mv4['movieshop_net'];
+          array_push($arrweekgross,$grossweek);
+        }
+          
+        echo json_encode(array("statusCode"=>200, 'weeks'=>$arr, 'till'=>$arrweektill, 'cash'=>$arrweekcash, 'gross'=>$arrweekgross));
+      }else{
+        echo json_encode(array("statusCode"=>317));
+      }
+    }else{
+      http_response_code(404);
+      include('../app/404.php');
+      die();
+    }
+  }
+
+  public function getMovieShopRepoYear()
+  {
+    if($_SERVER['REQUEST_METHOD']=='GET'){
+      $data = [
+        'date' => date('Y-m-d', time())
+      ];
+      $db = $this->pageModel->getDatabaseConnection();
+      $mv = getMovieshopDatesYear($db);
+      if($mv){
+        $arr = array();
+        while($mv2 = $mv->fetch_assoc()){
+          $dates = $mv2['DATE_FORMAT(date_created, "%Y")'];
+          array_push($arr, $dates);
+        }
+
+        $totalYEARMovie = getMovieshopGrossYear($db);
+        $arryear = array();
+        while( $mv3 = $totalYEARMovie->fetch_assoc()){
+          $totalsyear = $mv3['movieshop_net'];
+          array_push($arryear,$totalsyear);
+        }
+
+        $totalTillMovie = getMovieshopTillYear($db);
+        $arrtill = array();
+        while( $mv4 = $totalTillMovie->fetch_assoc()){
+          $totalsyeartill = $mv4['movieshop_net'];
+          array_push($arrtill,$totalsyeartill);
+        }
+
+        $totalCashMovie = getMovieshopCashYear($db);
+        $arrcash = array();
+        while( $mv5 = $totalCashMovie->fetch_assoc()){
+          $totalsyearcash = $mv5['movieshop_net'];
+          array_push($arrcash,$totalsyearcash);
+        }
+          
+        echo json_encode(array("statusCode"=>200, 'years'=>$arr, 'gross'=>$arryear, 'till'=>$arrtill, 'cash'=>$arrcash));
+      }else{
+        echo json_encode(array("statusCode"=>317));
+      }
+    }else{
+      http_response_code(404);
+      include('../app/404.php');
+      die();
+    }
+  }
+
+  public function getMovieShopRepoToday()
+  {
+    if($_SERVER['REQUEST_METHOD']=='GET'){
+      $data = [
+        'date' => date('Y-m-d', time())
+      ];
+      $db = $this->pageModel->getDatabaseConnection();
+      $mv = getMovieshopAllDate($data['date'], $db);
+      if($mv){
+        $mv2 = $mv->fetch_assoc();
+        $movietoday = ['till'=>$mv2['till'], 'cash'=>$mv2['cash'], 'total'=>($mv2['till']+$mv2['cash'])];
+        echo json_encode(array("statusCode"=>200, 'movie'=>$movietoday));
       }else{
         echo json_encode(array("statusCode"=>317));
       }

@@ -4,6 +4,7 @@
 <body class="playstation __playstation site-wrap">
     <?php require(APPROOT . '/views/inc/navbar.php'); ?>
     <main>
+        <?php flash('add-error'); ?>
         <h2 class="movie-title">Playstation <i class="fab fa-playstation fa-2x"></i></h2>
         <select name="filter-playstation" id="filter-playstation" class="dr_input">
             <option value="default">Filter</option>
