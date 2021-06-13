@@ -17,6 +17,8 @@
     <?php if (strpos($_SERVER['REQUEST_URI'], "pages/reports") !== false) :  ?>
     <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.3.2/dist/chart.min.js"></script>
+    <?php elseif(strpos($_SERVER['REQUEST_URI'], 'pages/date') !== false): ?>
+    <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
     <?php endif ?>
     <link rel="icon" href="<?php echo URLROOT; ?>/public/images/images/dailyhackstore.ico" type="image/ico" />
     <link rel="shortcut icon" href="<?php echo URLROOT; ?>/public/images/images/dailyhackstore.ico" type="image/ico" />

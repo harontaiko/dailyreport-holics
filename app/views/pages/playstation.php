@@ -9,7 +9,9 @@
         <select name="filter-playstation" id="filter-playstation" class="dr_input">
             <option value="default">Filter</option>
             <option value="today">Today</option>
-            <option value="this-month">This month</option>
+            <option value="week">Weekly</option>
+            <option value="month">Monthly</option>
+            <option value="year">This year</option>
         </select>
         <section class="todo">
             <form id="filter-movie-date">

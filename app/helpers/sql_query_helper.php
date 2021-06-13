@@ -931,6 +931,346 @@ function saleRecord($db, $date)
       return false;
   }
 }
+//////////////////////////////////////////////////////////////////cyber
+function getCyberAllYear($db)
+{
+  $query = 'SELECT cash, till, created_by, creator_ip, date_created FROM dr_cybershop WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 YEAR)';
+
+  $result = SelectCondFree($query, 'dr_cybershop', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getCyberAllDate($date, $db)
+{
+  $query = 'SELECT cash, till, created_by, creator_ip FROM dr_cybershop WHERE date_created=?';
+
+  $binders="s";
+
+  $param = array($date);
+
+  $result = SelectCond($query, $binders, $param, $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getCyberTotal($date, $db)
+{
+  $query = 'SELECT SUM(cash + till) AS cyber_net FROM dr_cybershop WHERE date_created=?';
+
+  $binders="s";
+
+  $param = array($date);
+
+  $result = SelectCond($query, $binders, $param, $db);
+
+  $row = $result->get_result();
+
+  $rowItem = $row->fetch_assoc();
+
+  $totalmovie = isset($rowItem['cyber_net']) ? $rowItem['cyber_net'] : 'N/A';
+
+  try {
+      return $totalmovie;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getCyberAllWeekNet($db)
+{
+  $query = 'SELECT DATE_FORMAT(date_created, "%U"), SUM(cash) AS total_cash, SUM(till) AS total_till, SUM(cash + till) AS net_total FROM dr_cybershop WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 WEEK) GROUP BY DATE_FORMAT(date_created, "%U")';
+
+  $result = SelectCondFree($query, 'dr_cybershop', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getCyberTotalWeek($db)
+{
+  $query = 'SELECT SUM(cash + till) AS cyber_net FROM dr_cybershop WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 WEEK)';
+
+  $result = SelectCondFree($query, 'dr_cybershop', $db);
+
+  $row = $result->get_result();
+
+  $rowItem = $row->fetch_assoc();
+
+  $totalmovie = isset($rowItem['cyber_net']) ? $rowItem['cyber_net'] : 'N/A';
+
+  try {
+      return $totalmovie;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getCyberDatesWeek($db)
+{
+  $query = 'SELECT DATE_FORMAT(date_created, "%U") FROM dr_cybershop WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 WEEK) GROUP BY DATE_FORMAT(date_created, "%U")';
+
+  $result = SelectCondFree($query, 'dr_cybershop', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getCyberTillWeek($db)
+{
+  $query = 'SELECT SUM(till) AS cyber_net FROM dr_cybershop WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 WEEK) GROUP BY DATE_FORMAT(date_created, "%U")';
+
+  $result = SelectCondFree($query, 'dr_cybershop', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getCyberCashWeek($db)
+{
+  $query = 'SELECT SUM(cash) AS cyber_net FROM dr_cybershop WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 WEEK) GROUP BY DATE_FORMAT(date_created, "%U")';
+
+  $result = SelectCondFree($query, 'dr_cybershop', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getCyberGrossWeek($db)
+{
+  $query = 'SELECT SUM(cash+till) AS cyber_net FROM dr_cybershop WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 WEEK) GROUP BY DATE_FORMAT(date_created, "%U")';
+
+  $result = SelectCondFree($query, 'dr_cybershop', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getCyberAllMonthNet($db)
+{
+  $query = 'SELECT DATE_FORMAT(date_created, "%M"), SUM(cash) AS total_cash, SUM(till) AS total_till, SUM(cash + till) AS net_total FROM dr_cybershop WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 MONTH) GROUP BY DATE_FORMAT(date_created, "%M")';
+
+  $result = SelectCondFree($query, 'dr_cybershop', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getCyberTotalMonth($db)
+{
+  $query = 'SELECT SUM(cash + till) AS cyber_net FROM dr_cybershop WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 MONTH)';
+
+  $result = SelectCondFree($query, 'dr_cybershop', $db);
+
+  $row = $result->get_result();
+
+  $rowItem = $row->fetch_assoc();
+
+  $totalmovie = isset($rowItem['cyber_net']) ? $rowItem['cyber_net'] : 'N/A';
+
+  try {
+      return $totalmovie;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getCyberDatesMonth($db)
+{
+  $query = 'SELECT DATE_FORMAT(date_created, "%M") FROM dr_cybershop WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 MONTH) GROUP BY DATE_FORMAT(date_created, "%M")';
+
+  $result = SelectCondFree($query, 'dr_cybershop', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getCyberGrossMonth($db)
+{
+  $query = 'SELECT SUM(cash + till) AS cyber_net FROM dr_cybershop WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 MONTH) GROUP BY DATE_FORMAT(date_created, "%M")';
+
+  $result = SelectCondFree($query, 'dr_cybershop', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getCyberCashMonth($db)
+{
+  $query = 'SELECT SUM(cash) AS cyber_net FROM dr_cybershop WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 MONTH) GROUP BY DATE_FORMAT(date_created, "%M")';
+
+  $result = SelectCondFree($query, 'dr_cybershop', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getCyberTillMonth($db)
+{
+  $query = 'SELECT SUM(till) AS cyber_net FROM dr_cybershop WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 MONTH) GROUP BY DATE_FORMAT(date_created, "%M")';
+
+  $result = SelectCondFree($query, 'dr_cybershop', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getCyberAllYearNet($db)
+{
+  $query = 'SELECT DATE_FORMAT(date_created, "%Y"), SUM(cash) AS total_cash, SUM(till) AS total_till, SUM(cash + till) AS net_total FROM dr_cybershop WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 YEAR) GROUP BY DATE_FORMAT(date_created, "%Y")';
+
+  $result = SelectCondFree($query, 'dr_cybershop', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getCyberTotalYear($db)
+{
+  $query = 'SELECT SUM(cash + till) AS cyber_net FROM dr_cybershop WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 YEAR)';
+
+  $result = SelectCondFree($query, 'dr_cybershop', $db);
+
+  $row = $result->get_result();
+
+  $rowItem = $row->fetch_assoc();
+
+  $totalmovie = isset($rowItem['cyber_net']) ? $rowItem['cyber_net'] : 'N/A';
+
+  try {
+      return $totalmovie;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getCyberDatesYear($db)
+{
+  $query = 'SELECT DATE_FORMAT(date_created, "%Y") FROM dr_cybershop WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 YEAR) GROUP BY DATE_FORMAT(date_created, "%Y")';
+
+  $result = SelectCondFree($query, 'dr_cybershop', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getCyberGrossYear($db)
+{
+  $query = 'SELECT SUM(cash + till) AS cyber_net FROM dr_cybershop WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 YEAR) GROUP BY DATE_FORMAT(date_created, "%Y")';
+
+  $result = SelectCondFree($query, 'dr_cybershop', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getCyberTillYear($db)
+{
+  $query = 'SELECT SUM(till) AS cyber_net FROM dr_cybershop WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 YEAR) GROUP BY DATE_FORMAT(date_created, "%Y")';
+
+  $result = SelectCondFree($query, 'dr_cybershop', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getCyberCashYear($db)
+{
+  $query = 'SELECT SUM(cash) AS cyber_net FROM dr_cybershop WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 YEAR) GROUP BY DATE_FORMAT(date_created, "%Y")';
+
+  $result = SelectCondFree($query, 'dr_cybershop', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+//////////////////////////////////////////////////////////////////movieshop
 
 function getMovieshopAllDate($date, $db)
 {
@@ -1276,4 +1616,58 @@ function getMovieshopGrossMonth($db)
   } catch (Error $e) {
       return false;
   } 
+}
+
+//////////////////////////////////////////////////////////////////////////filter Date Report
+function getFileteredReportBetween($from, $to, $shopname, $db)
+{
+  if($shopname == "movie"){
+    $query = 'SELECT cash, till, created_by, creator_ip, date_created FROM dr_movieshop WHERE date_created BETWEEN ? AND ?';
+
+    $binders ="ss";
+
+    $params = array($from, $to);
+
+    $result = SelectCond($query, $binders, $params, $db);
+  
+    $row = $result->get_result();
+  
+    try {
+        return $row;
+    } catch (Error $e) {
+        return false;
+    } 
+  }else if($shopname == "cyber"){
+    $query = 'SELECT cash, till, created_by, creator_ip, date_created FROM dr_cybershop WHERE date_created BETWEEN ? AND ?';
+
+    $binders ="ss";
+
+    $params = array($from, $to);
+
+    $result = SelectCond($query, $binders, $params, $db);
+  
+    $row = $result->get_result();
+  
+    try {
+        return $row;
+    } catch (Error $e) {
+        return false;
+    } 
+  }else if($shopname == "ps"){
+    $query = 'SELECT cash, till, created_by, creator_ip, date_created FROM dr_playstation WHERE date_created BETWEEN ? AND ?';
+
+    $binders ="ss";
+
+    $params = array($from, $to);
+
+    $result = SelectCond($query, $binders, $params, $db);
+  
+    $row = $result->get_result();
+  
+    try {
+        return $row;
+    } catch (Error $e) {
+        return false;
+    } 
+  }
 }

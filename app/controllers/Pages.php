@@ -28,6 +28,31 @@ class Pages extends Controller
       $this->view('pages/index', $data);
     }
 
+    public function date($shopname, $from, $to)
+    {
+
+       if(isset($from) && isset($shopname) && isset($to)){
+        if (!isset($_SESSION["user_id"])) {
+          $data = [
+            "title" => "Daily Report",  
+          ];
+          redirect("users/index");
+        } 
+        
+        $db = $this->pageModel->getDatabaseConnection();
+
+        $inventoryData = $this->pageModel->getInventoryData();
+
+        $data = ['title'=>'Filter Report', "inventory" => $inventoryData, 'db'=>$db, 'from'=>htmlspecialchars($from), 'to'=>htmlspecialchars($to), 'shopname'=>htmlspecialchars($shopname)];
+
+        $this->view('pages/date', $data);
+      }else{
+        http_response_code(404);
+        include('../app/404.php');
+        die();
+      }
+    }
+
     public function reports($shopname, $reportdate)
     {
 
@@ -686,9 +711,7 @@ class Pages extends Controller
   public function getMovieShopRepoMonth()
   {
     if($_SERVER['REQUEST_METHOD']=='GET'){
-      $data = [
-        'date' => date('Y-m-d', time())
-      ];
+
       $db = $this->pageModel->getDatabaseConnection();
       $mv = getMovieshopDatesMonth($db);
       if($mv){
@@ -833,6 +856,160 @@ class Pages extends Controller
         $mv2 = $mv->fetch_assoc();
         $movietoday = ['till'=>$mv2['till'], 'cash'=>$mv2['cash'], 'total'=>($mv2['till']+$mv2['cash'])];
         echo json_encode(array("statusCode"=>200, 'movie'=>$movietoday));
+      }else{
+        echo json_encode(array("statusCode"=>317));
+      }
+    }else{
+      http_response_code(404);
+      include('../app/404.php');
+      die();
+    }
+  }
+
+  public function getCyberRepoToday()
+  {
+    if($_SERVER['REQUEST_METHOD']=='GET'){
+      $data = [
+        'date' => date('Y-m-d', time())
+      ];
+      $db = $this->pageModel->getDatabaseConnection();
+      $mv = getCyberAllDate($data['date'], $db);
+      if($mv){
+        $mv2 = $mv->fetch_assoc();
+        $movietoday = ['till'=>$mv2['till'], 'cash'=>$mv2['cash'], 'total'=>($mv2['till']+$mv2['cash'])];
+        echo json_encode(array("statusCode"=>200, 'movie'=>$movietoday));
+      }else{
+        echo json_encode(array("statusCode"=>317));
+      }
+    }else{
+      http_response_code(404);
+      include('../app/404.php');
+      die();
+    }
+  }
+
+  public function getCyberRepoWeek()
+  {
+    if($_SERVER['REQUEST_METHOD']=='GET'){
+      $db = $this->pageModel->getDatabaseConnection();
+      $mv = getCyberDatesWeek($db);
+      if($mv){
+        $arr = array();
+        while($mv2 = $mv->fetch_assoc()){
+          $dates = $mv2['DATE_FORMAT(date_created, "%U")'];
+          array_push($arr, 'week '.$dates);
+        }
+
+        $totalTillWeek = getCyberTillWeek($db);
+        $arrweektill = array();
+        while( $mv3 = $totalTillWeek->fetch_assoc()){
+          $tillweek = $mv3['cyber_net'];
+          array_push($arrweektill,$tillweek);
+        }
+
+        $totalCashWeek = getCyberCashWeek($db);
+        $arrweekcash = array();
+        while( $mv4 = $totalCashWeek->fetch_assoc()){
+          $cashweek = $mv4['cyber_net'];
+          array_push($arrweekcash,$cashweek);
+        }
+
+        $totalGrossWeek = getCyberGrossWeek($db);
+        $arrweekgross = array();
+        while( $mv4 = $totalGrossWeek->fetch_assoc()){
+          $grossweek = $mv4['cyber_net'];
+          array_push($arrweekgross,$grossweek);
+        }
+          
+        echo json_encode(array("statusCode"=>200, 'weeks'=>$arr, 'till'=>$arrweektill, 'cash'=>$arrweekcash, 'gross'=>$arrweekgross));
+      }else{
+        echo json_encode(array("statusCode"=>317));
+      }
+    }else{
+      http_response_code(404);
+      include('../app/404.php');
+      die();
+    }
+  }
+
+  public function getCyberRepoMonth()
+  {
+    if($_SERVER['REQUEST_METHOD']=='GET'){
+      $db = $this->pageModel->getDatabaseConnection();
+      $mv = getCyberDatesMonth($db);
+      if($mv){
+        $arr = array();
+        while($mv2 = $mv->fetch_assoc()){
+          $dates = $mv2['DATE_FORMAT(date_created, "%M")'];
+          array_push($arr, $dates);
+        }
+
+        $totalmonthMovie = getCyberGrossMonth($db);
+          $arrtotal = array();
+          while( $mv3 = $totalmonthMovie->fetch_assoc()){
+            $totals = $mv3['cyber_net'];
+            array_push($arrtotal,$totals);
+          }
+
+        $cashmonthMovie = getCyberCashMonth($db);
+          $arrcash = array();
+          while( $mv4 = $cashmonthMovie->fetch_assoc()){
+            $cash = $mv4['cyber_net'];
+            array_push($arrcash,$cash);
+          }
+
+        $tillmonthMovie = getCyberTillMonth($db);
+          $arrtill = array();
+          while( $mv5 = $tillmonthMovie->fetch_assoc()){
+            $cash = $mv5['cyber_net'];
+            array_push($arrtill,$cash);
+          }
+          
+        echo json_encode(array("statusCode"=>200, 'dates'=>$arr, 'totals'=>$arrtotal, 'cash'=>$arrcash, 'till'=>$arrtill));
+      }else{
+        echo json_encode(array("statusCode"=>317));
+      }
+    }else{
+      http_response_code(404);
+      include('../app/404.php');
+      die();
+    }
+  }
+
+  public function getCyberRepoYear()
+  {
+    if($_SERVER['REQUEST_METHOD']=='GET'){
+      $db = $this->pageModel->getDatabaseConnection();
+      $mv = getCyberDatesYear($db);
+      if($mv){
+        $arr = array();
+        while($mv2 = $mv->fetch_assoc()){
+          $dates = $mv2['DATE_FORMAT(date_created, "%Y")'];
+          array_push($arr, $dates);
+        }
+
+        $totalYEARMovie = getCyberGrossYear($db);
+        $arryear = array();
+        while( $mv3 = $totalYEARMovie->fetch_assoc()){
+          $totalsyear = $mv3['cyber_net'];
+          array_push($arryear,$totalsyear);
+        }
+
+        $totalTillMovie = getCyberTillYear($db);
+        $arrtill = array();
+        while( $mv4 = $totalTillMovie->fetch_assoc()){
+          $totalsyeartill = $mv4['cyber_net'];
+          array_push($arrtill,$totalsyeartill);
+        }
+
+        $totalCashMovie = getCyberCashYear($db);
+        $arrcash = array();
+        while( $mv5 = $totalCashMovie->fetch_assoc()){
+          $totalsyearcash = $mv5['cyber_net'];
+          array_push($arrcash,$totalsyearcash);
+        }
+          
+        echo json_encode(array("statusCode"=>200, 'years'=>$arr, 'gross'=>$arryear, 'till'=>$arrtill, 'cash'=>$arrcash));
       }else{
         echo json_encode(array("statusCode"=>317));
       }

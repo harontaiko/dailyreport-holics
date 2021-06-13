@@ -7,24 +7,28 @@
     <?php if($data['shopname'] =="movie"): ?>
     <?php include_once APPROOT .'/views/reports/dailyMovieShopReport.php'; ?>
     <?php elseif($data['shopname'] == "cyber"): ?>
+    <?php include_once APPROOT .'/views/reports/dailyCyberReport.php'; ?>
     <?php elseif($data['shopname'] == "ps"): ?>
     <?php endif ?>
     <?php elseif($data['reportdate'] == "week"): ?>
     <?php if($data['shopname'] =="movie"): ?>
     <?php include_once APPROOT .'/views/reports/weeklyMovieShopReport.php'; ?>
     <?php elseif($data['shopname'] == "cyber"): ?>
+    <?php include_once APPROOT .'/views/reports/weeklyCyberReport.php'; ?>
     <?php elseif($data['shopname'] == "ps"): ?>
     <?php endif ?>
     <?php elseif($data['reportdate'] == "month"): ?>
     <?php if($data['shopname'] =="movie"): ?>
     <?php include_once APPROOT .'/views/reports/monthlyMovieShopReport.php'; ?>
     <?php elseif($data['shopname'] == "cyber"): ?>
+    <?php include_once APPROOT .'/views/reports/monthlyCyberReport.php'; ?>
     <?php elseif($data['shopname'] == "ps"): ?>
     <?php endif ?>
     <?php elseif($data['reportdate'] == "year"): ?>
     <?php if($data['shopname'] =="movie"): ?>
     <?php include_once APPROOT .'/views/reports/annualMovieShopReport.php'; ?>
     <?php elseif($data['shopname'] == "cyber"): ?>
+    <?php include_once APPROOT .'/views/reports/annualCyberReport.php'; ?>
     <?php elseif($data['shopname'] == "ps"): ?>
     <?php endif ?>
     <?php elseif($data['reportdate'] == ""): ?>

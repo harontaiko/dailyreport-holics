@@ -57,7 +57,9 @@
                                   ); ?></td>
                                     <td><?php echo isset($inventory['created_by']) ? $inventory['created_by']: ''; ?>
                                     </td>
-                                    <td><i class="fas fa-pencil"></i></td>
+                                    <td><a
+                                            href="<?php echo URLROOT; ?>/editInventory/<?php echo isset($inventory['item_id']) ? $inventory['item_id']: ''; ?>">edit</a>
+                                    </td>
                                 </tr>
                                 <?php endwhile ?>
                             </tbody>

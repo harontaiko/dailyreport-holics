@@ -214,7 +214,7 @@ class Page
 
     public function getNetTotal()
     {
-        $query = 'SELECT date_created, time_created, cash_sales, till_sales FROM dr_nettotal ORDER BY sales_id DESC';
+        $query = 'SELECT sales_id, date_created, time_created, cash_sales, till_sales FROM dr_nettotal ORDER BY sales_id DESC';
 
         $result = SelectCondFree($query, 'dr_nettotal', $this->db);
 

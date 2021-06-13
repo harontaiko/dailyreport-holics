@@ -625,6 +625,40 @@ dailyreport = {
   __cyber: {
     init: function _ps() {
       FilterInventory();
+      var cyberoptions = document.getElementById("filter-cyber");
+
+      cyberoptions.addEventListener("change", function LoadBuying() {
+        currentOption = cyberoptions.value;
+        currentOptionText = this.options[this.selectedIndex].value;
+        //today, month & default
+        location.replace(
+          `http://localhost/dailyreport-holics/pages/reports/cyber/${currentOptionText}`
+        );
+      });
+
+      //get cyber report between dates
+      document.getElementById("get-repo-btw").addEventListener("click", () => {
+        //validate dates
+        var date1 = document.querySelector("#date-1");
+        var date2 = document.querySelector("#date-2");
+        if (date1.value !== "" && date2.value !== "") {
+          //submit
+          location.replace(
+            `http://localhost/dailyreport-holics/pages/date/cyber/${date1.value}/${date2.value}`
+          );
+        } else {
+          date1.style.border = "2px solid red";
+          date1.style.outline = "none";
+          date2.style.border = "2px solid red";
+          date2.style.outline = "none";
+          sleep(2500).then(() => {
+            date1.style.border = "";
+            date1.style.outline = "";
+            date2.style.border = "";
+            date2.style.outline = "";
+          });
+        }
+      });
     },
   },
   __addItem: {
@@ -772,6 +806,30 @@ dailyreport = {
         location.replace(
           `http://localhost/dailyreport-holics/pages/reports/movie/${currentOptionText}`
         );
+      });
+
+      //get movieshop report between dates
+      document.getElementById("get-repo-btw").addEventListener("click", () => {
+        //validate dates
+        var date1 = document.querySelector("#date-1");
+        var date2 = document.querySelector("#date-2");
+        if (date1.value !== "" && date2.value !== "") {
+          //submit
+          location.replace(
+            `http://localhost/dailyreport-holics/pages/date/movie/${date1.value}/${date2.value}`
+          );
+        } else {
+          date1.style.border = "2px solid red";
+          date1.style.outline = "none";
+          date2.style.border = "2px solid red";
+          date2.style.outline = "none";
+          sleep(2500).then(() => {
+            date1.style.border = "";
+            date1.style.outline = "";
+            date2.style.border = "";
+            date2.style.outline = "";
+          });
+        }
       });
     },
   },

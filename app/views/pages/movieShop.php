@@ -17,13 +17,14 @@
             <form id="filter-movie-date">
                 <fieldset>
                     <label for="from">from</label>
-                    <input type="date" name="nom" class="dr_input" placeholder="From">
+                    <input type="date" name="nom" class="dr_input" id="date-1" placeholder="From">
                 </fieldset>
 
                 <fieldset>
                     <label for="to">to</label>
-                    <input type="date" name="prenom" class="dr_input" placeholder="To">
+                    <input type="date" name="prenom" class="dr_input" id="date-2" placeholder="To">
                 </fieldset>
+                <button type="button" class="get-repo-btw" id="get-repo-btw">get</button>
             </form>
         </section>
         <table class="rwd-table">
