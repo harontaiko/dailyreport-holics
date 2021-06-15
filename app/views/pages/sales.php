@@ -32,6 +32,7 @@
                 <th>Bought(ksh)</th>
                 <th>Sold(ksh)</th>
                 <th>Net profit</th>
+                <th>Invoice</th>
             </tr>
             <?php while ($sale = $data['sale']->fetch_assoc()) :  ?>
             <tr>
@@ -40,6 +41,9 @@
                 <td data-th="item-buying"><?php echo $sale['buying_price'] ?></td>
                 <td data-th="item-selling"><?php echo $sale['selling_price'] ?></td>
                 <td data-th="sold-profit"><?php echo $sale['profit'] ?></td>
+                <td data-th="print-invoice"><a
+                        href="<?php echo URLROOT; ?>/pages/invoice/sale/<?php echo $sale['sales_id']; ?>"><i
+                            style="color: #fff;" class="fas fa-file-invoice"></i></a></td>
             </tr>
             <?php endwhile ?>
         </table>

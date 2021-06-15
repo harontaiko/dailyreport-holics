@@ -1,4 +1,4 @@
-<button class="previous-report" onclick="location.replace(`http://localhost/dailyreport-holics/pages/cyber`);"
+<button class="previous-report" onclick="location.replace(`http://localhost/dailyreport-holics/pages/playstation`);"
     title="back"><i title="back" class="fas fa-arrow-left"></i></button>
 <button title="print report" type="button" id="custom-print-report"
     onClick="printJS({ printable: 'container-out-report', type: 'html', style: '.container-out-report td:nth-child(2){border-color: #f1f1f1; border-right: 1px solid #ddd;background: white;}.container-out-report td:nth-child(1){border-color: #f1f1f1; border-right: 1px solid #ddd;background: white;}.container-out-report td:nth-child(2){border-color: #f1f1f1; border-right: 1px solid #ddd;background: white;}.container-out-report td:nth-child(3){border-color: #f1f1f1; border-right: 1px solid #ddd;background: white;}.container-out-report td:nth-child(2){border-color: #f1f1f1; border-right: 1px solid #ddd;background: white;}.container-out-report td:nth-child(4){border-color: #f1f1f1; border-right: 1px solid #ddd;background: white;}.container-out-report td:nth-child(5){border-color: #f1f1f1; border-right: 1px solid #ddd;background: white;} .container-out-report tr:nth-child(1){border-color: #f1f1f1; border-bottom: 1px solid #ddd;background: white;}'})">
@@ -6,7 +6,7 @@
 </button>
 <section id="reports-tbl">
     <!--for demo wrap-->
-    <h1 id="report-title">Daily Cyber <span>Report</span></h1>
+    <h1 id="report-title">Daily Playstation <span>Report</span></h1>
 
     <table class="responstable" id="responstable">
 
@@ -21,7 +21,7 @@
 
         <?php 
                 
-                $m = getCyberAllDate(date('Y-m-d', time()), $data['db']);
+                $m = getPsAllDate(date('Y-m-d', time()), $data['db']);
                 while($mv = $m->fetch_assoc()):    
                 ?>
         <tr>
@@ -39,7 +39,7 @@
 
 </section>
 <div class="container-out-report" id="container-out-report">
-    <h1 id="report-title">Daily Cyber <span>Report</span></h1>
+    <h1 id="report-title">Daily Playstation <span>Report</span></h1>
     <table>
         <tr>
             <th>Date</th>
@@ -52,7 +52,7 @@
 
         <?php 
                 
-                $m = getCyberAllDate(date('Y-m-d', time()), $data['db']);
+                $m = getPsAllDate(date('Y-m-d', time()), $data['db']);
                 while($mv = $m->fetch_assoc()):    
                 ?>
         <tr>
@@ -72,7 +72,7 @@
                 <td></td>
                 <td></td>
                 <td>Total Today: <?php
-                     echo number_format(getCyberTotal(date('Y-m-d', time()), $data['db'])); ?></td>
+                     echo number_format(getPsTotalA(date('Y-m-d', time()), $data['db'])); ?></td>
             </tr>
         </tfoot>
     </table>
@@ -113,7 +113,7 @@ $(document).ready(function() {
                     data: {
                         labels: ['cash', 'till', 'gross income'],
                         datasets: [{
-                            label: 'Cyber Income Distribution',
+                            label: 'Playstation Income Distribution',
                             data: [dataResult.movie.cash, dataResult.movie.till,
                                 dataResult.movie.total
                             ],

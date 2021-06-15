@@ -129,7 +129,7 @@
                             <td><a href=""><?php echo number_format(($net['cash_sales'] + $net['till_sales'] + getSaleTotal($net['date_created'], $data['db'])) - (getExpenseTotal($net['date_created'], $data['db']))) . '/=';?>
                             </td>
                             <td><a
-                                    href="<?php echo URLROOT; ?>/view/<?php echo isset($net['sales_id']) ? ($net['sales_id']) : ''; ?>"><i
+                                    href="<?php echo URLROOT; ?>/pages/viewEdit/<?php echo isset($net['sales_id']) ? ($net['sales_id']) : ''; ?>"><i
                                         class="fas fa-eye"></i></a></td>
                         </tr>
                         <?php endwhile ?>

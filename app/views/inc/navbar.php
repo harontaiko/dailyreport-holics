@@ -1,8 +1,11 @@
 <nav class="site-nav">
 
     <div class="name">
-        <a id="home-" href="<?php echo URLROOT; ?>/pages/index">Daily Report</a>
+        <a id="home-" href="<?php echo URLROOT; ?>/pages/index">Daily Report </a>
         <i class="fas fa-chart-area fa-2x">
+            <?php if (strpos($_SERVER['REQUEST_URI'], "pages/index") !== false) :  ?>
+            <i class="fas fa-star star_active"></i>
+            <?php endif; ?>
         </i>
     </div>
 
@@ -71,18 +74,49 @@
             </div>
             </div>
             <ul>
-                <li><a href="<?php echo URLROOT; ?>/pages/movieShop">Movie shop</a></li>
-                <li><a href="<?php echo URLROOT; ?>/pages/cyber">Cyber</a></li>
-                <li><a href="<?php echo URLROOT; ?>/pages/playstation">Playstation</a></li>
+                <li><a href="<?php echo URLROOT; ?>/pages/movieShop">Movie shop
+                        <?php if (strpos($_SERVER['REQUEST_URI'], "pages/movieShop") !== false) :  ?>
+                        <i class="fas fa-star star_active"></i>
+                        <?php endif; ?></a></li>
+                <li><a href="<?php echo URLROOT; ?>/pages/cyber">Cyber
+                        <?php if (strpos($_SERVER['REQUEST_URI'], "pages/cyber") !== false) :  ?>
+                        <i class="fas fa-star star_active"></i>
+                        <?php endif; ?></a></li>
+                <li><a href="<?php echo URLROOT; ?>/pages/playstation">Playstation
+                        <?php if (strpos($_SERVER['REQUEST_URI'], "pages/playstation") !== false) :  ?>
+                        <i class="fas fa-star star_active"></i>
+                        <?php endif; ?>
+                    </a></li>
             </ul>
         </li>
-        <li><a href="<?php echo URLROOT; ?>/pages/add">Add sale</a></li>
-        <li><a href="<?php echo URLROOT; ?>/pages/filterReport">Filter Reports</a></li>
-        <li><a href="<?php echo URLROOT; ?>/pages/addItem">Add item to inventory</a></li>
-        <li><a href="<?php echo URLROOT; ?>/pages/sales">Items Sold</a></li>
-        <li><a href="<?php echo URLROOT; ?>/pages/expenses">Expenses</a></li>
-        <li><a href="<?php echo URLROOT; ?>/pages/total">Total</a></li>
-        <li><a href="<?php echo URLROOT; ?>/pages/total">Trends</a></li>
+        <li><a href="<?php echo URLROOT; ?>/pages/add">Add sale
+            </a></li>
+        <li><a href="<?php echo URLROOT; ?>/pages/addItem">Add item to inventory
+                <?php if (strpos($_SERVER['REQUEST_URI'], "pages/addItem") !== false) :  ?>
+                <i class="fas fa-star star_active"></i>
+                <?php endif; ?>
+            </a></li>
+        <li><a href="<?php echo URLROOT; ?>/pages/sales">Items Sold
+                <?php if (strpos($_SERVER['REQUEST_URI'], "pages/sales") !== false) :  ?>
+                <i class="fas fa-star star_active"></i>
+                <?php endif; ?>
+            </a></li>
+        <li><a href="<?php echo URLROOT; ?>/pages/expenses">Expenses
+                <?php if (strpos($_SERVER['REQUEST_URI'], "pages/expenses") !== false) :  ?>
+                <i class="fas fa-star star_active"></i>
+                <?php endif; ?>
+            </a></li>
+        <li><a href="<?php echo URLROOT; ?>/pages/total">Total
+                <?php if (strpos($_SERVER['REQUEST_URI'], "pages/total") !== false) :  ?>
+                <i class="fas fa-star star_active"></i>
+                <?php endif; ?>
+            </a></li>
+        <li><a href="<?php echo URLROOT; ?>/pages/trends">Trends
+                <?php if (strpos($_SERVER['REQUEST_URI'], "pages/trends") !== false) :  ?>
+                <i class="fas fa-star star_active"></i>
+                <?php endif; ?>
+            </a></li>
+        <li><a href="<?php echo URLROOT; ?>/pages/total">Cash Out</a></li>
         <?php if (strpos($_SERVER['REQUEST_URI'], "pages/index") !== false) :  ?>
         <?php else: ?>
         <form action="<?php echo URLROOT; ?>/users/logout" method="POST">

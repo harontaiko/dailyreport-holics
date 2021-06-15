@@ -53,6 +53,97 @@ class Pages extends Controller
       }
     }
 
+    public function viewEdit($recId)
+    {
+       if(isset($recId)){
+        if (!isset($_SESSION["user_id"])) {
+          $data = [
+            "title" => "Daily Report",  
+          ];
+          redirect("users/index");
+        } 
+        
+        $db = $this->pageModel->getDatabaseConnection();
+
+        $inventoryData = $this->pageModel->getInventoryData();
+
+        $datesold = $this->pageModel->getAllRecordNetTotal($recId);
+
+        $inventoryDataAdd = $this->pageModel->getInventoryData();
+
+        //push cyber vals to arr
+        $cybervals = getCyberAllDate($datesold, $db);
+
+        $arrcyber = array();
+
+        while( $cb = $cybervals->fetch_assoc()){
+          array_push($arrcyber,$cb);
+        }
+
+        //push ps vals to arr
+        $psvals = getPsAllDate($datesold, $db);
+
+        $arrps = array();
+
+        while( $ps = $psvals->fetch_assoc()){
+          array_push($arrps,$ps);
+        }
+
+        //push movie vals to arr
+        $movievals = getMovieShopAllDate($datesold, $db);
+
+        $arrmovie = array();
+
+        while( $mv = $movievals->fetch_assoc()){
+          array_push($arrmovie,$mv);
+        }
+
+        //push net total values to array
+        $netvals = $this->pageModel->getAllRecordNetT($recId);
+
+        $netarr = array();
+
+        while($nt = $netvals->fetch_assoc()){
+          array_push($netarr, $nt);
+        }
+
+        date_default_timezone_set('Africa/Nairobi');
+        $currentdate = date('Y-m-d h:i:s A', time());
+
+        $data = ['title'=>'View & Edit Record', 'recordDate'=>$datesold, "inventory" => $inventoryData, 'inventoryAdd'=>$inventoryDataAdd, 'db'=>$db, 'id'=>$recId, 'cyber'=>$arrcyber, 'movie'=>$arrmovie, 'ps'=>$arrps, 'netvals'=>$netarr, 'net'=>$netvals, 'date'=>$currentdate];
+
+        $this->view('pages/viewEdit', $data);
+      }else{
+        http_response_code(404);
+        include('../app/404.php');
+        die();
+      }
+    }
+
+    public function invoice($invoiceItem, $InvoiceId)
+    {
+
+       if(isset($invoiceItem) && isset($InvoiceId)){
+        if (!isset($_SESSION["user_id"])) {
+          $data = [
+            "title" => "Daily Report",  
+          ];
+          redirect("users/index");
+        } 
+        
+        $db = $this->pageModel->getDatabaseConnection();
+
+        $inventoryData = $this->pageModel->getInventoryData();
+
+        $data = ['title'=>'Invoice', "inventory" => $inventoryData, 'db'=>$db, 'invoiceItem'=>htmlspecialchars($invoiceItem), 'id'=>htmlspecialchars($InvoiceId)];
+
+        $this->view('pages/invoice', $data);
+      }else{
+        http_response_code(404);
+        include('../app/404.php');
+        die();
+      }
+    }
     public function reports($shopname, $reportdate)
     {
 
@@ -566,6 +657,22 @@ class Pages extends Controller
       }
     }
 
+    public function loadLatestExpenseEdit($date)
+    {
+      if($_SERVER['REQUEST_METHOD'] == 'GET')
+      {
+        $data = ['title'=>'Daily Report', "latest" => $this->pageModel->getExpenseTodayEdit($date)];
+
+        $this->view('pages/loadLatestExpense', $data);
+      }
+      else
+      {
+        http_response_code(404);
+        include('../app/404.php');
+        die();
+      }
+    }
+
     public function DeleteSaleNow(){
        if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id']))
       {
@@ -1006,6 +1113,138 @@ class Pages extends Controller
         $arrcash = array();
         while( $mv5 = $totalCashMovie->fetch_assoc()){
           $totalsyearcash = $mv5['cyber_net'];
+          array_push($arrcash,$totalsyearcash);
+        }
+          
+        echo json_encode(array("statusCode"=>200, 'years'=>$arr, 'gross'=>$arryear, 'till'=>$arrtill, 'cash'=>$arrcash));
+      }else{
+        echo json_encode(array("statusCode"=>317));
+      }
+    }else{
+      http_response_code(404);
+      include('../app/404.php');
+      die();
+    }
+  }
+
+  public function getPsRepoWeek()
+  {
+    if($_SERVER['REQUEST_METHOD']=='GET'){
+      $db = $this->pageModel->getDatabaseConnection();
+      $mv = getPsDatesWeek($db);
+      if($mv){
+        $arr = array();
+        while($mv2 = $mv->fetch_assoc()){
+          $dates = $mv2['DATE_FORMAT(date_created, "%U")'];
+          array_push($arr, 'week '.$dates);
+        }
+
+        $totalTillWeek = getPsTillWeek($db);
+        $arrweektill = array();
+        while( $mv3 = $totalTillWeek->fetch_assoc()){
+          $tillweek = $mv3['ps_net'];
+          array_push($arrweektill,$tillweek);
+        }
+
+        $totalCashWeek = getPsCashWeek($db);
+        $arrweekcash = array();
+        while( $mv4 = $totalCashWeek->fetch_assoc()){
+          $cashweek = $mv4['ps_net'];
+          array_push($arrweekcash,$cashweek);
+        }
+
+        $totalGrossWeek = getPsGrossWeek($db);
+        $arrweekgross = array();
+        while( $mv4 = $totalGrossWeek->fetch_assoc()){
+          $grossweek = $mv4['ps_net'];
+          array_push($arrweekgross,$grossweek);
+        }
+          
+        echo json_encode(array("statusCode"=>200, 'weeks'=>$arr, 'till'=>$arrweektill, 'cash'=>$arrweekcash, 'gross'=>$arrweekgross));
+      }else{
+        echo json_encode(array("statusCode"=>317));
+      }
+    }else{
+      http_response_code(404);
+      include('../app/404.php');
+      die();
+    }
+  }
+
+  public function getPsRepoMonth()
+  {
+    if($_SERVER['REQUEST_METHOD']=='GET'){
+      $db = $this->pageModel->getDatabaseConnection();
+      $mv = getPsDatesMonth($db);
+      if($mv){
+        $arr = array();
+        while($mv2 = $mv->fetch_assoc()){
+          $dates = $mv2['DATE_FORMAT(date_created, "%M")'];
+          array_push($arr, $dates);
+        }
+
+        $totalmonthMovie = getPsGrossMonth($db);
+          $arrtotal = array();
+          while( $mv3 = $totalmonthMovie->fetch_assoc()){
+            $totals = $mv3['ps_net'];
+            array_push($arrtotal,$totals);
+          }
+
+        $cashmonthMovie = getPsCashMonth($db);
+          $arrcash = array();
+          while( $mv4 = $cashmonthMovie->fetch_assoc()){
+            $cash = $mv4['ps_net'];
+            array_push($arrcash,$cash);
+          }
+
+        $tillmonthMovie = getPsTillMonth($db);
+          $arrtill = array();
+          while( $mv5 = $tillmonthMovie->fetch_assoc()){
+            $cash = $mv5['ps_net'];
+            array_push($arrtill,$cash);
+          }
+          
+        echo json_encode(array("statusCode"=>200, 'dates'=>$arr, 'totals'=>$arrtotal, 'cash'=>$arrcash, 'till'=>$arrtill));
+      }else{
+        echo json_encode(array("statusCode"=>317));
+      }
+    }else{
+      http_response_code(404);
+      include('../app/404.php');
+      die();
+    }
+  }
+
+  public function getPsRepoYear()
+  {
+    if($_SERVER['REQUEST_METHOD']=='GET'){
+      $db = $this->pageModel->getDatabaseConnection();
+      $mv = getPsDatesYear($db);
+      if($mv){
+        $arr = array();
+        while($mv2 = $mv->fetch_assoc()){
+          $dates = $mv2['DATE_FORMAT(date_created, "%Y")'];
+          array_push($arr, $dates);
+        }
+
+        $totalYEARMovie = getPsGrossYear($db);
+        $arryear = array();
+        while( $mv3 = $totalYEARMovie->fetch_assoc()){
+          $totalsyear = $mv3['ps_net'];
+          array_push($arryear,$totalsyear);
+        }
+
+        $totalTillMovie = getPsTillYear($db);
+        $arrtill = array();
+        while( $mv4 = $totalTillMovie->fetch_assoc()){
+          $totalsyeartill = $mv4['ps_net'];
+          array_push($arrtill,$totalsyeartill);
+        }
+
+        $totalCashMovie = getPsCashYear($db);
+        $arrcash = array();
+        while( $mv5 = $totalCashMovie->fetch_assoc()){
+          $totalsyearcash = $mv5['ps_net'];
           array_push($arrcash,$totalsyearcash);
         }
           

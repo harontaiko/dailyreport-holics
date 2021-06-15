@@ -9,6 +9,7 @@
     <?php elseif($data['shopname'] == "cyber"): ?>
     <?php include_once APPROOT .'/views/reports/dailyCyberReport.php'; ?>
     <?php elseif($data['shopname'] == "ps"): ?>
+    <?php include_once APPROOT .'/views/reports/dailyPsReport.php'; ?>
     <?php endif ?>
     <?php elseif($data['reportdate'] == "week"): ?>
     <?php if($data['shopname'] =="movie"): ?>
@@ -16,6 +17,7 @@
     <?php elseif($data['shopname'] == "cyber"): ?>
     <?php include_once APPROOT .'/views/reports/weeklyCyberReport.php'; ?>
     <?php elseif($data['shopname'] == "ps"): ?>
+    <?php include_once APPROOT .'/views/reports/weeklyPsReport.php'; ?>
     <?php endif ?>
     <?php elseif($data['reportdate'] == "month"): ?>
     <?php if($data['shopname'] =="movie"): ?>
@@ -23,6 +25,7 @@
     <?php elseif($data['shopname'] == "cyber"): ?>
     <?php include_once APPROOT .'/views/reports/monthlyCyberReport.php'; ?>
     <?php elseif($data['shopname'] == "ps"): ?>
+    <?php include_once APPROOT .'/views/reports/monthlyPsReport.php'; ?>
     <?php endif ?>
     <?php elseif($data['reportdate'] == "year"): ?>
     <?php if($data['shopname'] =="movie"): ?>
@@ -30,6 +33,7 @@
     <?php elseif($data['shopname'] == "cyber"): ?>
     <?php include_once APPROOT .'/views/reports/annualCyberReport.php'; ?>
     <?php elseif($data['shopname'] == "ps"): ?>
+    <?php include_once APPROOT .'/views/reports/annualPsReport.php'; ?>
     <?php endif ?>
     <?php elseif($data['reportdate'] == ""): ?>
     <?php endif ?>

@@ -617,9 +617,43 @@ dailyreport = {
       }
     },
   },
-  __plastation: {
+  __playstation: {
     init: function _ps() {
       FilterInventory();
+      var psoptions = document.getElementById("filter-playstation");
+
+      psoptions.addEventListener("change", function LoadBuying() {
+        currentOption = psoptions.value;
+        currentOptionText = this.options[this.selectedIndex].value;
+        //today, month & default
+        location.replace(
+          `http://localhost/dailyreport-holics/pages/reports/ps/${currentOptionText}`
+        );
+      });
+
+      //get ps report between dates
+      document.getElementById("get-repo-btw").addEventListener("click", () => {
+        //validate dates
+        var date1 = document.querySelector("#date-1");
+        var date2 = document.querySelector("#date-2");
+        if (date1.value !== "" && date2.value !== "") {
+          //submit
+          location.replace(
+            `http://localhost/dailyreport-holics/pages/date/ps/${date1.value}/${date2.value}`
+          );
+        } else {
+          date1.style.border = "2px solid red";
+          date1.style.outline = "none";
+          date2.style.border = "2px solid red";
+          date2.style.outline = "none";
+          sleep(2500).then(() => {
+            date1.style.border = "";
+            date1.style.outline = "";
+            date2.style.border = "";
+            date2.style.outline = "";
+          });
+        }
+      });
     },
   },
   __cyber: {
@@ -846,6 +880,131 @@ dailyreport = {
   __reports: {
     init: function _repo() {
       FilterInventory();
+    },
+  },
+  __viewEdit: {
+    init: function __viewEdit() {
+      FilterInventory();
+      const cyberCash = document.getElementById("cyber-cash");
+      const cyberTill = document.getElementById("cyber-till");
+      const psCash = document.getElementById("ps-cash");
+      const psTill = document.getElementById("ps-till");
+      const movieCash = document.getElementById("movie-cash");
+      const movieTill = document.getElementById("movie-till");
+      const salesCash = document.getElementById("sales-cash");
+      const salesTill = document.getElementById("sales-till");
+      const boughtPrice = document.getElementById("bought-price");
+      const salesProfit = document.getElementById("sales-profit");
+      const expensesValue = document.getElementById("expense-value");
+
+      //calculate pofit
+      salesCash.addEventListener("input", function () {
+        //check if till has a value and forbid
+        if (salesTill.value !== "") {
+          salesTill.style.border = "2px solid red";
+          salesTill.style.outline = "none";
+          //error
+          document.getElementsByName("sales-till")[0].placeholder =
+            "fill one only";
+          sleep(1000).then(() => {
+            document.getElementsByName("sales-till")[0].placeholder =
+              "sell..till/other";
+            salesTill.style.border = "";
+            salesTill.style.outline = "";
+            salesTill.value = "";
+          });
+        } else {
+          if (salesCash.value == "") {
+            salesProfit.value = 0;
+          } else {
+            salesProfit.value = salesCash.value - boughtPrice.value;
+          }
+        }
+      });
+      salesTill.addEventListener("input", function () {
+        //check if till has a value and forbid
+        if (salesCash.value !== "") {
+          salesCash.style.border = "2px solid red";
+          salesCash.style.outline = "none";
+          //error
+          document.getElementsByName("sales-cash")[0].placeholder =
+            "fill one only";
+          sleep(1000).then(() => {
+            document.getElementsByName("sales-till")[0].placeholder =
+              "sell..cash";
+            salesCash.style.border = "";
+            salesCash.style.outline = "";
+            salesCash.value = "";
+          });
+        } else {
+          if (salesTill.value == "") {
+            salesProfit.value = 0;
+          } else {
+            salesProfit.value = salesTill.value - boughtPrice.value;
+          }
+        }
+      });
+      //get all values and sum in total input
+      let incomeRecords = [
+        cyberCash,
+        cyberTill,
+        psCash,
+        psTill,
+        movieCash,
+        movieTill,
+        salesProfit,
+        expensesValue,
+      ];
+
+      //real time income total(ksh)
+      $(document).on("input", ".income-calc", function () {
+        var sum = 0;
+        $(".income-calc").each(function () {
+          sum += +$(this).val();
+        });
+        $("#total-cash").val(sum);
+        var totalCash = $("#total-cash").val(sum);
+        document.getElementById(
+          "total-sales-out-cash"
+        ).innerHTML = `cash total: ${sum}`;
+      });
+
+      //real time income total(till)
+      $(document).on("input", ".income-calc-till", function () {
+        var sum = 0;
+        $(".income-calc-till").each(function () {
+          sum += +$(this).val();
+        });
+        $("#total-till").val(sum);
+        var totalTill = $("#total-till").val(sum);
+        document.getElementById(
+          "total-sales-out-till"
+        ).innerHTML = `till total: ${sum}`;
+      });
+
+      //get buying price of selected item in sales
+      var salesOptions = document.getElementById("product");
+
+      salesOptions.addEventListener("change", function LoadBuying() {
+        currentOption = salesOptions.value;
+        currentOptionText = this.options[this.selectedIndex].text;
+
+        $("#sc").load(
+          `loadBuying/${currentOption}`,
+          function (res, status, http) {
+            document.getElementById("bought-price").value = res;
+            document.getElementById("bought-item").value = currentOptionText;
+          }
+        );
+      });
+
+      //add sale
+      $(document).ready(function () {
+        var Recorddate = document.getElementById("recorddate").value;
+        console.log(Recorddate);
+        /*$("#exp").load(`loadLatestExpense/${Recorddate}`); 
+        $("#sl").load(`loadLatestSold`); */
+      });
     },
   },
 };

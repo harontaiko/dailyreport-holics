@@ -14,6 +14,48 @@ class Page
       return $this->db;
     }
 
+    public function getAllRecordNetT($id)
+    { 
+        $query = 'SELECT * FROM dr_nettotal WHERE sales_id=?';
+
+        $binders = "s";
+
+        $param = array($id);
+
+        $result = SelectCond($query, $binders, $param, $this->db);
+
+        $row = $result->get_result();
+
+        try {
+            return $row;
+        } catch (Error $e) {
+            return false;
+        } 
+    }
+
+    public function getAllRecordNetTotal($id)
+    { 
+        $query = 'SELECT date_created FROM dr_nettotal WHERE sales_id=?';
+
+        $binders = "s";
+
+        $param = array($id);
+
+        $result = SelectCond($query, $binders, $param, $this->db);
+
+        $row = $result->get_result();
+
+        $rowItem = $row->fetch_assoc();
+        
+        $datesold = isset($rowItem['date_created']) ? $rowItem['date_created'] : '';
+
+        try {
+            return $datesold;
+        } catch (Error $e) {
+            return false;
+        } 
+    }
+
     public function getCurrentProfitTotal()
     {
         $query = 'SELECT SUM(profit) AS current_total FROM dr_sales';
@@ -127,7 +169,7 @@ class Page
 
     public function getAlltimeTotal()
     {
-        $query = 'SELECT sales_id, total_sales, totalprofit, totalincome, totalexpense, date_created FROM dr_nettotal ORDER BY sales_id';
+        $query = 'SELECT sales_id, total_sales, totalprofit, totalincome, totalexpense, date_created FROM dr_nettotal ORDER BY sales_id DESC';
     
         $result = SelectCondFree($query, 'dr_nettotal', $this->db);
     
@@ -142,7 +184,7 @@ class Page
 
     public function getAlltimeSales()
     {
-        $query = 'SELECT sales_item, sales_id, selling_price, buying_price, profit, date_created FROM dr_sales';
+        $query = 'SELECT sales_id, sales_item, sales_id, selling_price, buying_price, profit, date_created FROM dr_sales ORDER BY sales_id DESC';
     
         $result = SelectCondFree($query, 'dr_sales', $this->db);
     
@@ -555,6 +597,25 @@ class Page
         $binders = "s";
 
         $parameters = array(date('Y-m-d', time()));
+
+        $result = SelectCond($query, $binders, $parameters, $this->db);
+
+        $row = $result->get_result();
+
+        try {
+            return $row;
+        } catch (Error $e) {
+            return false;
+        }  
+    }
+
+    public function getExpenseTodayEdit($date)
+    {
+        $query = 'SELECT expense_id, expense_item, expense_cost FROM dr_expenses WHERE date_created=?';
+
+        $binders = "s";
+
+        $parameters = array($date);
 
         $result = SelectCond($query, $binders, $parameters, $this->db);
 

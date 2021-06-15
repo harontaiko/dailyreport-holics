@@ -113,7 +113,7 @@ $(document).ready(function() {
                     data: {
                         labels: ['cash', 'till', 'gross income'],
                         datasets: [{
-                            label: 'Movie Shop Cash Distribution',
+                            label: 'Movie Shop Income Distribution',
                             data: [dataResult.movie.cash, dataResult.movie.till,
                                 dataResult.movie.total
                             ],

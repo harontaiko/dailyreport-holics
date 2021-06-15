@@ -1799,3 +1799,31 @@ $table-header-border: 1px solid #fff;
   margin: auto;
   padding: 32px;
 }
+
+.print-invoice {
+  position: absolute;
+  right: 5%;
+  background: #9a9191;
+  color: #fff;
+  border: none;
+  padding: 6px 9px;
+  border-radius: 4px;
+}
+
+.star_active {
+  color: rgb(248, 46, 46);
+  animation: rotating 2s linear infinite;
+}
+
+@keyframes rotating {
+  from {
+    -webkit-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}

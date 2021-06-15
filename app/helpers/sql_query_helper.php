@@ -356,68 +356,6 @@ function Fullsearch($searchfield, $matchingitem, $table, $db)
   return $stmt_s;
 }
 
-function CheckAdviceTbl($table, $db)
-{
-  $query = 'SELECT COUNT(*) FROM '.$table.'';
-
-  $stmt = $db->prepare($query);
-
-  $stmt->execute();
-
-  return $stmt;
-}
-
-
-function verifyThisUserInfo($table, $db, $username)
-{
-  $query = 'SELECT * FROM '.$table.' WHERE owner_name=?';
-
-  $stmt = $db->prepare($query);
-
-  $stmt->bind_param('s', $username);
-
-  $stmt->execute();
-
-  return $stmt;
-}
-
-function checkLimit($username, $table, $currentdate, $db)
-{
-  mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
-  $query =  'SELECT COUNT(*) AS `post_count` FROM '.$table.' WHERE date_created = ? AND owner_name=?';
-
-  $stmt = $db->prepare($query);
-
-  $stmt->bind_param('ss',$currentdate, $username);
-
-  $stmt->execute();
-
-  return $stmt;
-}
-
-function getAllAlumni($table, $db)
-{
-  $query = 'SELECT DISTINCT owner_name FROM '.$table.' ORDER BY advice_id ASC';
-
-  $stmt = $db->prepare($query);
-
-  $stmt->execute();
-
-  return $stmt;
-}
-
- function getThisAdvice($table, $category, $db)
-{
-  $query = 'SELECT * FROM '.$table.' WHERE advice_category=? ORDER BY advice_id ASC';
-
-  $stmt = $db->prepare($query);
-
-  $stmt->bind_param('s', $category);
-
-  $stmt->execute();
-
-  return $stmt;
-}
 
 function LoadUsers($usertable, $db){
   // check user and question data
@@ -930,6 +868,330 @@ function saleRecord($db, $date)
   } else {
       return false;
   }
+}
+///////////////////////////////////////////////////////////////////Playstation
+function getPsAllDate($date, $db)
+{
+  $query = 'SELECT cash, till, created_by, creator_ip FROM dr_playstation WHERE date_created=?';
+
+  $binders="s";
+
+  $param = array($date);
+
+  $result = SelectCond($query, $binders, $param, $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getPsTotalA($date, $db)
+{
+  $query = 'SELECT SUM(cash + till) AS ps_net FROM dr_playstation WHERE date_created=?';
+
+  $binders="s";
+
+  $param = array($date);
+
+  $result = SelectCond($query, $binders, $param, $db);
+
+  $row = $result->get_result();
+
+  $rowItem = $row->fetch_assoc();
+
+  $totalmovie = isset($rowItem['ps_net']) ? $rowItem['ps_net'] : 'N/A';
+
+  try {
+      return $totalmovie;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getPsAllWeekNet($db)
+{
+  $query = 'SELECT DATE_FORMAT(date_created, "%U"), SUM(cash) AS total_cash, SUM(till) AS total_till, SUM(cash + till) AS net_total FROM dr_playstation WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 WEEK) GROUP BY DATE_FORMAT(date_created, "%U")';
+
+  $result = SelectCondFree($query, 'dr_playstation', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getPsTotalWeek($db)
+{
+  $query = 'SELECT SUM(cash + till) AS ps_net FROM dr_playstation WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 WEEK)';
+
+  $result = SelectCondFree($query, 'dr_playstation', $db);
+
+  $row = $result->get_result();
+
+  $rowItem = $row->fetch_assoc();
+
+  $totalmovie = isset($rowItem['ps_net']) ? $rowItem['ps_net'] : 'N/A';
+
+  try {
+      return $totalmovie;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getPsDatesWeek($db)
+{
+  $query = 'SELECT DATE_FORMAT(date_created, "%U") FROM dr_playstation WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 WEEK) GROUP BY DATE_FORMAT(date_created, "%U")';
+
+  $result = SelectCondFree($query, 'dr_playstation', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getPsTillWeek($db)
+{
+  $query = 'SELECT SUM(till) AS ps_net FROM dr_playstation WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 WEEK) GROUP BY DATE_FORMAT(date_created, "%U")';
+
+  $result = SelectCondFree($query, 'dr_playstation', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getPsCashWeek($db)
+{
+  $query = 'SELECT SUM(cash) AS ps_net FROM dr_playstation WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 WEEK) GROUP BY DATE_FORMAT(date_created, "%U")';
+
+  $result = SelectCondFree($query, 'dr_playstation', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getPsGrossWeek($db)
+{
+  $query = 'SELECT SUM(cash+till) AS ps_net FROM dr_playstation WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 WEEK) GROUP BY DATE_FORMAT(date_created, "%U")';
+
+  $result = SelectCondFree($query, 'dr_playstation', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getPsAllMonthNet($db)
+{
+  $query = 'SELECT DATE_FORMAT(date_created, "%M"), SUM(cash) AS total_cash, SUM(till) AS total_till, SUM(cash + till) AS net_total FROM dr_playstation WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 MONTH) GROUP BY DATE_FORMAT(date_created, "%M")';
+
+  $result = SelectCondFree($query, 'dr_playstation', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getPsTotalMonth($db)
+{
+  $query = 'SELECT SUM(cash + till) AS ps_net FROM dr_playstation WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 MONTH)';
+
+  $result = SelectCondFree($query, 'dr_playstation', $db);
+
+  $row = $result->get_result();
+
+  $rowItem = $row->fetch_assoc();
+
+  $totalmovie = isset($rowItem['ps_net']) ? $rowItem['ps_net'] : 'N/A';
+
+  try {
+      return $totalmovie;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getPsDatesMonth($db)
+{
+  $query = 'SELECT DATE_FORMAT(date_created, "%M") FROM dr_playstation WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 MONTH) GROUP BY DATE_FORMAT(date_created, "%M")';
+
+  $result = SelectCondFree($query, 'dr_playstation', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getPsGrossMonth($db)
+{
+  $query = 'SELECT SUM(cash + till) AS ps_net FROM dr_playstation WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 MONTH) GROUP BY DATE_FORMAT(date_created, "%M")';
+
+  $result = SelectCondFree($query, 'dr_playstation', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getPsCashMonth($db)
+{
+  $query = 'SELECT SUM(cash) AS ps_net FROM dr_playstation WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 MONTH) GROUP BY DATE_FORMAT(date_created, "%M")';
+
+  $result = SelectCondFree($query, 'dr_playstation', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getPsTillMonth($db)
+{
+  $query = 'SELECT SUM(till) AS ps_net FROM dr_playstation WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 MONTH) GROUP BY DATE_FORMAT(date_created, "%M")';
+
+  $result = SelectCondFree($query, 'dr_playstation', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getPsAllYearNet($db)
+{
+  $query = 'SELECT DATE_FORMAT(date_created, "%Y"), SUM(cash) AS total_cash, SUM(till) AS total_till, SUM(cash + till) AS net_total FROM dr_playstation WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 YEAR) GROUP BY DATE_FORMAT(date_created, "%Y")';
+
+  $result = SelectCondFree($query, 'dr_playstation', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getPsTotalYear($db)
+{
+  $query = 'SELECT SUM(cash + till) AS ps_net FROM dr_playstation WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 YEAR)';
+
+  $result = SelectCondFree($query, 'dr_playstation', $db);
+
+  $row = $result->get_result();
+
+  $rowItem = $row->fetch_assoc();
+
+  $totalmovie = isset($rowItem['ps_net']) ? $rowItem['ps_net'] : 'N/A';
+
+  try {
+      return $totalmovie;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getPsDatesYear($db)
+{
+  $query = 'SELECT DATE_FORMAT(date_created, "%Y") FROM dr_playstation WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 YEAR) GROUP BY DATE_FORMAT(date_created, "%Y")';
+
+  $result = SelectCondFree($query, 'dr_playstation', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getPsGrossYear($db)
+{
+  $query = 'SELECT SUM(cash + till) AS ps_net FROM dr_playstation WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 YEAR) GROUP BY DATE_FORMAT(date_created, "%Y")';
+
+  $result = SelectCondFree($query, 'dr_playstation', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getPsTillYear($db)
+{
+  $query = 'SELECT SUM(till) AS ps_net FROM dr_playstation WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 YEAR) GROUP BY DATE_FORMAT(date_created, "%Y")';
+
+  $result = SelectCondFree($query, 'dr_playstation', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getPsCashYear($db)
+{
+  $query = 'SELECT SUM(cash) AS ps_net FROM dr_playstation WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 YEAR) GROUP BY DATE_FORMAT(date_created, "%Y")';
+
+  $result = SelectCondFree($query, 'dr_playstation', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
 }
 //////////////////////////////////////////////////////////////////cyber
 function getCyberAllYear($db)
@@ -1670,4 +1932,24 @@ function getFileteredReportBetween($from, $to, $shopname, $db)
         return false;
     } 
   }
+}
+
+///////////////////////////////////////////////////////////////////invoice
+function getSaleItemById($id,$db)
+{
+  $query = 'SELECT * FROM dr_sales WHERE sales_id=?';
+
+  $binders ="s";
+
+  $params = array($id);
+
+  $result = SelectCond($query, $binders, $params, $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
 }

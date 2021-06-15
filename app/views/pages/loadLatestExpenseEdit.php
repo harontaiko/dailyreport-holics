@@ -1,4 +1,4 @@
-<p id="sales-made-p">Today's Expenses</p>
+<p id="sales-made-p">Expenses</p>
 <?php  while ($latest = $data['latest']->fetch_assoc()) :   ?>
 <p id="<?php echo isset($latest['expense_id']) ? $latest['expense_id']: 'N/A'; ?>" class="total-expense">
     <?php echo isset($latest['expense_item']) ? $latest['expense_item']: 'N/A';?> -
