@@ -144,6 +144,40 @@ class Pages extends Controller
         die();
       }
     }
+
+    public function viewExpense($id)
+    {
+
+       if(isset($id)){
+        if (!isset($_SESSION["user_id"])) {
+          $data = [
+            "title" => "Daily Report",  
+          ];
+          redirect("users/index");
+        } 
+        
+        $db = $this->pageModel->getDatabaseConnection();
+
+        $inventoryData = $this->pageModel->getInventoryData();
+
+        $expense = $this->pageModel->getExpenseById($id);
+
+        //individual vals   
+        $arr = array();
+        while($mv2 = $expense->fetch_assoc()){
+            array_push($arr, $mv2);
+        } 
+
+        $data = ['title'=>'Expense', 'exp'=>$arr, 'row'=>$expense, "inventory" => $inventoryData, 'db'=>$db, 'date'=>htmlspecialchars($id),];
+
+        $this->view('pages/viewExpense', $data);
+      }else{
+        http_response_code(404);
+        include('../app/404.php');
+        die();
+      }
+    }
+
     public function reports($shopname, $reportdate)
     {
 

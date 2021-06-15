@@ -14,6 +14,25 @@ class Page
       return $this->db;
     }
 
+    public function getExpenseById($date)
+    { 
+        $query = 'SELECT * FROM dr_expenses WHERE date_created=?';
+
+        $binders = "s";
+
+        $param = array($date);
+
+        $result = SelectCond($query, $binders, $param, $this->db);
+
+        $row = $result->get_result();
+
+        try {
+            return $row;
+        } catch (Error $e) {
+            return false;
+        } 
+    }
+
     public function getAllRecordNetT($id)
     { 
         $query = 'SELECT * FROM dr_nettotal WHERE sales_id=?';

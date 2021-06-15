@@ -56,7 +56,9 @@
                     <?php echo number_format(getExpenseTotal($exp['date_created'], $data['db'])); ?></td>
                 <td data-th="expense-total">
                     <?php echo number_format(getExpenseTotal($exp['date_created'], $data['db'])).'/='; ?></td>
-                <td data-th="see"><i class="fas fa-eye"></i></td>
+                <td data-th="see"><a style="color: #fff;"
+                        href="<?php echo URLROOT; ?>/pages/viewExpense/<?php echo isset($exp['date_created']) ? $exp['date_created']: 'N/A' ?>"><i
+                            class="fas fa-eye"></i></a></td>
             </tr>
             <?php endwhile ?>
 

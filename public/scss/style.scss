@@ -1827,3 +1827,149 @@ $table-header-border: 1px solid #fff;
     transform: rotate(360deg);
   }
 }
+
+.viewExpense {
+  font-weight: 400;
+  line-height: 1.75;
+  background: #f5ebdc;
+  color: #2b0200;
+  font-family: "Raleway", sans-serif;
+}
+
+.expense-header {
+  margin: 0 auto;
+  width: 95%;
+  max-width: 1024px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 4px solid #d62400;
+  border-radius: 0.25rem;
+}
+
+.logo {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  &__icon {
+    height: 100%;
+    width: 65px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    svg {
+      height: 50%;
+      margin: 1rem 0;
+      transform: rotate(-45deg);
+      fill: transparent;
+      stroke: #d62400;
+      stroke-width: 1.65rem;
+      overflow: visible;
+      transition: 0.2s ease;
+    }
+  }
+  &__text {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    padding: 0 0.75rem;
+    #brand-name {
+      padding: 0;
+      margin: 0;
+    }
+    .tagline {
+      padding: 0;
+      margin: 0;
+    }
+  }
+  &:hover {
+    .logo__icon {
+      svg {
+        fill: #d62400;
+        stroke-width: 0;
+      }
+    }
+  }
+}
+
+#table-expense-i {
+  border: 1px solid #dbdce2;
+  border-bottom: 1px solid #ccc;
+  box-shadow: 0 1px 2px #d1d1d1;
+}
+#table-expense-i header {
+  background: #f2f3f6;
+  font-size: 12px;
+  border-top: 1px solid #fff;
+  border-bottom: 1px solid #dbdce2;
+  color: #555;
+  font-weight: bold;
+  position: relative;
+  overflow: hidden;
+}
+#table-expense-i header:after {
+  content: " ";
+  clear: both;
+}
+#table-expense-i header span {
+  padding: 10px;
+  display: block;
+  float: left;
+}
+#table-expense-i header ul {
+  display: block;
+  padding: 0;
+  margin: 0;
+  float: right;
+  border-left: 1px solid #fff;
+}
+#table-expense-i header ul li {
+  float: left;
+  border-left: 1px solid #dbdce2;
+  border-right: 1px solid #fff;
+}
+#table-expense-i header ul li:last-child {
+  border-right: 0;
+}
+#table-expense-i header ul li a {
+  display: block;
+  padding: 10px;
+  color: #535767;
+}
+#table-expense-i header ul li a:hover {
+  color: #222;
+}
+
+.table-expense-2 {
+  border: 0;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+.table-expense-2 tbody tr td {
+  background: #fff;
+  border-bottom: 1px solid #ebecef;
+  font-size: 14px;
+  color: #64687b;
+  font-family: "Tahoma", Arial;
+}
+.table-expense-2 thead tr:first-child th {
+  border-top: 1px solid red;
+}
+.table-expense-2 thead tr th {
+  background: #f2f3f6;
+  padding: 10px 10px 10px 10px;
+  font-family: Arial;
+  font-size: 10px;
+  text-transform: uppercase;
+  color: #767d94;
+  font-weight: bold;
+}
+
+.table-expense-2 > thead:first-child > tr:first-child > th {
+  border-top: 1px solid #fff;
+}
+
+.table-expense-2 > thead > tr > th {
+  border-bottom: 1px solid #dbdce2;
+}

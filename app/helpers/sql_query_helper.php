@@ -583,7 +583,7 @@ function getExpenseTotalCount($date, $db)
 
 function getNetExpenses($date,$db)
 {
-    $query = 'SELECT expense_item, expense_cost FROM dr_expenses WHERE date_created=?';
+    $query = 'SELECT * FROM dr_expenses WHERE date_created=?';
 
     $binders="s";
 
