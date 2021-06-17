@@ -1,4 +1,4 @@
-<button class="previous-report" onclick="location.replace(`http://localhost/dailyreport-holics/pages/movieShop`);"
+<button class="previous-report" onclick="location.replace(`http://localhost/dailyreport-holics/pages/total`);"
     title="back"><i title="back" class="fas fa-arrow-left"></i></button>
 <button title="print report" type="button" id="custom-print-report"
     onClick="printJS({ printable: 'container-out-report', type: 'html', style: '.container-out-report td:nth-child(2){border-color: #f1f1f1; border-right: 1px solid #ddd;background: white;}.container-out-report td:nth-child(1){border-color: #f1f1f1; border-right: 1px solid #ddd;background: white;}.container-out-report td:nth-child(2){border-color: #f1f1f1; border-right: 1px solid #ddd;background: white;}.container-out-report td:nth-child(3){border-color: #f1f1f1; border-right: 1px solid #ddd;background: white;}.container-out-report td:nth-child(2){border-color: #f1f1f1; border-right: 1px solid #ddd;background: white;}.container-out-report td:nth-child(4){border-color: #f1f1f1; border-right: 1px solid #ddd;background: white;}.container-out-report td:nth-child(5){border-color: #f1f1f1; border-right: 1px solid #ddd;background: white;} .container-out-report tr:nth-child(1){border-color: #f1f1f1; border-bottom: 1px solid #ddd;background: white;}'})">
@@ -6,30 +6,30 @@
 </button>
 <section id="reports-tbl">
     <!--for demo wrap-->
-    <h1 id="report-title">Daily Movieshop <span>Report</span></h1>
+    <h1 id="report-title">Daily Net Income <span>Report</span></h1>
 
     <table class="responstable" id="responstable">
 
         <tr>
             <th>Date</th>
-            <th>Till income(Ksh)</th>
-            <th>Cash income(Ksh)</th>
-            <th>Net Total</th>
+            <th>Total Till income(Ksh)</th>
+            <th>Total Cash income(Ksh)</th>
+            <th>Total Gross</th>
             <th>Created by</th>
             <th>Host Address</th>
         </tr>
 
         <?php 
                 
-                $m = getMovieshopAllDate(date('Y-m-d', time()), $data['db']);
+                $m = getNetAllDate(date('Y-m-d', time()), $data['db']);
                 while($mv = $m->fetch_assoc()):    
                 ?>
         <tr>
             <td style="color: black;">
                 <?php echo date('Y-m-d', strtotime(date('Y-m-d', time()))); ?></td>
-            <td style="color: black;"><?php echo number_format($mv['cash']); ?></td>
-            <td style="color: black;"><?php echo number_format($mv['till']); ?></td>
-            <td style="color: black;"><?php echo number_format($mv['cash'] + $mv['till']); ?>
+            <td style="color: black;"><?php echo number_format($mv['cash_sales']); ?></td>
+            <td style="color: black;"><?php echo number_format($mv['till_sales']); ?></td>
+            <td style="color: black;"><?php echo number_format($mv['totalincome']); ?>
             <td style="color: black;"><?php echo $mv['created_by']; ?>
             <td style="color: black;"><?php echo $mv['creator_ip']; ?>
             </td>
@@ -39,7 +39,7 @@
 
 </section>
 <div class="container-out-report" id="container-out-report">
-    <h1 id="report-title">Daily Movieshop <span>Report</span></h1>
+    <h1 id="report-title">Daily Net Income <span>Report</span></h1>
     <table>
         <tr>
             <th>Date</th>
@@ -52,7 +52,7 @@
 
         <?php 
                 
-                $m = getMovieshopAllDate(date('Y-m-d', time()), $data['db']);
+                $m = getCyberAllDate(date('Y-m-d', time()), $data['db']);
                 while($mv = $m->fetch_assoc()):    
                 ?>
         <tr>
@@ -71,13 +71,15 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td>Total Today: <?php
-                   if((getMovieShopTotal(date('Y-m-d', time()), $data['db']))){
+                <td>Net Total Today:
+                    <?php
+                   if((getNetTotalA(date('Y-m-d', time()), $data['db']))){
                     echo 'N/A';
                    }else{
-                    echo number_format(getMovieShopTotal(date('Y-m-d', time()), $data['db']));
+                    echo number_format(getNetTotalA(date('Y-m-d', time()), $data['db']));
                    }
-                     ?></td>
+                     ?>
+                </td>
             </tr>
         </tfoot>
     </table>
@@ -97,12 +99,12 @@
         </div>
     </section>
 </div>
-<!--line chart daily movie report-->
+<!--line chart daily cyber report-->
 <script>
-//get movie shop report for today
+//get Cyber report for today
 $(document).ready(function() {
     $.ajax({
-        url: `http://localhost/dailyreport-holics/pages/getMovieShopRepoToday`,
+        url: `http://localhost/dailyreport-holics/pages/getNetRepoToday`,
         type: "GET",
         dataType: "json",
         success: function(dataResult) {
@@ -118,7 +120,7 @@ $(document).ready(function() {
                     data: {
                         labels: ['cash', 'till', 'gross income'],
                         datasets: [{
-                            label: 'Movie Shop Income Distribution',
+                            label: 'Total Income Distribution Today',
                             data: [dataResult.movie.cash, dataResult.movie.till,
                                 dataResult.movie.total
                             ],

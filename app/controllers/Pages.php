@@ -168,7 +168,7 @@ class Pages extends Controller
             array_push($arr, $mv2);
         } 
 
-        $data = ['title'=>'Expense', 'exp'=>$arr, 'row'=>$expense, "inventory" => $inventoryData, 'db'=>$db, 'date'=>htmlspecialchars($id),];
+        $data = ['title'=>'Expense - E'.htmlspecialchars(date('Ymd',strtotime($id))).'', 'exp'=>$arr, 'row'=>$expense, "inventory" => $inventoryData, 'db'=>$db, 'date'=>htmlspecialchars($id),];
 
         $this->view('pages/viewExpense', $data);
       }else{
@@ -1279,6 +1279,160 @@ class Pages extends Controller
         $arrcash = array();
         while( $mv5 = $totalCashMovie->fetch_assoc()){
           $totalsyearcash = $mv5['ps_net'];
+          array_push($arrcash,$totalsyearcash);
+        }
+          
+        echo json_encode(array("statusCode"=>200, 'years'=>$arr, 'gross'=>$arryear, 'till'=>$arrtill, 'cash'=>$arrcash));
+      }else{
+        echo json_encode(array("statusCode"=>317));
+      }
+    }else{
+      http_response_code(404);
+      include('../app/404.php');
+      die();
+    }
+  }
+
+  public function getNetRepoToday()
+  {
+    if($_SERVER['REQUEST_METHOD']=='GET'){
+      $data = [
+        'date' => date('Y-m-d', time())
+      ];
+      $db = $this->pageModel->getDatabaseConnection();
+      $mv = getNetAllDate($data['date'], $db);
+      if($mv){
+        $mv2 = $mv->fetch_assoc();
+        $movietoday = ['till'=>$mv2['till_sales'], 'cash'=>$mv2['cash_sales'], 'total'=>($mv2['totalincome'])];
+        echo json_encode(array("statusCode"=>200, 'movie'=>$movietoday));
+      }else{
+        echo json_encode(array("statusCode"=>317));
+      }
+    }else{
+      http_response_code(404);
+      include('../app/404.php');
+      die();
+    }
+  }
+
+  public function getNetRepoWeek()
+  {
+    if($_SERVER['REQUEST_METHOD']=='GET'){
+      $db = $this->pageModel->getDatabaseConnection();
+      $mv = getNetDatesWeek($db);
+      if($mv){
+        $arr = array();
+        while($mv2 = $mv->fetch_assoc()){
+          $dates = $mv2['DATE_FORMAT(date_created, "%U")'];
+          array_push($arr, 'week '.$dates);
+        }
+
+        $totalTillWeek = getNetTillWeek($db);
+        $arrweektill = array();
+        while( $mv3 = $totalTillWeek->fetch_assoc()){
+          $tillweek = $mv3['net_till'];
+          array_push($arrweektill,$tillweek);
+        }
+
+        $totalCashWeek = getNetCashWeek($db);
+        $arrweekcash = array();
+        while( $mv4 = $totalCashWeek->fetch_assoc()){
+          $cashweek = $mv4['cash_total'];
+          array_push($arrweekcash,$cashweek);
+        }
+
+        $totalGrossWeek = getNetGrossWeek($db);
+        $arrweekgross = array();
+        while( $mv4 = $totalGrossWeek->fetch_assoc()){
+          $grossweek = $mv4['total_net'];
+          array_push($arrweekgross,$grossweek);
+        }
+          
+        echo json_encode(array("statusCode"=>200, 'weeks'=>$arr, 'till'=>$arrweektill, 'cash'=>$arrweekcash, 'gross'=>$arrweekgross));
+      }else{
+        echo json_encode(array("statusCode"=>317));
+      }
+    }else{
+      http_response_code(404);
+      include('../app/404.php');
+      die();
+    }
+  }
+
+  public function getNetRepoMonth()
+  {
+    if($_SERVER['REQUEST_METHOD']=='GET'){
+      $db = $this->pageModel->getDatabaseConnection();
+      $mv = getNetDatesMonth($db);
+      if($mv){
+        $arr = array();
+        while($mv2 = $mv->fetch_assoc()){
+          $dates = $mv2['DATE_FORMAT(date_created, "%M")'];
+          array_push($arr, $dates);
+        }
+
+        $totalmonthMovie = getNetGrossMonth($db);
+          $arrtotal = array();
+          while( $mv3 = $totalmonthMovie->fetch_assoc()){
+            $totals = $mv3['totalnet'];
+            array_push($arrtotal,$totals);
+          }
+
+        $cashmonthMovie = getNetCashMonth($db);
+          $arrcash = array();
+          while( $mv4 = $cashmonthMovie->fetch_assoc()){
+            $cash = $mv4['cash_net'];
+            array_push($arrcash,$cash);
+          }
+
+        $tillmonthMovie = getNetTillMonth($db);
+          $arrtill = array();
+          while( $mv5 = $tillmonthMovie->fetch_assoc()){
+            $cash = $mv5['till_net'];
+            array_push($arrtill,$cash);
+          }
+          
+        echo json_encode(array("statusCode"=>200, 'dates'=>$arr, 'totals'=>$arrtotal, 'cash'=>$arrcash, 'till'=>$arrtill));
+      }else{
+        echo json_encode(array("statusCode"=>317));
+      }
+    }else{
+      http_response_code(404);
+      include('../app/404.php');
+      die();
+    }
+  }
+
+  public function getNetRepoYear()
+  {
+    if($_SERVER['REQUEST_METHOD']=='GET'){
+      $db = $this->pageModel->getDatabaseConnection();
+      $mv = getNetDatesYear($db);
+      if($mv){
+        $arr = array();
+        while($mv2 = $mv->fetch_assoc()){
+          $dates = $mv2['DATE_FORMAT(date_created, "%Y")'];
+          array_push($arr, $dates);
+        }
+
+        $totalYEARMovie = getNetGrossYear($db);
+        $arryear = array();
+        while( $mv3 = $totalYEARMovie->fetch_assoc()){
+          $totalsyear = $mv3['totalincome'];
+          array_push($arryear,$totalsyear);
+        }
+
+        $totalTillMovie = getNetTillYear($db);
+        $arrtill = array();
+        while( $mv4 = $totalTillMovie->fetch_assoc()){
+          $totalsyeartill = $mv4['net_till'];
+          array_push($arrtill,$totalsyeartill);
+        }
+
+        $totalCashMovie = getNetCashYear($db);
+        $arrcash = array();
+        while( $mv5 = $totalCashMovie->fetch_assoc()){
+          $totalsyearcash = $mv5['net_cash'];
           array_push($arrcash,$totalsyearcash);
         }
           

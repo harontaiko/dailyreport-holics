@@ -1,30 +1,30 @@
 <section id="reports-tbl">
 
-    <button class="previous-report" onclick="location.replace(`http://localhost/dailyreport-holics/pages/playstation`);"
+    <button class="previous-report" onclick="location.replace(`http://localhost/dailyreport-holics/pages/total`);"
         title="back"><i title="back" class="fas fa-arrow-left"></i></button>
     <button title="print report" type="button" id="custom-print-report"
         onClick="printJS({ printable: 'container-out-report2', type: 'html', style: '.container-out-report td:nth-child(2){border-color: #f1f1f1; border-right: 1px solid #ddd;background: white;}.container-out-report td:nth-child(1){border-color: #f1f1f1; border-right: 1px solid #ddd;background: white;}.container-out-report td:nth-child(2){border-color: #f1f1f1; border-right: 1px solid #ddd;background: white;}.container-out-report td:nth-child(3){border-color: #f1f1f1; border-right: 1px solid #ddd;background: white;}.container-out-report td:nth-child(2){border-color: #f1f1f1; border-right: 1px solid #ddd;background: white;}.container-out-report td:nth-child(4){border-color: #f1f1f1; border-right: 1px solid #ddd;background: white;}.container-out-report td:nth-child(5){border-color: #f1f1f1; border-right: 1px solid #ddd;background: white;} .container-out-report tr:nth-child(1){border-color: #f1f1f1; border-bottom: 1px solid #ddd;background: white;}'})">
         <i class=" fas fa-print"></i>
     </button>
-    <h1 id="report-title">Monthly Playstation <span>Report</span></h1>
+    <h1 id="report-title">Weekly Net Total <span>Report</span></h1>
 
     <table class="responstable" id="responstable">
 
         <tr>
-            <th>Month</th>
-            <th>Monthly Cash income(Ksh)</th>
-            <th>Monthly Till income(Ksh)</th>
-            <th>Monthly Net Total</th>
+            <th>Week</th>
+            <th>Weekly Cash income(Ksh)</th>
+            <th>Weekly Till income(Ksh)</th>
+            <th>Weekly Net Total</th>
         </tr>
 
         <?php 
         
-        $m = getPsAllMonthNet($data['db']);
+        $m = getNetAllWeekNet($data['db']);
         while($mv = $m->fetch_assoc()):    
         ?>
         <tr>
             <td style="color: black;">
-                <?php echo $mv['DATE_FORMAT(date_created, "%M")']; ?></td>
+                <?php echo 'Week '. $mv['DATE_FORMAT(date_created, "%U")']; ?></td>
             <td style="color: black;"><?php echo number_format($mv['total_cash']); ?></td>
             <td style="color: black;"><?php echo number_format($mv['total_till']); ?></td>
             <td style="color: black;"><?php echo number_format($mv['net_total']); ?>
@@ -35,36 +35,36 @@
 
 </section>
 <div class="container-out-report" id="container-out-report2">
-    <h1 id="report-title">Monthly Playstation <span>Report</span></h1>
+    <h1 id="report-title">Weekly Net Total <span>Report</span></h1>
 
     <table>
         <tr>
-            <th>Month</th>
-            <th>Monthly Cash income(Ksh)</th>
-            <th>Monthly Till income(Ksh)</th>
-            <th>Monthly Net Total</th>
+            <th>Week</th>
+            <th>Weekly Cash income(Ksh)</th>
+            <th>Weekly Till income(Ksh)</th>
+            <th>Weekly Net Total</th>
         </tr>
 
         <?php 
         
-        $m = getPsAllMonthNet($data['db']);
+        $m = getNetAllWeekNet($data['db']);
         while($mv = $m->fetch_assoc()):    
         ?>
         <tr>
             <td style="color: black;">
-                <?php echo $mv['DATE_FORMAT(date_created, "%M")']; ?></td>
+                <?php echo 'Week '. $mv['DATE_FORMAT(date_created, "%U")']; ?></td>
             <td style="color: black;"><?php echo number_format($mv['total_cash']); ?></td>
             <td style="color: black;"><?php echo number_format($mv['total_till']); ?></td>
             <td style="color: black;"><?php echo number_format($mv['net_total']); ?>
+            </td>
         </tr>
         <?php endwhile; ?>
         <tfoot>
             <tr>
                 <td></td>
                 <td></td>
-                <td></td>
-                <td>Monthly total: <?php
-                    echo number_format(getPsTotalMonth($data['db']));           
+                <td>Weekly total: <?php
+                    echo number_format(getNetTotalWeek($data['db'])); 
                      ?></td>
             </tr>
         </tfoot>
@@ -87,7 +87,7 @@
 //get movie shop report for today
 $(document).ready(function() {
     $.ajax({
-        url: `http://localhost/dailyreport-holics/pages/getPsRepoMonth`,
+        url: `http://localhost/dailyreport-holics/pages/getNetRepoWeek`,
         type: "GET",
         dataType: "json",
         success: function(dataResult) {
@@ -102,16 +102,16 @@ $(document).ready(function() {
                 var lineMonthChart3 = document
                     .getElementById("pie-month-chart-repo-mv")
                     .getContext("2d");
-
-                //////////////////////////////////////////////////////////////////////////////monhtly gross
+                console.log(dataResult.till);
+                //////////////////////////////////////////////////////////////////////////////weekly gross
                 //perfom another get for gross
                 var lineChartReport = new Chart(lineMonthChart, {
                     type: "line",
                     data: {
-                        labels: dataResult.dates,
+                        labels: dataResult.weeks,
                         datasets: [{
-                            label: 'Gross Monthly Income Movie Shop',
-                            data: dataResult.totals,
+                            label: 'Weekly Net Gross Income',
+                            data: dataResult.gross,
                             fill: false,
                             borderColor: 'rgb(209, 31, 31)',
                             backgroundColor: 'rgb(209, 31, 31)',
@@ -123,13 +123,13 @@ $(document).ready(function() {
                     },
 
                 });
-                //////////////////////////////////////////////////////////////////////////////monhtly till
+                //////////////////////////////////////////////////////////////////////////////weekly till
                 var lineChartReport2 = new Chart(lineMonthChart2, {
                     type: "line",
                     data: {
-                        labels: dataResult.dates,
+                        labels: dataResult.weeks,
                         datasets: [{
-                            label: 'Till Monthly Income Movie Shop',
+                            label: 'Weekly Net Till Income',
                             data: dataResult.till,
                             fill: false,
                             borderColor: 'rgb(20, 20, 243)',
@@ -142,13 +142,13 @@ $(document).ready(function() {
                     },
 
                 });
-                //////////////////////////////////////////////////////////////////////////////monhtly cash
+                //////////////////////////////////////////////////////////////////////////////weekly cash
                 var lineChartReport3 = new Chart(lineMonthChart3, {
                     type: "line",
                     data: {
-                        labels: dataResult.dates,
+                        labels: dataResult.weeks,
                         datasets: [{
-                            label: 'Cash Monthly Income Movie Shop',
+                            label: 'Weekly Net Cash Income',
                             data: dataResult.cash,
                             fill: false,
                             borderColor: 'rgb(243, 239, 20)',

@@ -820,6 +820,41 @@ dailyreport = {
   __expense: {
     init: function _ps() {
       FilterInventory();
+      //filter in select
+      var totalexpense = document.getElementById("filter-expense");
+
+      totalexpense.addEventListener("change", function LoadBuying() {
+        currentOption = totalexpense.value;
+        currentOptionText = this.options[this.selectedIndex].value;
+        //today, month & default
+        location.replace(
+          `http://localhost/dailyreport-holics/pages/reports/expense/${currentOptionText}`
+        );
+      });
+
+      //get movieshop report between dates
+      document.getElementById("get-repo-btw").addEventListener("click", () => {
+        //validate dates
+        var date1 = document.querySelector("#date-1");
+        var date2 = document.querySelector("#date-2");
+        if (date1.value !== "" && date2.value !== "") {
+          //submit
+          location.replace(
+            `http://localhost/dailyreport-holics/pages/date/expense/${date1.value}/${date2.value}`
+          );
+        } else {
+          date1.style.border = "2px solid red";
+          date1.style.outline = "none";
+          date2.style.border = "2px solid red";
+          date2.style.outline = "none";
+          sleep(2500).then(() => {
+            date1.style.border = "";
+            date1.style.outline = "";
+            date2.style.border = "";
+            date2.style.outline = "";
+          });
+        }
+      });
     },
   },
   __filterReport: {
@@ -875,6 +910,41 @@ dailyreport = {
   __total: {
     init: function _ps() {
       FilterInventory();
+      //filter in select
+      var totaloptions = document.getElementById("filter-total");
+
+      totaloptions.addEventListener("change", function LoadBuying() {
+        currentOption = totaloptions.value;
+        currentOptionText = this.options[this.selectedIndex].value;
+        //today, month & default
+        location.replace(
+          `http://localhost/dailyreport-holics/pages/reports/total/${currentOptionText}`
+        );
+      });
+
+      //get movieshop report between dates
+      document.getElementById("get-repo-btw").addEventListener("click", () => {
+        //validate dates
+        var date1 = document.querySelector("#date-1");
+        var date2 = document.querySelector("#date-2");
+        if (date1.value !== "" && date2.value !== "") {
+          //submit
+          location.replace(
+            `http://localhost/dailyreport-holics/pages/date/total/${date1.value}/${date2.value}`
+          );
+        } else {
+          date1.style.border = "2px solid red";
+          date1.style.outline = "none";
+          date2.style.border = "2px solid red";
+          date2.style.outline = "none";
+          sleep(2500).then(() => {
+            date1.style.border = "";
+            date1.style.outline = "";
+            date2.style.border = "";
+            date2.style.outline = "";
+          });
+        }
+      });
     },
   },
   __reports: {

@@ -64,7 +64,8 @@
                 <td></td>
                 <td></td>
                 <td>Weekly total: <?php
-             echo number_format(getPsTotalWeek($data['db'])); ?></td>
+                    echo number_format(getPsTotalWeek( $data['db']));
+                     ?></td>
             </tr>
         </tfoot>
     </table>

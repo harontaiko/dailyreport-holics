@@ -1,12 +1,12 @@
 <section id="reports-tbl">
 
-    <button class="previous-report" onclick="location.replace(`http://localhost/dailyreport-holics/pages/playstation`);"
+    <button class="previous-report" onclick="location.replace(`http://localhost/dailyreport-holics/pages/total`);"
         title="back"><i title="back" class="fas fa-arrow-left"></i></button>
     <button title="print report" type="button" id="custom-print-report"
         onClick="printJS({ printable: 'container-out-report2', type: 'html', style: '.container-out-report td:nth-child(2){border-color: #f1f1f1; border-right: 1px solid #ddd;background: white;}.container-out-report td:nth-child(1){border-color: #f1f1f1; border-right: 1px solid #ddd;background: white;}.container-out-report td:nth-child(2){border-color: #f1f1f1; border-right: 1px solid #ddd;background: white;}.container-out-report td:nth-child(3){border-color: #f1f1f1; border-right: 1px solid #ddd;background: white;}.container-out-report td:nth-child(2){border-color: #f1f1f1; border-right: 1px solid #ddd;background: white;}.container-out-report td:nth-child(4){border-color: #f1f1f1; border-right: 1px solid #ddd;background: white;}.container-out-report td:nth-child(5){border-color: #f1f1f1; border-right: 1px solid #ddd;background: white;} .container-out-report tr:nth-child(1){border-color: #f1f1f1; border-bottom: 1px solid #ddd;background: white;}'})">
         <i class=" fas fa-print"></i>
     </button>
-    <h1 id="report-title">Monthly Playstation <span>Report</span></h1>
+    <h1 id="report-title">Monthly Net <span>Report</span></h1>
 
     <table class="responstable" id="responstable">
 
@@ -19,7 +19,7 @@
 
         <?php 
         
-        $m = getPsAllMonthNet($data['db']);
+        $m = getNetAllMonthNet($data['db']);
         while($mv = $m->fetch_assoc()):    
         ?>
         <tr>
@@ -35,7 +35,7 @@
 
 </section>
 <div class="container-out-report" id="container-out-report2">
-    <h1 id="report-title">Monthly Playstation <span>Report</span></h1>
+    <h1 id="report-title">Monthly Net <span>Report</span></h1>
 
     <table>
         <tr>
@@ -47,7 +47,7 @@
 
         <?php 
         
-        $m = getPsAllMonthNet($data['db']);
+        $m = getNetAllMonthNet($data['db']);
         while($mv = $m->fetch_assoc()):    
         ?>
         <tr>
@@ -64,7 +64,7 @@
                 <td></td>
                 <td></td>
                 <td>Monthly total: <?php
-                    echo number_format(getPsTotalMonth($data['db']));           
+                    echo number_format(getNetTotalMonth($data['db']));  
                      ?></td>
             </tr>
         </tfoot>
@@ -87,7 +87,7 @@
 //get movie shop report for today
 $(document).ready(function() {
     $.ajax({
-        url: `http://localhost/dailyreport-holics/pages/getPsRepoMonth`,
+        url: `http://localhost/dailyreport-holics/pages/getNetRepoMonth`,
         type: "GET",
         dataType: "json",
         success: function(dataResult) {
@@ -110,7 +110,7 @@ $(document).ready(function() {
                     data: {
                         labels: dataResult.dates,
                         datasets: [{
-                            label: 'Gross Monthly Income Movie Shop',
+                            label: 'Monthly Total Gross Income',
                             data: dataResult.totals,
                             fill: false,
                             borderColor: 'rgb(209, 31, 31)',
@@ -129,7 +129,7 @@ $(document).ready(function() {
                     data: {
                         labels: dataResult.dates,
                         datasets: [{
-                            label: 'Till Monthly Income Movie Shop',
+                            label: 'Monthly Total Till Income',
                             data: dataResult.till,
                             fill: false,
                             borderColor: 'rgb(20, 20, 243)',
@@ -148,7 +148,7 @@ $(document).ready(function() {
                     data: {
                         labels: dataResult.dates,
                         datasets: [{
-                            label: 'Cash Monthly Income Movie Shop',
+                            label: 'Monthly Total Cash Income',
                             data: dataResult.cash,
                             fill: false,
                             borderColor: 'rgb(243, 239, 20)',

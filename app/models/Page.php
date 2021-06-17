@@ -408,9 +408,9 @@ class Page
         //total income
         $TotalIncome = $cyberTotal + $shopTotal + $psTotal;
         //total expense
-        $query6 = 'SELECT SUM(expense_cost) AS exp_total FROM dr_expenses WHERE date_created=?';
+        $query6 = 'SELECT SUM(expense_cost) AS exp_total FROM dr_expenses WHERE date_created=? GROUP BY date_created';
 
-        $binders6 = "i";
+        $binders6 = "s";
 
         $parameters6 = array($data['date']);
 

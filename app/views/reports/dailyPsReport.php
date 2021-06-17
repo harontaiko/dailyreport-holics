@@ -72,7 +72,12 @@
                 <td></td>
                 <td></td>
                 <td>Total Today: <?php
-                     echo number_format(getPsTotalA(date('Y-m-d', time()), $data['db'])); ?></td>
+                   if((getPsTotal(date('Y-m-d', time()), $data['db']))){
+                    echo 'N/A';
+                   }else{
+                    echo number_format(getPsTotal(date('Y-m-d', time()), $data['db']));
+                   }
+                     ?></td>
             </tr>
         </tfoot>
     </table>

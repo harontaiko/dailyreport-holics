@@ -63,8 +63,9 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td>Annual total: <?php
-                     echo number_format(getPsTotalYear($data['db'])); ?></td>
+                <td>Annual total:<?php
+                    echo number_format(getPsTotalYear($data['db']));
+                     ?></td>
             </tr>
         </tfoot>
     </table>

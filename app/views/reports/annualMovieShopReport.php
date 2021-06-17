@@ -64,7 +64,8 @@
                 <td></td>
                 <td></td>
                 <td>Annual total: <?php
-                     echo number_format(getMovieshopTotalYear($data['db'])); ?></td>
+                    echo number_format(getMovieShopTotalYear($data['db']));            
+                     ?></td>
             </tr>
         </tfoot>
     </table>

@@ -7,6 +7,8 @@
     <?php include_once APPROOT .'/views/datesfilter/CyberReport.php'; ?>
     <?php elseif($data['shopname'] == "ps"): ?>
     <?php include_once APPROOT .'/views/datesfilter/PsReport.php'; ?>
+    <?php elseif($data['shopname'] == "total"): ?>
+    <?php include_once APPROOT .'/views/datesfilter/NetReport.php'; ?>
     <?php endif ?>
 </body>
 <noscript>

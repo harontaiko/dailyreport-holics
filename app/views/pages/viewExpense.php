@@ -31,22 +31,23 @@
             <ul>
                 <li>
                     <a href="">
-                        <i class="glyphicon glyphicon-plus"></i>
+
                     </a>
                 </li>
                 <li>
                     <a href="">
-                        <i class="glyphicon glyphicon-plus"></i>
+
                     </a>
                 </li>
                 <li>
-                    <a href="">
-                        <i class="fas fa-print"></i>
-                    </a>
+                    <button title="print report" type="button" class="print-invoice" id="custom-print-report"
+                        onClick="printJS({ printable: 'table-expense-i', type: 'html', style: '.table-expense-2{border:0;margin-bottom:0;padding-bottom:0}.table-expense-2 tbody tr td{background:#fff;border-bottom:1px solid #ebecef;font-size:14px;color:#64687b;}.table-expense-2 thead tr:first-child th{border-top:1px solid red}.table-expense-2 thead tr th{background:#f2f3f6;padding:10px 10px 10px 10px;font-family:Arial;font-size:10px;text-transform:uppercase;color:#767d94;font-weight:bold}.table-expense-2>thead:first-child>tr:first-child>th{border-top:1px solid #fff}.table-expense-2>thead>tr>th{border-bottom:1px solid #dbdce2}#table-expense-i header:after{clear:both}#table-expense-i header span{padding:10px;display:block;float:left}#table-expense-i header ul{display:block;padding:0;margin:0;float:right;border-left:1px solid #fff}#table-expense-i header ul li{float:left;border-left:1px solid #dbdce2;border-right:1px solid #fff}#table-expense-i header ul li:last-child{border-right:0}#table-expense-i header ul li a{display:block;padding:10px;color:#535767}#table-expense-i header ul li a:hover{color:#222}'})">
+                        <i class=" fas fa-print"></i>
+                    </button>
                 </li>
             </ul>
         </header>
-        <table class="table-expense-2">
+        <table class="table-expense-2" id="table-expense-2">
             <thead>
                 <tr>
                     <th>
@@ -80,7 +81,7 @@
                     </td>
                     <td>
                         <a
-                            href="#!"><?php echo isset($exp2['expense_cost']) ? number_format($exp2['expense_cost']) : 'N/A'; ?></a>
+                            href="#!"><?php echo isset($exp2['expense_cost']) ? number_format($exp2['expense_cost']).'/=' : 'N/A'; ?></a>
                     </td>
                     <td>
                         <span
@@ -88,7 +89,7 @@
                     </td>
                     <td>
                         <span
-                            class="label label-success"><?php echo isset($exp2['time_created']) ? $exp2['time_created'] : 'N/A'; ?></span>
+                            class="label label-success"><?php echo isset($exp2['time_created']) ? date('h:i:s A',strtotime($exp2['time_created'])) : 'N/A'; ?></span>
                     </td>
                 </tr>
                 <?php endwhile; ?>
@@ -96,7 +97,7 @@
         </table>
     </div>
     <h1>
-        Total:<?php echo number_format(getExpenseTotal($data['date'], $data['db'])); ?>
+        Total:<?php echo number_format(getExpenseTotal($data['date'], $data['db'])).'/='; ?>
     </h1>
 </body>
 

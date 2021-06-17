@@ -9,20 +9,22 @@
         <select name="filter-expense" id="filter-expense" class="dr_input">
             <option value="default">Filter</option>
             <option value="today">Today</option>
-            <option value="this-month">This month</option>
-            <option value="this-year">This year</option>
+            <option value="week">Weekly</option>
+            <option value="month">Monthly</option>
+            <option value="year">This year</option>
         </select>
         <section class="todo">
             <form id="filter-movie-date">
                 <fieldset>
                     <label for="from">from</label>
-                    <input type="date" name="nom" class="dr_input" placeholder="From">
+                    <input type="date" id="date-1" name="nom" class="dr_input" placeholder="From">
                 </fieldset>
 
                 <fieldset>
                     <label for="to">to</label>
-                    <input type="date" name="prenom" class="dr_input" placeholder="To">
+                    <input type="date" id="date-2" name="prenom" class="dr_input" placeholder="To">
                 </fieldset>
+                <button type="button" class="get-repo-btw" id="get-repo-btw">get</button>
             </form>
         </section>
         <table class="rwd-table">

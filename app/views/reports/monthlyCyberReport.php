@@ -64,7 +64,8 @@
                 <td></td>
                 <td></td>
                 <td>Monthly total: <?php
-             echo number_format(getCyberTotalMonth($data['db'])); ?></td>
+                    echo number_format(getCyberTotalMonth($data['db']));  
+                     ?></td>
             </tr>
         </tfoot>
     </table>

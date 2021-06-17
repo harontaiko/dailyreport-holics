@@ -869,6 +869,568 @@ function saleRecord($db, $date)
       return false;
   }
 }
+/////////////////////////////////////////////////////////////////////expenses
+function getExpenseAllDate($date, $db)
+{
+  $query = 'SELECT * FROM dr_expenses WHERE date_created=?';
+
+  $binders="s";
+
+  $param = array($date);
+
+  $result = SelectCond($query, $binders, $param, $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getExpenseTotalA($date, $db)
+{
+  $query = 'SELECT SUM(expense_cost) AS expense_net FROM dr_expenses WHERE date_created=? GROUP BY date_created';
+
+  $binders="s";
+
+  $param = array($date);
+
+  $result = SelectCond($query, $binders, $param, $db);
+
+  $row = $result->get_result();
+
+  $rowItem = $row->fetch_assoc();
+
+  $totalmovie = isset($rowItem['expense_net']) ? $rowItem['expense_net'] : 'N/A';
+
+  try {
+      return $totalmovie;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getExpenseAllWeekNet($db)
+{
+  $query = 'SELECT DATE_FORMAT(date_created, "%U"), SUM(cash) AS total_cash, SUM(till) AS total_till, SUM(cash + till) AS net_total FROM dr_playstation WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 WEEK) GROUP BY DATE_FORMAT(date_created, "%U")';
+
+  $result = SelectCondFree($query, 'dr_playstation', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getExpenseTotalWeek($db)
+{
+  $query = 'SELECT SUM(expense_cost) AS expense_net FROM dr_expenses WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 WEEK)';
+
+  $result = SelectCondFree($query, 'dr_expenses', $db);
+
+  $row = $result->get_result();
+
+  $rowItem = $row->fetch_assoc();
+
+  $totalmovie = isset($rowItem['expense_net']) ? $rowItem['expense_net'] : 'N/A';
+
+  try {
+      return $totalmovie;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getExpenseDatesWeek($db)
+{
+  $query = 'SELECT DATE_FORMAT(date_created, "%U") FROM dr_expenses WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 WEEK) GROUP BY DATE_FORMAT(date_created, "%U")';
+
+  $result = SelectCondFree($query, 'dr_expenses', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getExpenseThisWeek($db)
+{
+  $query = 'SELECT SUM(expense_cost) AS ps_net FROM dr_playstation WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 WEEK) GROUP BY DATE_FORMAT(date_created, "%U")';
+
+  $result = SelectCondFree($query, 'dr_playstation', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+
+function getExpenseAllMonthNet($db)
+{
+  $query = 'SELECT DATE_FORMAT(date_created, "%M"), SUM(expense_cost) AS expense_net FROM dr_expenses WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 MONTH) GROUP BY DATE_FORMAT(date_created, "%M")';
+
+  $result = SelectCondFree($query, 'dr_expenses', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getExpenseTotalMonth($db)
+{
+  $query = 'SELECT SUM(expense_cost) AS expense_net FROM dr_expenses WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 MONTH)';
+
+  $result = SelectCondFree($query, 'dr_expenses', $db);
+
+  $row = $result->get_result();
+
+  $rowItem = $row->fetch_assoc();
+
+  $totalmovie = isset($rowItem['expense_net']) ? $rowItem['expense_net'] : 'N/A';
+
+  try {
+      return $totalmovie;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getExpenseDatesMonth($db)
+{
+  $query = 'SELECT DATE_FORMAT(date_created, "%M") FROM dr_expenses WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 MONTH) GROUP BY DATE_FORMAT(date_created, "%M")';
+
+  $result = SelectCondFree($query, 'dr_expenses', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getExpenseGrossMonth($db)
+{
+  $query = 'SELECT SUM(expense_cost) AS expense_net FROM dr_expenses WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 MONTH) GROUP BY DATE_FORMAT(date_created, "%M")';
+
+  $result = SelectCondFree($query, 'dr_expenses', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+
+function getExpenseAllYearNet($db)
+{
+  $query = 'SELECT DATE_FORMAT(date_created, "%Y"), SUM(expense_cost) AS expense_net FROM dr_expenses WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 YEAR) GROUP BY DATE_FORMAT(date_created, "%Y")';
+
+  $result = SelectCondFree($query, 'dr_expenses', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getExpenseTotalYear($db)
+{
+  $query = 'SELECT SUM(expense_cost) AS expense_net FROM dr_expenses WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 YEAR)';
+
+  $result = SelectCondFree($query, 'dr_expenses', $db);
+
+  $row = $result->get_result();
+
+  $rowItem = $row->fetch_assoc();
+
+  $totalmovie = isset($rowItem['expense_net']) ? $rowItem['expense_net'] : 'N/A';
+
+  try {
+      return $totalmovie;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getExpenseDatesYear($db)
+{
+  $query = 'SELECT DATE_FORMAT(date_created, "%Y") FROM dr_expenses WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 YEAR) GROUP BY DATE_FORMAT(date_created, "%Y")';
+
+  $result = SelectCondFree($query, 'dr_expenses', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getExpenseGrossYear($db)
+{
+  $query = 'SELECT SUM(expense_cost) AS expense_net FROM dr_expenses WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 YEAR) GROUP BY DATE_FORMAT(date_created, "%Y")';
+
+  $result = SelectCondFree($query, 'dr_expenses', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+
+////////////////////////////////////////////////////////////////////NET TOTAL
+function getNetAllDate($date, $db)
+{
+  $query = 'SELECT * FROM dr_nettotal WHERE date_created=?';
+
+  $binders="s";
+
+  $param = array($date);
+
+  $result = SelectCond($query, $binders, $param, $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getNetTotalA($date, $db)
+{
+  $query = 'SELECT totalincome AS total_income FROM dr_nettotal WHERE date_created=?';
+
+  $binders="s";
+
+  $param = array($date);
+
+  $result = SelectCond($query, $binders, $param, $db);
+
+  $row = $result->get_result();
+
+  $rowItem = $row->fetch_assoc();
+
+  $totalincome = isset($rowItem['total_income']) ? $rowItem['total_income'] : 'N/A';
+
+  try {
+      return $totalincome;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getNetAllWeekNet($db)
+{
+  $query = 'SELECT DATE_FORMAT(date_created, "%U"), SUM(cash_sales) AS total_cash, SUM(till_sales) AS total_till, SUM(totalincome) AS net_total FROM dr_nettotal WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 WEEK) GROUP BY DATE_FORMAT(date_created, "%U")';
+
+  $result = SelectCondFree($query, 'dr_nettotal', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getNetTotalWeek($db)
+{
+  $query = 'SELECT SUM(totalincome) AS net_total FROM dr_nettotal WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 WEEK)';
+
+  $result = SelectCondFree($query, 'dr_nettotal', $db);
+
+  $row = $result->get_result();
+
+  $rowItem = $row->fetch_assoc();
+
+  $totalweekly = isset($rowItem['net_total']) ? $rowItem['net_total'] : 'N/A';
+
+  try {
+      return $totalweekly;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getNetDatesWeek($db)
+{
+  $query = 'SELECT DATE_FORMAT(date_created, "%U") FROM dr_nettotal WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 WEEK) GROUP BY DATE_FORMAT(date_created, "%U")';
+
+  $result = SelectCondFree($query, 'dr_nettotal', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getNetTillWeek($db)
+{
+  $query = 'SELECT SUM(till_sales) AS net_till FROM dr_nettotal WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 WEEK) GROUP BY DATE_FORMAT(date_created, "%U")';
+
+  $result = SelectCondFree($query, 'dr_nettotal', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getNetCashWeek($db)
+{
+  $query = 'SELECT SUM(cash_sales) AS cash_total FROM dr_nettotal WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 WEEK) GROUP BY DATE_FORMAT(date_created, "%U")';
+
+  $result = SelectCondFree($query, 'dr_nettotal', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getNetGrossWeek($db)
+{
+  $query = 'SELECT SUM(totalincome) AS total_net FROM dr_nettotal WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 WEEK) GROUP BY DATE_FORMAT(date_created, "%U")';
+
+  $result = SelectCondFree($query, 'dr_nettotal', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getNetAllMonthNet($db)
+{
+  $query = 'SELECT DATE_FORMAT(date_created, "%M"), SUM(cash_sales) AS total_cash, SUM(till_sales) AS total_till, SUM(totalincome) AS net_total FROM dr_nettotal WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 MONTH) GROUP BY DATE_FORMAT(date_created, "%M")';
+
+  $result = SelectCondFree($query, 'dr_nettotal', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getNetTotalMonth($db)
+{
+  $query = 'SELECT SUM(totalincome) AS totalnet FROM dr_nettotal WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 MONTH)';
+
+  $result = SelectCondFree($query, 'dr_nettotal', $db);
+
+  $row = $result->get_result();
+
+  $rowItem = $row->fetch_assoc();
+
+  $totalmovie = isset($rowItem['totalnet']) ? $rowItem['totalnet'] : 'N/A';
+
+  try {
+      return $totalmovie;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getNetDatesMonth($db)
+{
+  $query = 'SELECT DATE_FORMAT(date_created, "%M") FROM dr_nettotal WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 MONTH) GROUP BY DATE_FORMAT(date_created, "%M")';
+
+  $result = SelectCondFree($query, 'dr_nettotal', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getNetGrossMonth($db)
+{
+  $query = 'SELECT SUM(totalincome) AS totalnet FROM dr_nettotal WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 MONTH) GROUP BY DATE_FORMAT(date_created, "%M")';
+
+  $result = SelectCondFree($query, 'dr_nettotal', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getNetCashMonth($db)
+{
+  $query = 'SELECT SUM(cash_sales) AS cash_net FROM dr_nettotal WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 MONTH) GROUP BY DATE_FORMAT(date_created, "%M")';
+
+  $result = SelectCondFree($query, 'dr_nettotal', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getNetTillMonth($db)
+{
+  $query = 'SELECT SUM(till_sales) AS till_net FROM dr_nettotal WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 MONTH) GROUP BY DATE_FORMAT(date_created, "%M")';
+
+  $result = SelectCondFree($query, 'dr_nettotal', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getNetAllYearNet($db)
+{
+  $query = 'SELECT DATE_FORMAT(date_created, "%Y"), SUM(cash_sales) AS total_cash, SUM(till_sales) AS total_till, SUM(totalincome) AS net_total FROM dr_nettotal WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 YEAR) GROUP BY DATE_FORMAT(date_created, "%Y")';
+
+  $result = SelectCondFree($query, 'dr_nettotal', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getNetTotalYear($db)
+{
+  $query = 'SELECT SUM(totalincome) AS total_income FROM dr_nettotal WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 YEAR)';
+
+  $result = SelectCondFree($query, 'dr_nettotal', $db);
+
+  $row = $result->get_result();
+
+  $rowItem = $row->fetch_assoc();
+
+  $totalmovie = isset($rowItem['total_income']) ? $rowItem['total_income'] : 'N/A';
+
+  try {
+      return $totalmovie;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getNetDatesYear($db)
+{
+  $query = 'SELECT DATE_FORMAT(date_created, "%Y") FROM dr_nettotal WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 YEAR) GROUP BY DATE_FORMAT(date_created, "%Y")';
+
+  $result = SelectCondFree($query, 'dr_nettotal', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getNetGrossYear($db)
+{
+  $query = 'SELECT SUM(totalincome) AS totalincome FROM dr_nettotal WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 YEAR) GROUP BY DATE_FORMAT(date_created, "%Y")';
+
+  $result = SelectCondFree($query, 'dr_nettotal', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getNetTillYear($db)
+{
+  $query = 'SELECT SUM(till_sales) AS net_till FROM dr_nettotal WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 YEAR) GROUP BY DATE_FORMAT(date_created, "%Y")';
+
+  $result = SelectCondFree($query, 'dr_nettotal', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getNetCashYear($db)
+{
+  $query = 'SELECT SUM(cash_sales) AS net_cash FROM dr_nettotal WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 YEAR) GROUP BY DATE_FORMAT(date_created, "%Y")';
+
+  $result = SelectCondFree($query, 'dr_nettotal', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
 ///////////////////////////////////////////////////////////////////Playstation
 function getPsAllDate($date, $db)
 {
@@ -1917,6 +2479,22 @@ function getFileteredReportBetween($from, $to, $shopname, $db)
     } 
   }else if($shopname == "ps"){
     $query = 'SELECT cash, till, created_by, creator_ip, date_created FROM dr_playstation WHERE date_created BETWEEN ? AND ?';
+
+    $binders ="ss";
+
+    $params = array($from, $to);
+
+    $result = SelectCond($query, $binders, $params, $db);
+  
+    $row = $result->get_result();
+  
+    try {
+        return $row;
+    } catch (Error $e) {
+        return false;
+    } 
+  }else if($shopname == "total"){
+    $query = 'SELECT * FROM dr_nettotal WHERE date_created BETWEEN ? AND ?';
 
     $binders ="ss";
 
