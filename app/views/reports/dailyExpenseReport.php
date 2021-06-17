@@ -1,4 +1,4 @@
-<button class="previous-report" onclick="location.replace(`http://localhost/dailyreport-holics/pages/cyber`);"
+<button class="previous-report" onclick="location.replace(`http://localhost/dailyreport-holics/pages/expenses`);"
     title="back"><i title="back" class="fas fa-arrow-left"></i></button>
 <button title="print report" type="button" id="custom-print-report"
     onClick="printJS({ printable: 'container-out-report', type: 'html', style: '.container-out-report td:nth-child(2){border-color: #f1f1f1; border-right: 1px solid #ddd;background: white;}.container-out-report td:nth-child(1){border-color: #f1f1f1; border-right: 1px solid #ddd;background: white;}.container-out-report td:nth-child(2){border-color: #f1f1f1; border-right: 1px solid #ddd;background: white;}.container-out-report td:nth-child(3){border-color: #f1f1f1; border-right: 1px solid #ddd;background: white;}.container-out-report td:nth-child(2){border-color: #f1f1f1; border-right: 1px solid #ddd;background: white;}.container-out-report td:nth-child(4){border-color: #f1f1f1; border-right: 1px solid #ddd;background: white;}.container-out-report td:nth-child(5){border-color: #f1f1f1; border-right: 1px solid #ddd;background: white;} .container-out-report tr:nth-child(1){border-color: #f1f1f1; border-bottom: 1px solid #ddd;background: white;}'})">
@@ -71,12 +71,8 @@
                 <td></td>
                 <td>Total Today:
                     <?php
-                   if((getExpenseTotal(date('Y-m-d', time()), $data['db']))){
-                    echo 'N/A';
-                   }else{
                     echo number_format(getExpenseTotal(date('Y-m-d', time()), $data['db']));
-                   }
-                     ?>
+                    ?>
                 </td>
             </tr>
         </tfoot>
@@ -102,7 +98,7 @@
 //get Cyber report for today
 $(document).ready(function() {
     $.ajax({
-        url: `http://localhost/dailyreport-holics/pages/getCyberRepoToday`,
+        url: `http://localhost/dailyreport-holics/pages/getExpenseRepoToday`,
         type: "GET",
         dataType: "json",
         success: function(dataResult) {
@@ -116,12 +112,10 @@ $(document).ready(function() {
                 var pieChartReport = new Chart(pieChart, {
                     type: "pie",
                     data: {
-                        labels: ['cash', 'till', 'gross income'],
+                        labels: dataResult.labels,
                         datasets: [{
                             label: 'Cyber Income Distribution',
-                            data: [dataResult.movie.cash, dataResult.movie.till,
-                                dataResult.movie.total
-                            ],
+                            data: dataResult.cost,
                             backgroundColor: [
                                 'rgb(255, 99, 132)',
                                 'rgb(54, 162, 235)',

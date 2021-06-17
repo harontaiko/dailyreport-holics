@@ -72,11 +72,8 @@
                 <td></td>
                 <td></td>
                 <td>Total Today: <?php
-                   if((getMovieShopTotal(date('Y-m-d', time()), $data['db']))){
-                    echo 'N/A';
-                   }else{
                     echo number_format(getMovieShopTotal(date('Y-m-d', time()), $data['db']));
-                   }
+                   
                      ?></td>
             </tr>
         </tfoot>

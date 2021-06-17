@@ -869,6 +869,339 @@ function saleRecord($db, $date)
       return false;
   }
 }
+/////////////////////////////////////////////////////////////////////sales
+
+
+function getSalesAllDate($date, $db)
+{
+  $query = 'SELECT * FROM dr_sales WHERE date_created=?';
+
+  $binders="s";
+
+  $param = array($date);
+
+  $result = SelectCond($query, $binders, $param, $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getSalesTotalA($date, $db)
+{
+  $query = 'SELECT SUM(selling_price) AS sales_net FROM dr_sales WHERE date_created=?';
+
+  $binders="s";
+
+  $param = array($date);
+
+  $result = SelectCond($query, $binders, $param, $db);
+
+  $row = $result->get_result();
+
+  $rowItem = $row->fetch_assoc();
+
+  $totalmovie = isset($rowItem['sales_net']) ? $rowItem['sales_net'] : 'N/A';
+
+  try {
+      return $totalmovie;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+//top 2 sold items this week
+function getMostSoldItemsWeek($db)
+{
+  $query = 'SELECT sales_item, DATE_FORMAT(date_created, "%U"), selling_price FROM dr_sales WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 WEEK) GROUP BY sales_item ORDER BY COUNT(*) DESC LIMIT 2';
+
+  $result = SelectCondFree($query, 'dr_sales', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getSalesAllWeekNet($db)
+{
+  $query = 'SELECT DATE_FORMAT(date_created, "%U"), SUM(selling_price) AS selling, SUM(profit) AS sales_net FROM dr_sales WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 WEEK) GROUP BY DATE_FORMAT(date_created, "%U")';
+
+  $result = SelectCondFree($query, 'dr_sales', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getSalesTotalWeek($db)
+{
+  $query = 'SELECT SUM(selling_price) AS sales_net FROM dr_sales WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 WEEK)';
+
+  $result = SelectCondFree($query, 'dr_sales', $db);
+
+  $row = $result->get_result();
+
+  $rowItem = $row->fetch_assoc();
+
+  $totalmovie = isset($rowItem['sales_net']) ? $rowItem['sales_net'] : 'N/A';
+
+  try {
+      return $totalmovie;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getSalesDatesWeek($db)
+{
+  $query = 'SELECT DATE_FORMAT(date_created, "%U") FROM dr_sales WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 WEEK) GROUP BY DATE_FORMAT(date_created, "%U")';
+
+  $result = SelectCondFree($query, 'dr_sales', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+
+function getSalesProfitWeek($db)
+{
+  $query = 'SELECT SUM(profit) AS sales_net FROM dr_sales WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 WEEK) GROUP BY DATE_FORMAT(date_created, "%U")';
+
+  $result = SelectCondFree($query, 'dr_sales', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getSalesWeek($db)
+{
+  $query = 'SELECT SUM(selling_price) AS sales_net FROM dr_sales WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 WEEK) GROUP BY DATE_FORMAT(date_created, "%U")';
+
+  $result = SelectCondFree($query, 'dr_sales', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+
+//TOP 3 MOST SOLD ITEMS THIS MONTH 
+function getMostSoldItemsMonth($db)
+{
+  $query = 'SELECT sales_item, selling_price FROM dr_sales WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 MONTH) GROUP BY sales_item ORDER BY COUNT(*) DESC LIMIT 3';
+
+  $result = SelectCondFree($query, 'dr_sales', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getSalesAllMonthNet($db)
+{
+  $query = 'SELECT DATE_FORMAT(date_created, "%M"), SUM(profit) AS profit_net, SUM(selling_price) AS sales_net FROM dr_sales WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 MONTH) GROUP BY DATE_FORMAT(date_created, "%M")';
+
+  $result = SelectCondFree($query, 'dr_sales', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getSalesTotalMonth($db)
+{
+  $query = 'SELECT SUM(selling_price) AS sales_net FROM dr_sales WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 MONTH)';
+
+  $result = SelectCondFree($query, 'dr_sales', $db);
+
+  $row = $result->get_result();
+
+  $rowItem = $row->fetch_assoc();
+
+  $totalmovie = isset($rowItem['sales_net']) ? $rowItem['sales_net'] : 'N/A';
+
+  try {
+      return $totalmovie;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getSalesDatesMonth($db)
+{
+  $query = 'SELECT DATE_FORMAT(date_created, "%M") FROM dr_sales WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 MONTH) GROUP BY DATE_FORMAT(date_created, "%M")';
+
+  $result = SelectCondFree($query, 'dr_sales', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+
+function getSalesProfitMonth($db)
+{
+  $query = 'SELECT SUM(profit) AS sales_net FROM dr_sales WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 MONTH) GROUP BY DATE_FORMAT(date_created, "%M")';
+
+  $result = SelectCondFree($query, 'dr_sales', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getSalesMonth($db)
+{
+  $query = 'SELECT SUM(selling_price) AS sales_net FROM dr_sales WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 MONTH) GROUP BY DATE_FORMAT(date_created, "%M")';
+
+  $result = SelectCondFree($query, 'dr_sales', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getSalesAllYearNet($db)
+{
+  $query = 'SELECT DATE_FORMAT(date_created, "%Y"), SUM(selling_price) AS sales_net, SUM(profit) AS profit_net FROM dr_sales WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 YEAR) GROUP BY DATE_FORMAT(date_created, "%Y")';
+
+  $result = SelectCondFree($query, 'dr_sales', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getSalesTotalYear($db)
+{
+  $query = 'SELECT SUM(selling_price) AS sales_net FROM dr_sales WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 YEAR)';
+
+  $result = SelectCondFree($query, 'dr_sales', $db);
+
+  $row = $result->get_result();
+
+  $rowItem = $row->fetch_assoc();
+
+  $totalmovie = isset($rowItem['sales_net']) ? $rowItem['sales_net'] : 'N/A';
+
+  try {
+      return $totalmovie;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+//TOP 6 MOST SOLD ITEMS THIS YEAR 
+function getMostSoldItemsYear($db)
+{
+  $query = 'SELECT sales_item, selling_price FROM dr_sales WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 YEAR) GROUP BY sales_item ORDER BY COUNT(*) DESC LIMIT 6';
+
+  $result = SelectCondFree($query, 'dr_sales', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getSalesDatesYear($db)
+{
+  $query = 'SELECT DATE_FORMAT(date_created, "%Y") FROM dr_playstation WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 YEAR) GROUP BY DATE_FORMAT(date_created, "%Y")';
+
+  $result = SelectCondFree($query, 'dr_playstation', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+
+function getSalesProfitYear($db)
+{
+  $query = 'SELECT SUM(profit) AS sales_net FROM dr_sales WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 YEAR) GROUP BY DATE_FORMAT(date_created, "%Y")';
+
+  $result = SelectCondFree($query, 'dr_sales', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getSalesYear($db)
+{
+  $query = 'SELECT SUM(selling_price) AS sales_net FROM dr_sales WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 YEAR) GROUP BY DATE_FORMAT(date_created, "%Y")';
+
+  $result = SelectCondFree($query, 'dr_sales', $db);
+
+  $row = $result->get_result();
+
+  try {
+      return $row;
+  } catch (Error $e) {
+      return false;
+  } 
+}
 /////////////////////////////////////////////////////////////////////expenses
 function getExpenseAllDate($date, $db)
 {
@@ -914,9 +1247,9 @@ function getExpenseTotalA($date, $db)
 
 function getExpenseAllWeekNet($db)
 {
-  $query = 'SELECT DATE_FORMAT(date_created, "%U"), SUM(cash) AS total_cash, SUM(till) AS total_till, SUM(cash + till) AS net_total FROM dr_playstation WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 WEEK) GROUP BY DATE_FORMAT(date_created, "%U")';
+  $query = 'SELECT DATE_FORMAT(date_created, "%U"), SUM(expense_cost) AS expense_net FROM dr_expenses WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 WEEK) GROUP BY DATE_FORMAT(date_created, "%U")';
 
-  $result = SelectCondFree($query, 'dr_playstation', $db);
+  $result = SelectCondFree($query, 'dr_expenses', $db);
 
   $row = $result->get_result();
 
@@ -963,9 +1296,9 @@ function getExpenseDatesWeek($db)
 
 function getExpenseThisWeek($db)
 {
-  $query = 'SELECT SUM(expense_cost) AS ps_net FROM dr_playstation WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 WEEK) GROUP BY DATE_FORMAT(date_created, "%U")';
+  $query = 'SELECT SUM(expense_cost) AS expense_net FROM dr_expenses WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 WEEK) GROUP BY DATE_FORMAT(date_created, "%U")';
 
-  $result = SelectCondFree($query, 'dr_playstation', $db);
+  $result = SelectCondFree($query, 'dr_expenses', $db);
 
   $row = $result->get_result();
 
@@ -2509,6 +2842,39 @@ function getFileteredReportBetween($from, $to, $shopname, $db)
     } catch (Error $e) {
         return false;
     } 
+  }else if($shopname == "expense"){
+    $query = 'SELECT * FROM dr_expenses WHERE date_created BETWEEN ? AND ? ORDER BY date_created DESC';
+
+    $binders ="ss";
+
+    $params = array($from, $to);
+
+    $result = SelectCond($query, $binders, $params, $db);
+  
+    $row = $result->get_result();
+  
+    try {
+        return $row;
+    } catch (Error $e) {
+        return false;
+    }
+  }
+  else if($shopname == "sales"){
+    $query = 'SELECT * FROM dr_sales WHERE date_created BETWEEN ? AND ? ORDER BY date_created DESC';
+
+    $binders ="ss";
+
+    $params = array($from, $to);
+
+    $result = SelectCond($query, $binders, $params, $db);
+  
+    $row = $result->get_result();
+  
+    try {
+        return $row;
+    } catch (Error $e) {
+        return false;
+    }
   }
 }
 

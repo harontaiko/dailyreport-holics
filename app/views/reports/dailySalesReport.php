@@ -1,4 +1,4 @@
-<button class="previous-report" onclick="location.replace(`http://localhost/dailyreport-holics/pages/cyber`);"
+<button class="previous-report" onclick="location.replace(`http://localhost/dailyreport-holics/pages/sales`);"
     title="back"><i title="back" class="fas fa-arrow-left"></i></button>
 <button title="print report" type="button" id="custom-print-report"
     onClick="printJS({ printable: 'container-out-report', type: 'html', style: '.container-out-report td:nth-child(2){border-color: #f1f1f1; border-right: 1px solid #ddd;background: white;}.container-out-report td:nth-child(1){border-color: #f1f1f1; border-right: 1px solid #ddd;background: white;}.container-out-report td:nth-child(2){border-color: #f1f1f1; border-right: 1px solid #ddd;background: white;}.container-out-report td:nth-child(3){border-color: #f1f1f1; border-right: 1px solid #ddd;background: white;}.container-out-report td:nth-child(2){border-color: #f1f1f1; border-right: 1px solid #ddd;background: white;}.container-out-report td:nth-child(4){border-color: #f1f1f1; border-right: 1px solid #ddd;background: white;}.container-out-report td:nth-child(5){border-color: #f1f1f1; border-right: 1px solid #ddd;background: white;} .container-out-report tr:nth-child(1){border-color: #f1f1f1; border-bottom: 1px solid #ddd;background: white;}'})">
@@ -6,32 +6,35 @@
 </button>
 <section id="reports-tbl">
     <!--for demo wrap-->
-    <h1 id="report-title">Daily Cyber <span>Report</span></h1>
+    <h1 id="report-title">Daily Sales <span>Report</span></h1>
 
     <table class="responstable" id="responstable">
 
         <tr>
             <th>Date</th>
-            <th>Till income(Ksh)</th>
-            <th>Cash income(Ksh)</th>
-            <th>Net Total</th>
-            <th>Created by</th>
-            <th>Host Address</th>
+            <th>Item(name)</th>
+            <th>Bought(ksh)</th>
+            <th>Sold(ksh)</th>
+            <th>Net profit</th>
+            <th>Invoice</th>
         </tr>
 
         <?php 
                 
-                $m = getCyberAllDate(date('Y-m-d', time()), $data['db']);
+                $m = getSalesAllDate(date('Y-m-d', time()), $data['db']);
                 while($mv = $m->fetch_assoc()):    
                 ?>
         <tr>
             <td style="color: black;">
                 <?php echo date('Y-m-d', strtotime(date('Y-m-d', time()))); ?></td>
-            <td style="color: black;"><?php echo number_format($mv['cash']); ?></td>
-            <td style="color: black;"><?php echo number_format($mv['till']); ?></td>
-            <td style="color: black;"><?php echo number_format($mv['cash'] + $mv['till']); ?>
-            <td style="color: black;"><?php echo $mv['created_by']; ?>
-            <td style="color: black;"><?php echo $mv['creator_ip']; ?>
+            <td style="color: black;"><?php echo ($mv['sales_item']); ?></td>
+            <td style="color: black;"><?php echo number_format($mv['buying_price']); ?></td>
+            <td style="color: black;"><?php echo number_format($mv['selling_price']); ?>
+            <td style="color: black;"><?php echo number_format($mv['profit']); ?>
+            <td style="color: black;">
+                <a href="<?php echo URLROOT; ?>/pages/invoice/sale/<?php echo $mv['sales_id']; ?>"><i
+                        style="color: #111;" class="fas fa-file-invoice"></i></a>
+            </td>
             </td>
         </tr>
         <?php endwhile; ?>
@@ -39,29 +42,34 @@
 
 </section>
 <div class="container-out-report" id="container-out-report">
-    <h1 id="report-title">Daily Cyber <span>Report</span></h1>
+    <h1 id="report-title">Daily Sales <span>Report</span></h1>
     <table>
         <tr>
             <th>Date</th>
-            <th>Cash income(Ksh)</th>
-            <th>Till income(Ksh)</th>
-            <th>Net Total</th>
-            <th>Created by</th>
-            <th>Host Address</th>
+            <th>Item(name)</th>
+            <th>Bought(ksh)</th>
+            <th>Sold(ksh)</th>
+            <th>Net profit</th>
+            <th>Invoice</th>
         </tr>
 
         <?php 
                 
-                $m = getCyberAllDate(date('Y-m-d', time()), $data['db']);
+                $m = getSalesAllDate(date('Y-m-d', time()), $data['db']);
                 while($mv = $m->fetch_assoc()):    
                 ?>
         <tr>
-            <td><?php echo date('Y-m-d', strtotime(date('Y-m-d', time()))); ?></td>
-            <td><?php echo number_format($mv['cash']); ?></td>
-            <td><?php echo number_format($mv['till']); ?></td>
-            <td><?php echo number_format($mv['cash'] + $mv['till']); ?></td>
-            <td><?php echo $mv['created_by']; ?></td>
-            <td><?php echo $mv['creator_ip']; ?></td>
+            <td style="color: black;">
+                <?php echo date('Y-m-d', strtotime(date('Y-m-d', time()))); ?></td>
+            <td style="color: black;"><?php echo ($mv['sales_item']); ?></td>
+            <td style="color: black;"><?php echo number_format($mv['buying_price']); ?></td>
+            <td style="color: black;"><?php echo number_format($mv['selling_price']); ?>
+            <td style="color: black;"><?php echo number_format($mv['profit']); ?>
+            <td style="color: black;">
+                <a href="<?php echo URLROOT; ?>/pages/invoice/sale/<?php echo $mv['sales_id']; ?>"><i
+                        style="color: #111;" class="fas fa-file-invoice"></i></a>
+            </td>
+            </td>
         </tr>
         <?php endwhile; ?>
         <tfoot>
@@ -71,10 +79,8 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td>Total Today:
-                    <?php
-                    echo number_format(getCyberTotal(date('Y-m-d', time()), $data['db']));    
-                     ?>
+                <td>Total Sales Today:
+                    <?php echo number_format(getSalesTotalA(date('Y-m-d', time()), $data['db'])) ?>
                 </td>
             </tr>
         </tfoot>
@@ -100,7 +106,7 @@
 //get Cyber report for today
 $(document).ready(function() {
     $.ajax({
-        url: `http://localhost/dailyreport-holics/pages/getCyberRepoToday`,
+        url: `http://localhost/dailyreport-holics/pages/getSalesRepoToday`,
         type: "GET",
         dataType: "json",
         success: function(dataResult) {
@@ -114,12 +120,10 @@ $(document).ready(function() {
                 var pieChartReport = new Chart(pieChart, {
                     type: "pie",
                     data: {
-                        labels: ['cash', 'till', 'gross income'],
+                        labels: dataResult.labels,
                         datasets: [{
-                            label: 'Cyber Income Distribution',
-                            data: [dataResult.movie.cash, dataResult.movie.till,
-                                dataResult.movie.total
-                            ],
+                            label: 'Daily Sales Distribution',
+                            data: dataResult.cost,
                             backgroundColor: [
                                 'rgb(255, 99, 132)',
                                 'rgb(54, 162, 235)',

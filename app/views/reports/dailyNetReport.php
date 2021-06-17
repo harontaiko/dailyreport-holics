@@ -73,11 +73,8 @@
                 <td></td>
                 <td>Net Total Today:
                     <?php
-                   if((getNetTotalA(date('Y-m-d', time()), $data['db']))){
-                    echo 'N/A';
-                   }else{
                     echo number_format(getNetTotalA(date('Y-m-d', time()), $data['db']));
-                   }
+                   
                      ?>
                 </td>
             </tr>

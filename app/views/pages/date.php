@@ -9,6 +9,10 @@
     <?php include_once APPROOT .'/views/datesfilter/PsReport.php'; ?>
     <?php elseif($data['shopname'] == "total"): ?>
     <?php include_once APPROOT .'/views/datesfilter/NetReport.php'; ?>
+    <?php elseif($data['shopname'] == "expense"): ?>
+    <?php include_once APPROOT .'/views/datesfilter/ExpenseReport.php'; ?>
+    <?php elseif($data['shopname'] == "sales"): ?>
+    <?php include_once APPROOT .'/views/datesfilter/SalesReport.php'; ?>
     <?php endif ?>
 </body>
 <noscript>

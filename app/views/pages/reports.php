@@ -14,6 +14,8 @@
     <?php include_once APPROOT .'/views/reports/dailyNetReport.php'; ?>
     <?php elseif($data['shopname'] == "expense"): ?>
     <?php include_once APPROOT .'/views/reports/dailyExpenseReport.php'; ?>
+    <?php elseif($data['shopname'] == "sales"): ?>
+    <?php include_once APPROOT .'/views/reports/dailySalesReport.php'; ?>
     <?php endif ?>
     <?php elseif($data['reportdate'] == "week"): ?>
     <?php if($data['shopname'] =="movie"): ?>
@@ -26,6 +28,8 @@
     <?php include_once APPROOT .'/views/reports/weeklyNetReport.php'; ?>
     <?php elseif($data['shopname'] == "expense"): ?>
     <?php include_once APPROOT .'/views/reports/weeklyExpenseReport.php'; ?>
+    <?php elseif($data['shopname'] == "sales"): ?>
+    <?php include_once APPROOT .'/views/reports/weeklySalesReport.php'; ?>
     <?php endif ?>
     <?php elseif($data['reportdate'] == "month"): ?>
     <?php if($data['shopname'] =="movie"): ?>
@@ -38,6 +42,8 @@
     <?php include_once APPROOT .'/views/reports/monthlyNetReport.php'; ?>
     <?php elseif($data['shopname'] == "expense"): ?>
     <?php include_once APPROOT .'/views/reports/monthlyExpenseReport.php'; ?>
+    <?php elseif($data['shopname'] == "sales"): ?>
+    <?php include_once APPROOT .'/views/reports/monthlySalesReport.php'; ?>
     <?php endif ?>
     <?php elseif($data['reportdate'] == "year"): ?>
     <?php if($data['shopname'] =="movie"): ?>
@@ -48,8 +54,10 @@
     <?php include_once APPROOT .'/views/reports/annualPsReport.php'; ?>
     <?php elseif($data['shopname'] == "total"): ?>
     <?php include_once APPROOT .'/views/reports/annualNetReport.php'; ?>
-    <?php elseif($data['shopname'] == "total"): ?>
+    <?php elseif($data['shopname'] == "expense"): ?>
     <?php include_once APPROOT .'/views/reports/annualExpenseReport.php'; ?>
+    <?php elseif($data['shopname'] == "sales"): ?>
+    <?php include_once APPROOT .'/views/reports/annualSalesReport.php'; ?>
     <?php endif ?>
     <?php elseif($data['reportdate'] == ""): ?>
     <?php endif ?>

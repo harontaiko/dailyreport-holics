@@ -5,7 +5,7 @@ while($mv2 = $mv->fetch_assoc()){
     array_push($arr, $mv2);
 } 
 ?>
-<button title="print report" type="button" class="print-invoice" id="custom-print-report"
+<button title="print invoice" type="button" class="print-invoice" id="custom-print-report"
     onClick="printJS({ printable: 'this-current-invoice', type: 'html', style: '      .company-name {font-size: 25px;text-align: center;font-weight: bold;}   .company-heading {font-size: 17px;text-align: center;}.company-image {position: relative;}.company-image img {float: left;top: 0px;left: 0px;right: 0px;bottom: 0px;width: 150px;position: absolute;}'})">
     <i class=" fas fa-print"></i>
 </button>

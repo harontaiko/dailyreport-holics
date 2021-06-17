@@ -1446,4 +1446,334 @@ class Pages extends Controller
       die();
     }
   }
+
+  public function getExpenseRepoToday()
+  {
+    if($_SERVER['REQUEST_METHOD']=='GET'){
+      $data = [
+        'date' => date('Y-m-d', time())
+      ];
+      $db = $this->pageModel->getDatabaseConnection();
+      $mv = getExpenseAllDate($data['date'], $db);
+      if($mv){
+        //expense labels
+        $arrlabels = array();
+        while( $mv5 = $mv->fetch_assoc()){
+          $expenselables = $mv5['expense_item'];
+          array_push($arrlabels,$expenselables);
+        }
+        //expense matching costs
+        $mv2 = getExpenseAllDate($data['date'], $db);
+        $arrcosts = array();
+        while($mv6 = $mv2->fetch_assoc()){
+          $expensecosts = $mv6['expense_cost'];
+          array_push($arrcosts, $expensecosts);
+        }
+        echo json_encode(array("statusCode"=>200, 'labels'=>$arrlabels, 'cost'=>$arrcosts));
+      }else{
+        echo json_encode(array("statusCode"=>317));
+      }
+    }else{
+      http_response_code(404);
+      include('../app/404.php');
+      die();
+    }
+  }
+
+  public function getExpenseRepoWeek()
+  {
+    if($_SERVER['REQUEST_METHOD']=='GET'){
+      $db = $this->pageModel->getDatabaseConnection();
+      $mv = getExpenseDatesWeek($db);
+      if($mv){
+        $arr = array();
+        while($mv2 = $mv->fetch_assoc()){
+          $dates = $mv2['DATE_FORMAT(date_created, "%U")'];
+          array_push($arr, 'week '.$dates);
+        }
+
+        $totalweek = getExpenseThisWeek($db);
+        $arrweek = array();
+        while( $mv3 = $totalweek->fetch_assoc()){
+          $weekexp = $mv3['expense_net'];
+          array_push($arrweek,$weekexp);
+        }
+          
+        echo json_encode(array("statusCode"=>200, 'weeks'=>$arr, 'expense'=>$arrweek,));
+      }else{
+        echo json_encode(array("statusCode"=>317));
+      }
+    }else{
+      http_response_code(404);
+      include('../app/404.php');
+      die();
+    }
+  }
+
+  public function getExpenseRepoMonth()
+  {
+    if($_SERVER['REQUEST_METHOD']=='GET'){
+      $db = $this->pageModel->getDatabaseConnection();
+      $mv = getExpenseDatesMonth($db);
+      if($mv){
+        $arr = array();
+        while($mv2 = $mv->fetch_assoc()){
+          $dates = $mv2['DATE_FORMAT(date_created, "%M")'];
+          array_push($arr, $dates);
+        }
+
+        $totalmonth = getExpenseGrossMonth($db);
+        $arrmonth = array();
+        while( $mv3 = $totalmonth->fetch_assoc()){
+          $monthexp = $mv3['expense_net'];
+          array_push($arrmonth,$monthexp);
+        }
+          
+        echo json_encode(array("statusCode"=>200, 'dates'=>$arr, 'expense'=>$arrmonth,));
+      }else{
+        echo json_encode(array("statusCode"=>317));
+      }
+    }else{
+      http_response_code(404);
+      include('../app/404.php');
+      die();
+    }
+  }
+
+  public function getExpenseRepoYear()
+  {
+    if($_SERVER['REQUEST_METHOD']=='GET'){
+      $db = $this->pageModel->getDatabaseConnection();
+      $mv = getExpenseDatesYear($db);
+      if($mv){
+        $arr = array();
+        while($mv2 = $mv->fetch_assoc()){
+          $dates = $mv2['DATE_FORMAT(date_created, "%Y")'];
+          array_push($arr, $dates);
+        }
+
+        $totalyear = getExpenseGrossYear($db);
+        $arryear = array();
+        while( $mv3 = $totalyear->fetch_assoc()){
+          $yearexp = $mv3['expense_net'];
+          array_push($arryear,$yearexp);
+        }
+          
+        echo json_encode(array("statusCode"=>200, 'years'=>$arr, 'expense'=>$arryear,));
+      }else{
+        echo json_encode(array("statusCode"=>317));
+      }
+    }else{
+      http_response_code(404);
+      include('../app/404.php');
+      die();
+    }
+  }
+
+  public function getSalesRepoToday()
+  {
+    if($_SERVER['REQUEST_METHOD']=='GET'){
+      $data = [
+        'date' => date('Y-m-d', time())
+      ];
+      $db = $this->pageModel->getDatabaseConnection();
+      $mv = getSalesAllDate($data['date'], $db);
+      if($mv){
+        //expense labels
+        $arrlabels = array();
+        while( $mv5 = $mv->fetch_assoc()){
+          $expenselables = $mv5['sales_item'];
+          array_push($arrlabels,$expenselables);
+        }
+        //expense matching costs
+        $mv2 = getSalesAllDate($data['date'], $db);
+        $arrcosts = array();
+        while($mv6 = $mv2->fetch_assoc()){
+          $expensecosts = $mv6['selling_price'];
+          array_push($arrcosts, $expensecosts);
+        }
+        echo json_encode(array("statusCode"=>200, 'labels'=>$arrlabels, 'cost'=>$arrcosts));
+      }else{
+        echo json_encode(array("statusCode"=>317));
+      }
+    }else{
+      http_response_code(404);
+      include('../app/404.php');
+      die();
+    }
+  }
+
+  public function getSalesRepoWeek()
+  {
+    if($_SERVER['REQUEST_METHOD']=='GET'){
+      $db = $this->pageModel->getDatabaseConnection();
+      $mv = getMostSoldItemsWeek($db);
+      if($mv){
+        $arr = array();
+        while($mv2 = $mv->fetch_assoc()){
+          $dates = $mv2['sales_item'];
+          array_push($arr, $dates);
+        }
+
+        $totalweek = getMostSoldItemsWeek($db);
+        $arrweek = array();
+        while( $mv3 = $totalweek->fetch_assoc()){
+          $weekexp = $mv3['selling_price'];
+          array_push($arrweek,$weekexp);
+        }
+
+        $weeksales = getSalesAllWeekNet($db);
+        $arrsales = array();
+        while( $mv4 = $weeksales->fetch_assoc()){
+          $weeksale = $mv4['selling'];
+          array_push($arrsales,$weeksale);
+        }
+
+        $weekdates = getSalesAllWeekNet($db);
+        $arrdates = array();
+        while( $mv5 = $weekdates->fetch_assoc()){
+          $weekdate = $mv5['DATE_FORMAT(date_created, "%U")'];
+          array_push($arrdates,$weekdate);
+        }
+
+        $weekprofits = getSalesProfitWeek($db);
+        $arrprofits = array();
+        while( $mv6 = $weekprofits->fetch_assoc()){
+          $weekpr = $mv6['sales_net'];
+          array_push($arrprofits,$weekpr);
+        }
+
+        $weeklysales = getSalesWeek($db);
+        $arrweekly = array();
+        while( $mv7 = $weeklysales->fetch_assoc()){
+          $weekly = $mv7['sales_net'];
+          array_push($arrweekly,$weekly);
+        }
+
+        echo json_encode(array("statusCode"=>200, 'labels'=>$arr, 'cost'=>$arrweek, 'weeks'=>$arrdates, 'sales'=>$arrweekly, 'profits'=>$arrprofits));
+      }else{
+        echo json_encode(array("statusCode"=>317));
+      }
+    }else{
+      http_response_code(404);
+      include('../app/404.php');
+      die();
+    }
+  }
+
+  public function getSalesRepoMonth()
+  {
+    if($_SERVER['REQUEST_METHOD']=='GET'){
+      $db = $this->pageModel->getDatabaseConnection();
+      $mv = getMostSoldItemsMonth($db);
+      if($mv){
+        $arr = array();
+        while($mv2 = $mv->fetch_assoc()){
+          $dates = $mv2['sales_item'];
+          array_push($arr, $dates);
+        }
+
+        $totalweek = getMostSoldItemsMonth($db);
+        $arrweek = array();
+        while( $mv3 = $totalweek->fetch_assoc()){
+          $weekexp = $mv3['selling_price'];
+          array_push($arrweek,$weekexp);
+        }
+
+        $weeksales = getSalesAllMonthNet($db);
+        $arrsales = array();
+        while( $mv4 = $weeksales->fetch_assoc()){
+          $weeksale = $mv4['sales_net'];
+          array_push($arrsales,$weeksale);
+        }
+
+        $weekdates = getSalesAllMonthNet($db);
+        $arrdates = array();
+        while( $mv5 = $weekdates->fetch_assoc()){
+          $weekdate = $mv5['DATE_FORMAT(date_created, "%M")'];
+          array_push($arrdates,$weekdate);
+        }
+
+        $weekprofits = getSalesProfitMonth($db);
+        $arrprofits = array();
+        while( $mv6 = $weekprofits->fetch_assoc()){
+          $weekpr = $mv6['sales_net'];
+          array_push($arrprofits,$weekpr);
+        }
+
+        $weeklysales = getSalesMonth($db);
+        $arrweekly = array();
+        while( $mv7 = $weeklysales->fetch_assoc()){
+          $weekly = $mv7['sales_net'];
+          array_push($arrweekly,$weekly);
+        }
+
+        echo json_encode(array("statusCode"=>200, 'labels'=>$arr, 'cost'=>$arrweek, 'weeks'=>$arrdates, 'sales'=>$arrweekly, 'profits'=>$arrprofits));
+      }else{
+        echo json_encode(array("statusCode"=>317));
+      }
+    }else{
+      http_response_code(404);
+      include('../app/404.php');
+      die();
+    }
+  }
+
+  public function getSalesRepoYear()
+  {
+    if($_SERVER['REQUEST_METHOD']=='GET'){
+      $db = $this->pageModel->getDatabaseConnection();
+      $mv = getMostSoldItemsYear($db);
+      if($mv){
+        $arr = array();
+        while($mv2 = $mv->fetch_assoc()){
+          $dates = $mv2['sales_item'];
+          array_push($arr, $dates);
+        }
+
+        $totalweek = getMostSoldItemsYear($db);
+        $arrweek = array();
+        while( $mv3 = $totalweek->fetch_assoc()){
+          $weekexp = $mv3['selling_price'];
+          array_push($arrweek,$weekexp);
+        }
+
+        $weeksales = getSalesAllYearNet($db);
+        $arrsales = array();
+        while( $mv4 = $weeksales->fetch_assoc()){
+          $weeksale = $mv4['sales_net'];
+          array_push($arrsales,$weeksale);
+        }
+
+        $weekdates = getSalesAllYearNet($db);
+        $arrdates = array();
+        while( $mv5 = $weekdates->fetch_assoc()){
+          $weekdate = $mv5['DATE_FORMAT(date_created, "%Y")'];
+          array_push($arrdates,$weekdate);
+        }
+
+        $weekprofits = getSalesProfitYear($db);
+        $arrprofits = array();
+        while( $mv6 = $weekprofits->fetch_assoc()){
+          $weekpr = $mv6['sales_net'];
+          array_push($arrprofits,$weekpr);
+        }
+
+        $weeklysales = getSalesYear($db);
+        $arrweekly = array();
+        while( $mv7 = $weeklysales->fetch_assoc()){
+          $weekly = $mv7['sales_net'];
+          array_push($arrweekly,$weekly);
+        }
+
+        echo json_encode(array("statusCode"=>200, 'labels'=>$arr, 'cost'=>$arrweek, 'weeks'=>$arrdates, 'sales'=>$arrweekly, 'profits'=>$arrprofits));
+      }else{
+        echo json_encode(array("statusCode"=>317));
+      }
+    }else{
+      http_response_code(404);
+      include('../app/404.php');
+      die();
+    }
+  }
 }    

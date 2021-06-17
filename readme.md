@@ -35,3 +35,5 @@ Inventory management and daily record keeping system, built on PHP OOP and Js, D
 - loss from expense
 
 - massive bug in editing main report
+
+- Handle responsiveness later on
