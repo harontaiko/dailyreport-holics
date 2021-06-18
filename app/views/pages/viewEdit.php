@@ -1,7 +1,7 @@
 <?php require(APPROOT . '/views/inc/header.php'); ?>
 
-
-<body class="viewEdit __viewEdit site-wrap">
+<p>Nothing here yet</p>
+<!--<body class="viewEdit __viewEdit site-wrap">
     <?php require(APPROOT . '/views/inc/navbar.php'); ?>
     <main>
         <h2 id="add-title">View & Edit Record</h2>
@@ -107,7 +107,7 @@
 
     </main>
 
-</body>
+</body>-->
 
 <noscript>
     <div id="no_script">This site requires and runs entirely on javascript, please Ensure Javascript

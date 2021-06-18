@@ -917,7 +917,7 @@ dailyreport = {
         );
       });
 
-      //get movieshop report between dates
+      //get movieshop r between dates
       document.getElementById("get-repo-btw").addEventListener("click", () => {
         //validate dates
         var date1 = document.querySelector("#date-1");
@@ -1109,6 +1109,125 @@ dailyreport = {
         console.log(Recorddate);
         /*$("#exp").load(`loadLatestExpense/${Recorddate}`); 
         $("#sl").load(`loadLatestSold`); */
+      });
+    },
+  },
+  viewItem: {
+    init: function _viewitem() {
+      var threesixty = new ThreeSixty(document.getElementById("threesixty"), {
+        image: document.getElementById("item-image").src,
+        width: "60%",
+        height: "50%",
+        prev: document.getElementById("prev"),
+        next: document.getElementById("next"),
+      });
+
+      threesixty.play();
+    },
+  },
+  editItem: {
+    init: function _edititem() {
+      $(document).ready(function () {
+        $("form").on("submit", function (e) {
+          e.preventDefault();
+          //get values including file if exists
+          var itemName = document.querySelector("#item-name");
+          var itemQt = document.querySelector("#item-quantity");
+          var itemBp = document.querySelector("#item-bp");
+          var itemModel = document.querySelector("#model");
+          itemImage = document.querySelector("#product-image");
+
+          /*           var check = [itemName, itemQt, itemBp, itemModel].forEach((item) => {
+            if (item.value == "") {
+              item.style.border = "1.2px solid red";
+              sleep(3500).then(() => {
+                item.style.border = "";
+              });
+            }
+            return false;
+          }); */
+
+          //product image
+          var fd = new FormData();
+          var files = $("#product-image")[0].files[0];
+          fd.append("product-image", files);
+
+          $.ajax({
+            url: `http://localhost/dailyreport-holics/pages/saveInventoryEdit/${
+              document.getElementById("item-id").value
+            }`,
+            type: "POST",
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false,
+            dataType: "json",
+            success: function (dataResult) {
+              if (dataResult.statusCode == 200) {
+                //remove alerts
+                document.querySelector(".alert_success").style.display = "none";
+                document.getElementsByClassName("loader")[0].style.display =
+                  "block";
+
+                sleep(2100).then(() => {
+                  document.getElementsByClassName("loader")[0].style.display =
+                    "none";
+                  document.querySelector(".alert").style.display = "block";
+                  document.getElementById("inventory-alert").style.display =
+                    "block";
+                  document.getElementById("inventory-alert").style.color =
+                    "#fff";
+                  document.getElementById("inventory-alert").innerHTML =
+                    "item edited successfully!";
+
+                  //load new data to inventory UI
+                  $("#open-modal").load(`loadInventoryData`);
+
+                  $("#product-avatar").attr(
+                    "src",
+                    "http://localhost/dailyreport-holics/public/images/images/open-box.png"
+                  );
+                  document.getElementById("product-image").value = "";
+                  sleep(3500).then(() => {
+                    document.querySelector(".alert_success").style.display =
+                      "none";
+                    document.getElementById("inventory-alert").innerHTML = "";
+                  });
+
+                  location.replace(
+                    "http://localhost/dailyreport-holics/pages/index"
+                  );
+                });
+              } else if (dataResult.statusCode == 201) {
+                document.querySelector(".alert").style.display = "block";
+                document.getElementById("inventory-alert").style.color =
+                  "#f85f5f";
+                $("#inventory-alert").html(
+                  "invalid file or missing field, please try again"
+                );
+
+                sleep(4700).then(() => {
+                  document.querySelector(".alert_success").style.display =
+                    "none";
+                  document.getElementById("inventory-alert").innerHTML = "";
+                });
+              } else if (dataResult.statusCode == 417) {
+                document.querySelector(".alert").style.display = "block";
+                document.getElementById("inventory-alert").style.color =
+                  "#f85f5f";
+                $("#inventory-alert").html(
+                  "request could not be completed, check your connection"
+                );
+
+                sleep(4700).then(() => {
+                  document.querySelector(".alert_success").style.display =
+                    "none";
+                  document.getElementById("inventory-alert").innerHTML = "";
+                });
+              }
+            },
+          });
+        });
       });
     },
   },

@@ -2897,3 +2897,24 @@ function getSaleItemById($id,$db)
       return false;
   } 
 }
+
+///////////////////////////////////view inventory item
+function getInventoryItemById($id, $db)
+{
+  mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+  $query = 'SELECT item_name FROM dr_inventory WHERE item_id = ?';
+
+  $binders = "s";
+
+  $parameters = array($id);
+
+  $result = SelectCond($query, $binders, $parameters, $db);
+
+  $row = $result->get_result();
+
+  if($row->num_rows > 0){
+      return true;
+  }else{
+    return false;
+  }
+}

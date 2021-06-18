@@ -30,6 +30,7 @@
                                     <th>Created on</th>
                                     <th>Creator</th>
                                     <th>edit</th>
+                                    <th>view</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -61,7 +62,10 @@
                                     <td><?php echo isset($inventory['created_by']) ? $inventory['created_by']: ''; ?>
                                     </td>
                                     <td><a
-                                            href="<?php echo URLROOT; ?>/editInventory/<?php echo isset($inventory['item_id']) ? $inventory['item_id']: ''; ?>">edit</a>
+                                            href="<?php echo URLROOT; ?>/pages/editInventory/<?php echo isset($inventory['item_id']) ? $inventory['item_id']: ''; ?>">edit</a>
+                                    </td>
+                                    <td><a
+                                            href="<?php echo URLROOT; ?>/pages/viewItem/<?php echo isset($inventory['item_id']) ? $inventory['item_id']: ''; ?>">view</a>
                                     </td>
                                 </tr>
                                 <?php endwhile ?>
@@ -115,8 +119,10 @@
                 <?php if (strpos($_SERVER['REQUEST_URI'], "pages/trends") !== false) :  ?>
                 <i class="fas fa-star star_active"></i>
                 <?php endif; ?>
+                <span class="coming_soon">coming soon</span>
             </a></li>
-        <li><a href="<?php echo URLROOT; ?>/pages/total">Cash Out</a></li>
+        <li><a href="<?php echo URLROOT; ?>/pages/cashOut">Cash Out <span class="coming_soon">coming soon</span></a>
+        </li>
         <?php if (strpos($_SERVER['REQUEST_URI'], "pages/index") !== false) :  ?>
         <?php else: ?>
         <form action="<?php echo URLROOT; ?>/users/logout" method="POST">

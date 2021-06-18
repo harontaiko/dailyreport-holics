@@ -1973,3 +1973,428 @@ $table-header-border: 1px solid #fff;
 .table-expense-2 > thead > tr > th {
   border-bottom: 1px solid #dbdce2;
 }
+
+.coming_soon {
+  background: red;
+  border-radius: 4px;
+  padding: 2.1px;
+  position: absolute;
+  top: 0;
+  right: 35%;
+}
+
+// Colors
+$light-gray: #d3d3d3;
+$sky-blue: #7ec0ee;
+$princeton-orange: #f5821f;
+$yellow-orange: #fbae40;
+$rajah: #f8aa67;
+$deep-saffron: #f6923c;
+
+// Shapes
+$pill: 100px;
+$circle: 50%;
+$bolt-left: polygon(88% 60%, 62% 60%, 81% 96%, 7% 37%, 32% 36%, 11% 0);
+$bolt-right: polygon(45% 57%, 16% 57%, 85% 5%, 65% 42%, 94% 42%, 18% 100%);
+$bolt-bottom: polygon(75% 73%, 55% 64%, 52% 100%, 26% 30%, 47% 40%, 48% 0);
+
+.invisible {
+  visibility: hidden;
+}
+.hidden {
+  display: none;
+}
+
+body {
+  background: $light-gray;
+}
+
+.title {
+  text-align: center;
+  font-family: "Comic Sans MS", sans-serif;
+  font-weight: bold;
+  font-style: italic;
+}
+
+// Drawing CSS
+.box {
+  position: relative;
+  margin: auto;
+  display: block;
+  margin-top: 10%;
+  width: 600px;
+  height: 420px;
+}
+
+@media all and (max-width: 600px) {
+  .box {
+    margin-top: 100px;
+    width: 300px;
+    height: 210px;
+  }
+}
+
+.cloud {
+  position: absolute;
+  margin-top: 3.125rem;
+  background: white;
+  width: 41.67%;
+  height: 23.81%;
+  top: 38.1%;
+  left: 29.17%;
+  border-radius: $pill;
+}
+@media all and (max-width: 600px) {
+  .cloud {
+    margin-top: 5.5rem;
+  }
+}
+
+.cloud-copy {
+  position: absolute;
+  background: white;
+  width: 100%;
+  height: 100%;
+  border-radius: $pill;
+  z-index: 2;
+}
+@media all and (max-width: 600px) {
+  .cloud {
+    margin-top: 5.5rem;
+  }
+}
+
+.cloud-right {
+  position: absolute;
+  width: 40%;
+  height: 100%;
+  top: -50%;
+  right: 15%;
+  background: white;
+  border-radius: $circle;
+  z-index: 1;
+}
+
+.cloud-left {
+  position: absolute;
+  width: 44%;
+  height: 110%;
+  top: -65%;
+  left: 15%;
+  border-radius: 200px;
+  background: white;
+  z-index: 1;
+}
+
+.cloud-bottom {
+  position: absolute;
+  width: 52%;
+  height: 120%;
+  bottom: -25%;
+  right: 21%;
+  border-radius: $pill;
+  background: white;
+  z-index: 1;
+}
+
+.eye-left {
+  position: absolute;
+  background: black;
+  width: 10%;
+  height: 25%;
+  border-radius: $circle;
+  top: 20%;
+  left: 30%;
+  z-index: 4;
+}
+
+.eye-right {
+  position: absolute;
+  background: black;
+  width: 10%;
+  height: 25%;
+  border-radius: $circle;
+  top: 20%;
+  right: 30%;
+  z-index: 4;
+}
+
+.eyebrow-left {
+  position: absolute;
+  background: black;
+  width: 100%;
+  height: 20%;
+  top: -50%;
+  transform: rotate(10deg);
+}
+
+.eyebrow-right {
+  position: absolute;
+  background: black;
+  width: 100%;
+  height: 20%;
+  top: -50%;
+  transform: rotate(-10deg);
+}
+
+.pupil {
+  position: absolute;
+  border-radius: $circle;
+  height: 10px;
+  width: 10px;
+  right: 13%;
+  background: #ffffff;
+}
+@media all and (max-width: 600px) {
+  .pupil {
+    height: 5px;
+    width: 5px;
+  }
+}
+
+.frown {
+  position: absolute;
+  top: 59%;
+  left: 46.5%;
+  width: 7%;
+  height: 17.5%;
+  border: 3px solid;
+  border-radius: $circle;
+  border-color: #000 transparent transparent #000;
+  transform: rotate(45deg);
+  z-index: 3;
+}
+
+.smile {
+  position: absolute;
+  top: 50%;
+  left: 46.5%;
+  width: 7%;
+  height: 17.5%;
+  border: 3px solid;
+  border-radius: $circle;
+  border-color: transparent #000 #000 transparent;
+  transform: rotate(45deg);
+  z-index: 3;
+}
+
+.tear-left {
+  position: absolute;
+  top: 55%;
+  left: 25%;
+  width: 6%;
+  height: 15%;
+  border-radius: 0 50% 50% 50%;
+  background: $sky-blue;
+  transform: rotate(45deg);
+  z-index: 4;
+  animation: falling 2s infinite;
+}
+
+.tear-right {
+  position: absolute;
+  top: 55%;
+  right: 25%;
+  width: 6%;
+  height: 15%;
+  border-radius: 0 50% 50% 50%;
+  background: $sky-blue;
+  transform: rotate(45deg);
+  z-index: 5;
+  animation: falling 3.5s infinite;
+}
+
+.bolt-left {
+  position: absolute;
+  top: -110%;
+  width: 20%;
+  height: 50%;
+  left: 5%;
+  background: $yellow-orange;
+  -webkit-clip-path: $bolt-left;
+  clip-path: $bolt-left;
+  animation: fading 0.8s infinite;
+}
+
+.bolt-right {
+  position: absolute;
+  top: -100%;
+  width: 20%;
+  height: 50%;
+  right: 5%;
+  background: $yellow-orange;
+  -webkit-clip-path: $bolt-right;
+  clip-path: $bolt-right;
+  animation: fading 1s infinite;
+}
+
+.bolt-bottom {
+  position: absolute;
+  bottom: -100%;
+  left: 40%;
+  width: 20%;
+  height: 60%;
+  background: $yellow-orange;
+  -webkit-clip-path: $bolt-bottom;
+  clip-path: $bolt-bottom;
+  animation: fading 0.7s infinite;
+}
+
+@keyframes falling {
+  from {
+    opacity: 1;
+    transform: translate(0px, 0px), rotate(45deg);
+  }
+  to {
+    opacity: 0;
+    transform: translate(0px, 200px);
+  }
+}
+
+@keyframes fading {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+// Switch
+.switch {
+  position: relative;
+  margin: auto;
+  display: block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input {
+  display: none;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: black;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+  &:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+  }
+}
+
+input:checked + .slider {
+  background-color: $princeton-orange;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196f3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+.slider.round {
+  border-radius: 34px;
+  &:before {
+    border-radius: $circle;
+  }
+}
+
+.wrapper {
+  font-family: "Open Sans", sans;
+  text-align: center;
+  color: #444;
+}
+
+#threesixty {
+  margin: 0 auto;
+  user-select: none;
+}
+
+.g-hub {
+  color: #444;
+  font-size: 0.9em;
+}
+
+.buttons-wrapper {
+  max-width: 200px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+}
+
+.button {
+  position: relative;
+  appearance: none;
+  border: none;
+  padding: 40px 7px 5px;
+  cursor: pointer;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    border-left: 3px solid #000;
+    border-top: 3px solid #000;
+    width: 20px;
+    height: 20px;
+    transform: translate(-45%) rotate(-45deg);
+  }
+
+  &::after {
+    transform: translate(5%) rotate(-45deg);
+  }
+}
+
+#next {
+  &::before {
+    transform: translate(-90%) rotate(135deg);
+  }
+
+  &::after {
+    transform: translate(-50%) rotate(135deg);
+  }
+}
+
+.editItem main {
+  background-color: #f9f9f9;
+  font-family: "Raleway";
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.editItem label {
+  padding-bottom: 5px;
+  font-size: 13px;
+}
+
+.editItem input {
+  margin-top: 3px;
+  padding: 15px;
+  font-size: 16px;
+  width: 100%;
+  border-radius: 3px;
+  border: 1px solid #dcdcdc;
+}

@@ -758,6 +758,25 @@ class Page
 
 
 
+    public function getInventoryItemByIdII($id)
+    {
+        $query = 'SELECT * FROM dr_inventory WHERE item_id = ?';
+
+        $binders = "s";
+
+        $parameters = array($id);
+
+        $result = SelectCond($query, $binders, $parameters, $this->db);
+
+        $row = $result->get_result();
+
+        try {
+            return $row;
+        } catch (Error $e) {
+            return false;
+        }
+    }
+
     public function getInventoryItemById($id)
     {
         $query = 'SELECT item_name FROM dr_inventory WHERE item_id = ?';
@@ -902,6 +921,40 @@ class Page
         } catch (Error $e) {
             return false;
         }
+    }
+
+    public function saveToInventoryEdit($data)
+    {
+
+      $query = 'UPDATE dr_inventory SET item_name=?, item_quantity=?, item_buying=?, item_model=?, `image`=?, date_created=?, time_created=?, created_by=?, edited_by=? WHERE item_id=?';
+
+      $binders = "ssssssssss";
+      
+      $values = array($data['itemName'], $data['itemquantity'], $data['bp'], $data['model'], $data['imagename'], $data['date'], $data['time'], $data['creator'], $data['edited_by'], $data['id']); 
+
+      try { 
+          Update($query, $binders, $values, 'dr_inventory',$this->db);
+          return true;
+      } catch (Error $e) {
+          return false;
+      }
+    }
+
+    public function saveToInventoryNullEdit($data)
+    {
+
+      $query = 'UPDATE dr_inventory SET item_name=?, item_quantity=?, item_buying=?, item_model=?, date_created=?, time_created=?, created_by=?, edited_by=? WHERE item_id=?';
+
+      $binders = "sssssssss";
+      
+      $values = array($data['itemName'], $data['itemquantity'], $data['bp'], $data['model'], $data['date'], $data['time'], $data['creator'], $data['edited_by'], $data['id']); 
+
+      try { 
+          Update($query, $binders, $values, 'dr_inventory',$this->db);
+          return true;
+      } catch (Error $e) {
+          return false;
+      }
     }
 
     public function saveToInventory($data)

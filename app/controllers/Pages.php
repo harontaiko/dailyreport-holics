@@ -120,6 +120,70 @@ class Pages extends Controller
       }
     }
 
+    public function editInventory($itemId)
+    {
+
+       if(isset($itemId)){
+        if (!isset($_SESSION["user_id"])) {
+          $data = [
+            "title" => "Daily Report",  
+          ];
+          redirect("users/index");
+        } 
+        
+        $db = $this->pageModel->getDatabaseConnection();
+
+        $inventoryData = $this->pageModel->getInventoryData();
+
+        $items = $this->pageModel->getInventoryItemByIdII($itemId);
+
+        $itemarray = array();
+        while($item = $items->fetch_assoc()){
+          array_push($itemarray, $item);
+        }
+
+        $data = ['title'=>'Edit '.empty($itemarray['0']['item_name']) ? '':$itemarray['0']['item_name'].'', "inventory" => $inventoryData, 'db'=>$db, 'id'=>htmlspecialchars($itemId), 'row'=>$itemarray];
+
+        $this->view('pages/editInventory', $data);
+      }else{
+        http_response_code(404);
+        include('../app/404.php');
+        die();
+      }
+    }
+
+    public function ViewItem($itemId)
+    {
+
+       if(isset($itemId)){
+        if (!isset($_SESSION["user_id"])) {
+          $data = [
+            "title" => "Daily Report",  
+          ];
+          redirect("users/index");
+        } 
+        
+        $db = $this->pageModel->getDatabaseConnection();
+
+        $inventoryData = $this->pageModel->getInventoryData();
+
+        $items = $this->pageModel->getInventoryItemByIdII($itemId);
+
+        $itemarray = array();
+        while($item = $items->fetch_assoc()){
+          array_push($itemarray, $item);
+        }
+
+        $data = ['title'=>'View Item', "inventory" => $inventoryData, 'db'=>$db, 'id'=>htmlspecialchars($itemId), 'row'=>$itemarray];
+
+        $this->view('pages/viewItem', $data);
+      }else{
+        http_response_code(404);
+        include('../app/404.php');
+        die();
+      }
+    }
+
     public function invoice($invoiceItem, $InvoiceId)
     {
 
@@ -485,6 +549,140 @@ class Pages extends Controller
 
 
     //handle ajax POST & GET submission
+    public function saveInventoryEdit($id)
+    {  
+
+      if($_SERVER['REQUEST_METHOD'] == 'POST'){
+      
+      $file = $_FILES['product-image'];
+      $fileName = $file['name'];
+      $fileTmpName = $file['tmp_name'];
+      $fileSize = $file['size'];
+      $fileError = $file['error'];
+      $fileType = $file['type'];
+      $fileExtension = explode('.', $fileName);
+      $fileActualExtension = strtolower(end($fileExtension));
+      $allowedExtensions = array('jpg', 'jpeg', 'png', 'gif', 'psd', 'svg');
+      //saved in the users route
+      $fileDestination = '../public/uploads/' . preg_replace('/[^A-Za-z0-9. -]/', '', $fileName);
+      $photo = preg_replace('/[^A-Za-z0-9. -]/', '', $fileName);
+      
+      if ($file) {
+        if (in_array($fileActualExtension, $allowedExtensions)) {
+          
+          $itemName = $_POST['item-name'];
+          $itemquantity = $_POST['item-quantity'];
+          $itemBp = $_POST['item-bp'];
+          $itemModel = $_POST['item-model'];
+
+          $inventory = [
+            'id'=>$id,
+            'edited_by'=>$_SESSION['user_name'],
+            'date' => date('Y-m-d', time()),
+            'time' => date('H:i:s T', time()),
+            'ip' => get_ip_address(),
+            'itemName' => $itemName,
+            'itemquantity' => $itemquantity,
+            'bp' => $itemBp,
+            'model' => $itemModel,
+            'imagename' => $photo,
+            'creator' => $_SESSION['user_name'],
+            'destination' => $fileDestination,
+            'tempname' => $fileTmpName,
+          ];
+
+          move_uploaded_file($fileTmpName, $fileDestination);
+        
+          $save = $this->pageModel->saveToInventoryEdit($inventory);
+          
+          if($save)
+          {
+            echo json_encode(array("statusCode"=>200));
+          }
+          else{
+            echo json_encode(array("statusCode"=>417));
+          }
+        
+        }
+        else
+        {
+          $itemName = $_POST['item-name'];
+          $itemquantity = $_POST['item-quantity'];
+          $itemBp = $_POST['item-bp'];
+          $itemModel = $_POST['item-model'];
+  
+          $date = date('Y-m-d', time());
+            
+          $time = date('H:i:s T', time());
+  
+          $ip = get_ip_address();
+
+          $inventory = [
+            'id'=>$id,
+            'edited_by'=>$_SESSION['user_name'],
+            'date' => $date,
+            'time' => $time,
+            'ip' => $ip,
+            'itemName' => $itemName,
+            'itemquantity' => $itemquantity,
+            'bp' => $itemBp,
+            'model' => $itemModel,
+            'creator' => $_SESSION['user_name'],
+          ];
+        
+  
+          $save = $this->pageModel->saveToInventoryNullEdit($inventory);
+          if($save)
+          {
+            echo json_encode(array("statusCode"=>200));
+          }
+          else{
+            echo json_encode(array("statusCode"=>417));
+          }
+        }
+      }
+      else{
+        
+        $itemName = $_POST['item-name'];
+        $itemquantity = $_POST['item-quantity'];
+        $itemBp = $_POST['item-bp'];
+        $itemModel = $_POST['item-model'];
+
+        $date = date('Y-m-d', time());
+          
+        $time = date('H:i:s T', time());
+
+        $ip = get_ip_address();
+
+        $inventory = [
+          'id'=>$id,
+          'edited_by'=>$_SESSION['user_name'],
+          'date' => $date,
+          'time' => $time,
+          'ip' => $ip,
+          'itemName' => $itemName,
+          'itemquantity' => $itemquantity,
+          'bp' => $itemBp,
+          'model' => $itemModel,
+          'creator' => $_SESSION['user_name'],
+        ];
+
+        $save = $this->pageModel->saveToInventoryNullEdit($inventory);
+        if($save)
+        {
+          echo json_encode(array("statusCode"=>200));
+        }
+        else{
+          echo json_encode(array("statusCode"=>417));
+        }
+      }
+      
+    }else{
+      http_response_code(404);
+      include('../app/404.php');
+      die();
+    }    
+  }
     public function saveInventory()
     {  
 
@@ -500,7 +698,7 @@ class Pages extends Controller
       $fileActualExtension = strtolower(end($fileExtension));
       $allowedExtensions = array('jpg', 'jpeg', 'png', 'gif', 'psd', 'svg');
       //saved in the users route
-      $fileDestination = '../app/uploads/' . preg_replace('/[^A-Za-z0-9. -]/', '', $fileName);
+      $fileDestination = '../public/uploads/' . preg_replace('/[^A-Za-z0-9. -]/', '', $fileName);
       $photo = preg_replace('/[^A-Za-z0-9. -]/', '', $fileName);
       
       if ($file) {
