@@ -17,7 +17,7 @@ for (var i = 0; i < cancelSale.length; i++) {
             currentId = this.parentNode.id;
             hideParent = this.parentElement.style.display = "none";
             $.ajax({
-                url: `http://localhost/dailyreport-holics/pages/DeleteSaleNow`,
+                url: `<?php echo URLROOT; ?>/pages/DeleteSaleNow`,
                 type: "POST",
                 data: {
                     id: currentId

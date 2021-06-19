@@ -1,7 +1,7 @@
 <section id="reports-tbl">
 
-    <button class="previous-report" onclick="location.replace(`http://localhost/dailyreport-holics/pages/total`);"
-        title="back"><i title="back" class="fas fa-arrow-left"></i></button>
+    <button class="previous-report" onclick="location.replace(`<?php echo URLROOT; ?>/pages/total`);" title="back"><i
+            title="back" class="fas fa-arrow-left"></i></button>
     <button title="print report" type="button" id="custom-print-report"
         onClick="printJS({ printable: 'container-out-report2', type: 'html', style: '.container-out-report td:nth-child(2){border-color: #f1f1f1; border-right: 1px solid #ddd;background: white;}.container-out-report td:nth-child(1){border-color: #f1f1f1; border-right: 1px solid #ddd;background: white;}.container-out-report td:nth-child(2){border-color: #f1f1f1; border-right: 1px solid #ddd;background: white;}.container-out-report td:nth-child(3){border-color: #f1f1f1; border-right: 1px solid #ddd;background: white;}.container-out-report td:nth-child(2){border-color: #f1f1f1; border-right: 1px solid #ddd;background: white;}.container-out-report td:nth-child(4){border-color: #f1f1f1; border-right: 1px solid #ddd;background: white;}.container-out-report td:nth-child(5){border-color: #f1f1f1; border-right: 1px solid #ddd;background: white;} .container-out-report tr:nth-child(1){border-color: #f1f1f1; border-bottom: 1px solid #ddd;background: white;}'})">
         <i class=" fas fa-print"></i>
@@ -87,7 +87,7 @@
 //get movie shop report for today
 $(document).ready(function() {
     $.ajax({
-        url: `http://localhost/dailyreport-holics/pages/getNetRepoMonth`,
+        url: `<?php echo URLROOT; ?>/pages/getNetRepoMonth`,
         type: "GET",
         dataType: "json",
         success: function(dataResult) {

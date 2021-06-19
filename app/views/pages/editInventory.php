@@ -32,7 +32,7 @@
                 </div>
                 <div class="field-container">
                     <label for="expirationdate">Buying (Ksh)</label>
-                    <input id="item-bp" value="<?php print_r($data['row']['0']['item_quantity']) ?>" type="number"
+                    <input id="item-bp" value="<?php print_r($data['row']['0']['item_buying']) ?>" type="number"
                         name="item-bp" inputmode="numeric" required>
                 </div>
                 <div class="field-container">

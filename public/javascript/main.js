@@ -6,6 +6,8 @@
  * @desc [MARKUP BASED JAVASCRIPT, BASED ON PAUL IRISH'S DOM INTRUBUSIVE JS]
  */
 /**MARKUP BASED JAVASCRIPT, BASED ON PAUL IRISH'S DOM INTRUBUSIVE JS */
+var hostUrl = document.querySelector("link[rel='host']").getAttribute("href");
+console.log(hostUrl);
 UTIL = {
   fire: function (func, funcname, args) {
     var namespace = dailyreport;
@@ -303,7 +305,7 @@ dailyreport = {
             //check for atleast one sale & expense
             //if none, proceed but with warning
             $.ajax({
-              url: `http://localhost/dailyreport-holics/pages/CheckSaleExpense`,
+              url: `${hostUrl}/pages/CheckSaleExpense`,
               type: "GET",
               dataType: "json",
               success: function (dataResult) {
@@ -316,7 +318,7 @@ dailyreport = {
                   } else {
                     //save to db
                     $.ajax({
-                      url: `http://localhost/dailyreport-holics/pages/SaveSaleRecord`,
+                      url: `${hostUrl}/pages/SaveSaleRecord`,
                       type: "POST",
                       data: {
                         cybercash: cyberCash.value,
@@ -331,15 +333,13 @@ dailyreport = {
                         if (dataResult.statusCode == 200) {
                           //save net total
                           $.ajax({
-                            url: `http://localhost/dailyreport-holics/pages/SaveNetTotal`,
+                            url: `${hostUrl}/pages/SaveNetTotal`,
                             type: "POST",
                             dataType: "json",
                             success: function (dataResult) {
                               if (dataResult.statusCode == 200) {
                                 //success, redirect to home page
-                                location.replace(
-                                  "http://localhost/dailyreport-holics/pages/index"
-                                );
+                                location.replace(`${hostUrl}/pages/index`);
                               } else if (dataResult.statusCode == 317) {
                                 document.querySelector(".alert").style.display =
                                   "block";
@@ -434,7 +434,7 @@ dailyreport = {
             var expense_name = document.getElementById("expense_n").value;
             var expense_val = document.getElementById("expense-value").value;
             $.ajax({
-              url: `http://localhost/dailyreport-holics/pages/SaveExpense`,
+              url: `${hostUrl}/pages/SaveExpense`,
               type: "POST",
               data: {
                 expense: expense_name,
@@ -492,7 +492,7 @@ dailyreport = {
 
             //save cash sales
             $.ajax({
-              url: "http://localhost/dailyreport-holics/pages/saveSaleCash",
+              url: `${hostUrl}/pages/saveSaleCash`,
               type: "POST",
               data: form.serialize(),
               dataType: "json",
@@ -626,9 +626,7 @@ dailyreport = {
         currentOption = psoptions.value;
         currentOptionText = this.options[this.selectedIndex].value;
         //today, month & default
-        location.replace(
-          `http://localhost/dailyreport-holics/pages/reports/ps/${currentOptionText}`
-        );
+        location.replace(`${hostUrl}/pages/reports/ps/${currentOptionText}`);
       });
 
       //get ps report between dates
@@ -639,7 +637,7 @@ dailyreport = {
         if (date1.value !== "" && date2.value !== "") {
           //submit
           location.replace(
-            `http://localhost/dailyreport-holics/pages/date/ps/${date1.value}/${date2.value}`
+            `${hostUrl}/pages/date/ps/${date1.value}/${date2.value}`
           );
         } else {
           date1.style.border = "2px solid red";
@@ -665,9 +663,7 @@ dailyreport = {
         currentOption = cyberoptions.value;
         currentOptionText = this.options[this.selectedIndex].value;
         //today, month & default
-        location.replace(
-          `http://localhost/dailyreport-holics/pages/reports/cyber/${currentOptionText}`
-        );
+        location.replace(`${hostUrl}/pages/reports/cyber/${currentOptionText}`);
       });
 
       //get cyber report between dates
@@ -678,7 +674,7 @@ dailyreport = {
         if (date1.value !== "" && date2.value !== "") {
           //submit
           location.replace(
-            `http://localhost/dailyreport-holics/pages/date/cyber/${date1.value}/${date2.value}`
+            `${hostUrl}/pages/date/cyber/${date1.value}/${date2.value}`
           );
         } else {
           date1.style.border = "2px solid red";
@@ -725,7 +721,7 @@ dailyreport = {
           fd.append("product-image", files);
 
           $.ajax({
-            url: "http://localhost/dailyreport-holics/pages/saveInventory",
+            url: `${hostUrl}/pages/saveInventory`,
             type: "POST",
             data: new FormData(this),
             contentType: false,
@@ -762,7 +758,7 @@ dailyreport = {
 
                   $("#product-avatar").attr(
                     "src",
-                    "http://localhost/dailyreport-holics/public/images/images/open-box.png"
+                    `${hostUrl}/public/images/images/open-box.png`
                   );
                   document.getElementById("product-image").value = "";
                   sleep(3500).then(() => {
@@ -828,7 +824,7 @@ dailyreport = {
         currentOptionText = this.options[this.selectedIndex].value;
         //today, month & default
         location.replace(
-          `http://localhost/dailyreport-holics/pages/reports/expense/${currentOptionText}`
+          `${hostUrl}/pages/reports/expense/${currentOptionText}`
         );
       });
 
@@ -840,7 +836,7 @@ dailyreport = {
         if (date1.value !== "" && date2.value !== "") {
           //submit
           location.replace(
-            `http://localhost/dailyreport-holics/pages/date/expense/${date1.value}/${date2.value}`
+            `${hostUrl}/pages/date/expense/${date1.value}/${date2.value}`
           );
         } else {
           date1.style.border = "2px solid red";
@@ -872,9 +868,7 @@ dailyreport = {
         currentOption = movieshopOptions.value;
         currentOptionText = this.options[this.selectedIndex].value;
         //today, month & default
-        location.replace(
-          `http://localhost/dailyreport-holics/pages/reports/movie/${currentOptionText}`
-        );
+        location.replace(`${hostUrl}/pages/reports/movie/${currentOptionText}`);
       });
 
       //get movieshop report between dates
@@ -885,7 +879,7 @@ dailyreport = {
         if (date1.value !== "" && date2.value !== "") {
           //submit
           location.replace(
-            `http://localhost/dailyreport-holics/pages/date/movie/${date1.value}/${date2.value}`
+            `${hostUrl}/pages/date/movie/${date1.value}/${date2.value}`
           );
         } else {
           date1.style.border = "2px solid red";
@@ -912,9 +906,7 @@ dailyreport = {
         currentOption = totalsales.value;
         currentOptionText = this.options[this.selectedIndex].value;
         //today, month & default
-        location.replace(
-          `http://localhost/dailyreport-holics/pages/reports/sales/${currentOptionText}`
-        );
+        location.replace(`${hostUrl}/pages/reports/sales/${currentOptionText}`);
       });
 
       //get movieshop r between dates
@@ -925,7 +917,7 @@ dailyreport = {
         if (date1.value !== "" && date2.value !== "") {
           //submit
           location.replace(
-            `http://localhost/dailyreport-holics/pages/date/sales/${date1.value}/${date2.value}`
+            `${hostUrl}/pages/date/sales/${date1.value}/${date2.value}`
           );
         } else {
           date1.style.border = "2px solid red";
@@ -952,9 +944,7 @@ dailyreport = {
         currentOption = totaloptions.value;
         currentOptionText = this.options[this.selectedIndex].value;
         //today, month & default
-        location.replace(
-          `http://localhost/dailyreport-holics/pages/reports/total/${currentOptionText}`
-        );
+        location.replace(`${hostUrl}/pages/reports/total/${currentOptionText}`);
       });
 
       //get movieshop report between dates
@@ -965,7 +955,7 @@ dailyreport = {
         if (date1.value !== "" && date2.value !== "") {
           //submit
           location.replace(
-            `http://localhost/dailyreport-holics/pages/date/total/${date1.value}/${date2.value}`
+            `${hostUrl}/pages/date/total/${date1.value}/${date2.value}`
           );
         } else {
           date1.style.border = "2px solid red";
@@ -1153,7 +1143,7 @@ dailyreport = {
           fd.append("product-image", files);
 
           $.ajax({
-            url: `http://localhost/dailyreport-holics/pages/saveInventoryEdit/${
+            url: `${hostUrl}/pages/saveInventoryEdit/${
               document.getElementById("item-id").value
             }`,
             type: "POST",
@@ -1185,7 +1175,7 @@ dailyreport = {
 
                   $("#product-avatar").attr(
                     "src",
-                    "http://localhost/dailyreport-holics/public/images/images/open-box.png"
+                    `${hostUrl}/public/images/images/open-box.png`
                   );
                   document.getElementById("product-image").value = "";
                   sleep(3500).then(() => {
@@ -1194,9 +1184,7 @@ dailyreport = {
                     document.getElementById("inventory-alert").innerHTML = "";
                   });
 
-                  location.replace(
-                    "http://localhost/dailyreport-holics/pages/index"
-                  );
+                  location.replace(`${hostUrl}/pages/index`);
                 });
               } else if (dataResult.statusCode == 201) {
                 document.querySelector(".alert").style.display = "block";

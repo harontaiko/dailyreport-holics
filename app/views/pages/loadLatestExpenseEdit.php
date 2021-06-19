@@ -19,7 +19,7 @@ for (var i = 0; i < cancelExpense.length; i++) {
             currentId = this.parentNode.id;
             hideParent = this.parentElement.style.display = "none";
             $.ajax({
-                url: `http://localhost/dailyreport-holics/pages/DeleteExpenseNow`,
+                url: `<?php echo URLROOT; ?>/pages/DeleteExpenseNow`,
                 type: "POST",
                 data: {
                     id: currentId

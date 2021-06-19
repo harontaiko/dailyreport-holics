@@ -8,6 +8,7 @@
     <meta http-equiv="Cache-control" content="private">
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="Cache-control" content="no-store">
+    <link rel="host" href="<?php echo URLROOT; ?>">
     <link rel="canonical" href="<?php echo "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; ?>" />
     <meta name="og:url" content="<?php echo "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; ?>" />
     <link rel="stylesheet" href="<?php echo URLROOT; ?>/public/stylesheets/css/bootstrap.css" />
