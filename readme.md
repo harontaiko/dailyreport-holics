@@ -35,4 +35,8 @@ Inventory management and daily record keeping system, built on PHP OOP and Js, D
 
 - Handle responsiveness later on
 
--edit root url in js so the only editable thing on production is htaccess and config
+- edit root url in js so the only editable thing on production is htaccess and config
+
+```
+
+```

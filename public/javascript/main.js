@@ -7,7 +7,6 @@
  */
 /**MARKUP BASED JAVASCRIPT, BASED ON PAUL IRISH'S DOM INTRUBUSIVE JS */
 var hostUrl = document.querySelector("link[rel='host']").getAttribute("href");
-console.log(hostUrl);
 UTIL = {
   fire: function (func, funcname, args) {
     var namespace = dailyreport;
@@ -1093,12 +1092,128 @@ dailyreport = {
         );
       });
 
-      //add sale
       $(document).ready(function () {
         var Recorddate = document.getElementById("recorddate").value;
-        console.log(Recorddate);
-        /*$("#exp").load(`loadLatestExpense/${Recorddate}`); 
-        $("#sl").load(`loadLatestSold`); */
+        //load expenses,sold items
+        $.ajax({
+          url: `${hostUrl}/pages/loadLatestExpenseEdit/${Recorddate}`,
+          type: "GET",
+          dataType: "json",
+          success: function (dataResult) {
+            if (dataResult.statusCode == 200) {
+              var string = "";
+              dataResult.row.forEach((exp) => {
+                string += `<p id="${exp.expense_id}" class="total-expense">${exp.expense_item} - ${exp.expense_cost}
+                <button class="close-expense" type="button">&times;</button>
+                </p>`;
+                $("#exp").html(string);
+              });
+
+              cancelExpense = document.querySelectorAll(".close-expense");
+
+              for (var i = 0; i < cancelExpense.length; i++) {
+                cancelExpense[i].addEventListener("click", function (event) {
+                  if (!confirm("delete expense?")) {
+                    event.preventDefault();
+                  } else {
+                    //del from db
+                    currentId = this.parentNode.id;
+                    hideParent = this.parentElement.style.display = "none";
+                    $.ajax({
+                      url: `${hostUrl}/pages/DeleteExpenseNow`,
+                      type: "POST",
+                      data: {
+                        id: currentId,
+                      },
+                      dataType: "json",
+                      success: function (dataResult) {
+                        if (dataResult.statusCode == 200) {
+                          //success, del element from DOM
+                          hideParent;
+                        } else if (dataResult.statusCode == 317) {
+                          //for some reason, the id is not present once user accepts condition so,
+                          //fx is true all the time
+                          hideParent;
+                        }
+                      },
+                    });
+                  }
+                });
+              }
+            } else {
+              document.querySelector(".alert").style.display = "block";
+              document.getElementById("add-alert").style.color = "#fff";
+              $("#add-alert").html(
+                "an error occurred, record could not be fetched, please check your connection"
+              );
+
+              sleep(4700).then(() => {
+                document.querySelector(".alert_success").style.display = "none";
+                document.getElementById("add-alert").innerHTML = "";
+              });
+            }
+          },
+        });
+
+        $.ajax({
+          url: `${hostUrl}/pages/loadLatestSaleEdit/${Recorddate}`,
+          type: "GET",
+          dataType: "json",
+          success: function (dataResult) {
+            if (dataResult.statusCode == 200) {
+              var string = "";
+              dataResult.row.forEach((exp) => {
+                string += `<p id="${exp.sales_id}" class="total-expense">${exp.sales_item} - ${exp.buying_price}
+                <button class="close-sale" type="button">&times;</button>
+                </p>`;
+                $("#sl").html(string);
+              });
+
+              cancelExpense = document.querySelectorAll(".close-sale");
+
+              for (var i = 0; i < cancelExpense.length; i++) {
+                cancelExpense[i].addEventListener("click", function (event) {
+                  if (!confirm("delete sale?")) {
+                    event.preventDefault();
+                  } else {
+                    //del from db
+                    currentId = this.parentNode.id;
+                    hideParent = this.parentElement.style.display = "none";
+                    $.ajax({
+                      url: `${hostUrl}/pages/DeleteSaleNow`,
+                      type: "POST",
+                      data: {
+                        id: currentId,
+                      },
+                      dataType: "json",
+                      success: function (dataResult) {
+                        if (dataResult.statusCode == 200) {
+                          //success, del element from DOM
+                          hideParent;
+                        } else if (dataResult.statusCode == 317) {
+                          //for some reason, the id is not present once user accepts condition so,
+                          //fx is true all the time
+                          hideParent;
+                        }
+                      },
+                    });
+                  }
+                });
+              }
+            } else {
+              document.querySelector(".alert").style.display = "block";
+              document.getElementById("add-alert").style.color = "#fff";
+              $("#add-alert").html(
+                "an error occurred, record could not be fetched, please check your connection"
+              );
+
+              sleep(4700).then(() => {
+                document.querySelector(".alert_success").style.display = "none";
+                document.getElementById("add-alert").innerHTML = "";
+              });
+            }
+          },
+        });
       });
     },
   },
@@ -1146,6 +1261,7 @@ dailyreport = {
             url: `${hostUrl}/pages/saveInventoryEdit/${
               document.getElementById("item-id").value
             }`,
+            async: true,
             type: "POST",
             data: new FormData(this),
             contentType: false,
@@ -1184,7 +1300,7 @@ dailyreport = {
                     document.getElementById("inventory-alert").innerHTML = "";
                   });
 
-                  location.replace(`${hostUrl}/pages/index`);
+                  // location.replace(`${hostUrl}/pages/index`);
                 });
               } else if (dataResult.statusCode == 201) {
                 document.querySelector(".alert").style.display = "block";

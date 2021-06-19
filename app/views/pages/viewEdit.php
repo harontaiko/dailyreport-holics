@@ -1,7 +1,7 @@
 <?php require(APPROOT . '/views/inc/header.php'); ?>
 
-<p>Nothing here yet</p>
-<!--<body class="viewEdit __viewEdit site-wrap">
+
+<body class="viewEdit __viewEdit site-wrap">
     <?php require(APPROOT . '/views/inc/navbar.php'); ?>
     <main>
         <h2 id="add-title">View & Edit Record</h2>
@@ -13,7 +13,7 @@
             <div class="alert alert_success" id="alert_add">
                 <p id="add-alert"></p>
             </div>
-            <input type="submit" class="save-record" value="create record">
+            <input type="submit" class="save-record" value="save record">
             <div class="inner_grid">
                 <div class="income">
                     <h3>Income</h3>
@@ -65,6 +65,7 @@
                             <p>Product Sales <i class="fa fa-cash-register"></i></p>
                             <div id="sc">
                             </div>
+                            <p id="sales-made-p">Today's Sales</p>
                             <div id="sl">
                             </div>
                             <select name="product" id="product" class="dr_input">
@@ -90,16 +91,16 @@
                 <div class="expenses">
                     <h3>Expenses</h3>
                     <hr>
-
                     <div class="expenses-record">
                         <p>Expenses <i class="fas fa-money-bill-alt"></i></p>
+                        <p id="sales-made-p">Today's Expenses</p>
                         <div id="exp">
                         </div>
                         <input type="text" placeholder="expense (description)" id="expense_n" name="expense-name"
                             class="dr_input">
                         <input type="number" name="expense-value" id="expense-value" placeholder="used(ksh)"
                             class="dr_input">
-                        <button class="add-expense" id="n-expense" type="button">Add</button>
+                        <button disabled class="add-expense" id="n-expense" type="button">Add</button>
                     </div>
                 </div>
             </div>
@@ -107,7 +108,7 @@
 
     </main>
 
-</body>-->
+</body>
 
 <noscript>
     <div id="no_script">This site requires and runs entirely on javascript, please Ensure Javascript

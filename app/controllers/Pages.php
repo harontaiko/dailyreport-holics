@@ -53,6 +53,29 @@ class Pages extends Controller
       }
     }
 
+    public function activity()
+    {
+
+       if(isset($from) && isset($shopname) && isset($to)){
+        if (!isset($_SESSION["user_id"])) {
+          $data = [
+            "title" => "Daily Report",  
+          ];
+          redirect("users/index");
+        } 
+        
+        $db = $this->pageModel->getDatabaseConnection();
+
+        $data = ['title'=>'Filter Report'];
+
+        $this->view('pages/activity', $data);
+      }else{
+        http_response_code(404);
+        include('../app/404.php');
+        die();
+      }
+    }
+
     public function viewEdit($recId)
     {
        if(isset($recId)){
@@ -476,16 +499,6 @@ class Pages extends Controller
       
       $db = $this->pageModel->getDatabaseConnection();
 
-        if (strpos($_SERVER['REQUEST_URI'], "pages/add") !== false && saleRecord($db, date('Y-m-d',time())) !==false) : 
-          //redirect to history
-          if(isset($_SERVER['HTTP_REFERER'])):
-              header('location:'.$_SERVER['HTTP_REFERER'].'');
-              flash('add-error','You cannot add a new sale, a record already exist for this day, try editing it instead','alert_fail');
-          else:
-              redirect('pages/index');
-          endif;
-      endif;
-
       date_default_timezone_set('Africa/Nairobi');
       $currentdate = date('Y-m-d h:i:s A', time());
 
@@ -495,8 +508,34 @@ class Pages extends Controller
 
       $dbAdd = $this->pageModel->getDatabaseConnection();
 
+      //select values for today
+      $today = date('Y-m-d', time());
+      $movie = $this->pageModel->getMovieValuesByDate($today);
+      $mvarr = array();
+      while($val1 = $movie->fetch_assoc()){
+        array_push($mvarr, $val1);
+      }
+
+      $cyber = $this->pageModel->getCyberValuesByDate($today);
+      $cbarr = array();
+      while($val2 = $cyber->fetch_assoc()){
+        array_push($cbarr, $val2);
+      }
+
+      $ps = $this->pageModel->getPsValuesByDate($today);
+      $psarr = array();
+      while($val3 = $ps->fetch_assoc()){
+        array_push($psarr, $val3);
+      }
+
+      $net = $this->pageModel->getNetValuesByDate($today);
+      $ntarr = array();
+      while($val4 = $net->fetch_assoc()){
+        array_push($ntarr, $val4);
+      }
+
       //add store record
-      $data = ['title' => 'Add Sale Record', 'date'=>$currentdate, "inventoryAdd" => $inventoryDataAdd, "inventory" => $inventoryData, 'db'=>$db, 'db2' => $dbAdd];
+      $data = ['title' => 'Add Sale Record', 'net'=>$ntarr, 'cyber'=>$cbarr, 'today'=>$today, 'ps'=>$psarr, 'movie'=>$mvarr, 'date'=>$currentdate, "inventoryAdd" => $inventoryDataAdd, "inventory" => $inventoryData, 'db'=>$db, 'db2' => $dbAdd];
 
       $this->view('pages/add',$data);
       
@@ -893,9 +932,47 @@ class Pages extends Controller
     {
       if($_SERVER['REQUEST_METHOD'] == 'GET')
       {
-        $data = ['title'=>'Daily Report', "latest" => $this->pageModel->getExpenseTodayEdit($date)];
+        $data = ['title'=>'Daily Report'];
 
-        $this->view('pages/loadLatestExpense', $data);
+        if($this->pageModel->getExpenseTodayEdit($date)){
+          $row = $this->pageModel->getExpenseTodayEdit($date);
+          $result_array = array();
+          while($dt = $row->fetch_assoc()) {
+            array_push($result_array, $dt);
+        }
+   
+          echo json_encode(array("statusCode"=>200, 'row'=>$result_array));
+        }
+        else{
+          echo json_encode(array("statusCode"=>317));
+        }
+      }
+      else
+      {
+        http_response_code(404);
+        include('../app/404.php');
+        die();
+      }
+    }
+
+    public function loadLatestSaleEdit($date)
+    {
+      if($_SERVER['REQUEST_METHOD'] == 'GET')
+      {
+        $data = ['title'=>'Daily Report'];
+
+        if($this->pageModel->getSaleTodayEdit($date)){
+          $row = $this->pageModel->getSaleTodayEdit($date);
+          $result_array = array();
+          while($dt = $row->fetch_assoc()) {
+            array_push($result_array, $dt);
+        }
+   
+          echo json_encode(array("statusCode"=>200, 'row'=>$result_array));
+        }
+        else{
+          echo json_encode(array("statusCode"=>317));
+        }
       }
       else
       {

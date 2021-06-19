@@ -2901,12 +2901,32 @@ function getSaleItemById($id,$db)
 ///////////////////////////////////view inventory item
 function getInventoryItemById($id, $db)
 {
-  mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+  //mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
   $query = 'SELECT item_name FROM dr_inventory WHERE item_id = ?';
 
   $binders = "s";
 
   $parameters = array($id);
+
+  $result = SelectCond($query, $binders, $parameters, $db);
+
+  $row = $result->get_result();
+
+  if($row->num_rows > 0){
+      return true;
+  }else{
+    return false;
+  }
+}
+
+/////////////////////////////////////////////////////////checks
+function checkForSaleDataToday($date, $db)
+{
+  $query = 'SELECT sales_id FROM dr_nettotal WHERE date_created = ?';
+
+  $binders = "s";
+
+  $parameters = array($date);
 
   $result = SelectCond($query, $binders, $parameters, $db);
 

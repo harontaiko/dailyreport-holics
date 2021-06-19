@@ -303,6 +303,82 @@ class Page
         } 
     }
 
+    public function getCyberValuesByDate($date)
+    {
+        $query = 'SELECT cash, till FROM dr_cybershop WHERE date_created=?';
+
+        $binders= "s";
+
+        $values = array($date);
+
+        $result = SelectCond($query, $binders, $values, $this->db);
+
+        $row = $result->get_result();
+
+        try {
+            return $row;
+        } catch (Error $e) {
+            return false;
+        } 
+    }
+
+    public function getPsValuesByDate($date)
+    {
+        $query = 'SELECT cash, till FROM dr_playstation WHERE date_created=?';
+
+        $binders= "s";
+
+        $values = array($date);
+
+        $result = SelectCond($query, $binders, $values, $this->db);
+
+        $row = $result->get_result();
+
+        try {
+            return $row;
+        } catch (Error $e) {
+            return false;
+        } 
+    }
+
+    public function getMovieValuesByDate($date)
+    {
+        $query = 'SELECT cash, till FROM dr_movieshop WHERE date_created=?';
+
+        $binders= "s";
+
+        $values = array($date);
+
+        $result = SelectCond($query, $binders, $values, $this->db);
+
+        $row = $result->get_result();
+
+        try {
+            return $row;
+        } catch (Error $e) {
+            return false;
+        } 
+    }
+
+    public function getNetValuesByDate($date)
+    {
+        $query = 'SELECT * FROM dr_nettotal WHERE date_created=?';
+
+        $binders= "s";
+
+        $values = array($date);
+
+        $result = SelectCond($query, $binders, $values, $this->db);
+
+        $row = $result->get_result();
+
+        try {
+            return $row;
+        } catch (Error $e) {
+            return false;
+        } 
+    }
+
     public function getCyberTotal()
     {
         $query = 'SELECT date_created, cash, till FROM dr_cybershop ORDER BY record_id DESC';
@@ -631,6 +707,25 @@ class Page
     public function getExpenseTodayEdit($date)
     {
         $query = 'SELECT expense_id, expense_item, expense_cost FROM dr_expenses WHERE date_created=?';
+
+        $binders = "s";
+
+        $parameters = array($date);
+
+        $result = SelectCond($query, $binders, $parameters, $this->db);
+
+        $row = $result->get_result();
+
+        try {
+            return $row;
+        } catch (Error $e) {
+            return false;
+        }  
+    }
+
+    public function getSaleTodayEdit($date)
+    {
+        $query = 'SELECT * FROM dr_sales WHERE date_created=?';
 
         $binders = "s";
 
