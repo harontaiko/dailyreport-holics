@@ -13,8 +13,8 @@
     <meta name="og:url" content="<?php echo "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; ?>" />
     <link rel="stylesheet" href="<?php echo URLROOT; ?>/public/stylesheets/css/bootstrap.css" />
     <link rel="stylesheet" href="<?php echo URLROOT; ?>/public/stylesheets/css/style.css" />
-    <script src="<?php echo URLROOT; ?>/public/javascript/fontawesome.js"></script>
-    <script src="<?php echo URLROOT; ?>/public/javascript/jquery.js"></script>
+    <script src="<?php echo URLROOT; ?>/public/javascript/fontawesome.min.js"></script>
+    <script src="<?php echo URLROOT; ?>/public/javascript/jquery.min.js"></script>
     <?php if (strpos($_SERVER['REQUEST_URI'], "pages/reports") !== false) :  ?>
     <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.3.2/dist/chart.min.js"></script>
