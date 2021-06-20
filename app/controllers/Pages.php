@@ -7,6 +7,26 @@ class Pages extends Controller
     {
       $this->pageModel = $this->model('Page'); 
     }
+    
+
+    public function activity()
+    {
+  
+          if (!isset($_SESSION["user_id"])) {
+            $data = [
+              "title" => "Daily Report",  
+            ];
+            redirect("users/index");
+          } 
+          
+          $db = $this->pageModel->getDatabaseConnection();
+
+          $users = $this->pageModel->getAdmins();
+  
+          $data = ['title'=>'Activity', 'row'=>$users, 'db'=>$db];
+  
+          $this->view('pages/activity', $data);
+    }
 
     public function index()
     {
@@ -46,29 +66,6 @@ class Pages extends Controller
         $data = ['title'=>'Filter Report', "inventory" => $inventoryData, 'db'=>$db, 'from'=>htmlspecialchars($from), 'to'=>htmlspecialchars($to), 'shopname'=>htmlspecialchars($shopname)];
 
         $this->view('pages/date', $data);
-      }else{
-        http_response_code(404);
-        include('../app/404.php');
-        die();
-      }
-    }
-
-    public function activity()
-    {
-
-       if(isset($from) && isset($shopname) && isset($to)){
-        if (!isset($_SESSION["user_id"])) {
-          $data = [
-            "title" => "Daily Report",  
-          ];
-          redirect("users/index");
-        } 
-        
-        $db = $this->pageModel->getDatabaseConnection();
-
-        $data = ['title'=>'Filter Report'];
-
-        $this->view('pages/activity', $data);
       }else{
         http_response_code(404);
         include('../app/404.php');

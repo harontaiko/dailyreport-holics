@@ -2919,6 +2919,75 @@ function getInventoryItemById($id, $db)
   }
 }
 
+function getLoginCounts($id, $db)
+{
+  $query = 'SELECT login_count FROM dr_login WHERE user_id=?';
+
+  $binders = "s";
+
+  $param =array($id);
+
+  $result = SelectCond($query, $binders, $param, $db);
+
+  $row = $result->get_result();
+
+  $rowItem = $row->fetch_assoc();
+
+  $totalmovie = isset($rowItem['login_count']) ? $rowItem['login_count'] : 'N/A';
+
+  try {
+      return $totalmovie;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getLastIp($id, $db)
+{
+  $query = 'SELECT user_ip FROM dr_login WHERE user_id=?';
+
+  $binders = "s";
+
+  $param =array($id);
+
+  $result = SelectCond($query, $binders, $param, $db);
+
+  $row = $result->get_result();
+
+  $rowItem = $row->fetch_assoc();
+
+  $totalmovie = isset($rowItem['user_ip']) ? $rowItem['user_ip'] : 'N/A';
+
+  try {
+      return $totalmovie;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function getLastActive($id, $db)
+{
+  $query = 'SELECT time_logged FROM dr_login WHERE user_id=?';
+
+  $binders = "s";
+
+  $param =array($id);
+
+  $result = SelectCond($query, $binders, $param, $db);
+
+  $row = $result->get_result();
+
+  $rowItem = $row->fetch_assoc();
+
+  $totalmovie = isset($rowItem['time_logged']) ? $rowItem['time_logged'] : 'N/A';
+
+  try {
+      return $totalmovie;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
 /////////////////////////////////////////////////////////checks
 function checkForSaleDataToday($date, $db)
 {

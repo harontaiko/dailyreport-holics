@@ -115,6 +115,11 @@
                 <i class="fas fa-star star_active"></i>
                 <?php endif; ?>
             </a></li>
+        <li><a href="<?php echo URLROOT; ?>/pages/activity">Admins
+                <?php if (strpos($_SERVER['REQUEST_URI'], "pages/activity") !== false) :  ?>
+                <i class="fas fa-star star_active"></i>
+                <?php endif; ?>
+            </a></li>
         <li><a href="<?php echo URLROOT; ?>/pages/trends">Trends
                 <?php if (strpos($_SERVER['REQUEST_URI'], "pages/trends") !== false) :  ?>
                 <i class="fas fa-star star_active"></i>

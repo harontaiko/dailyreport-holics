@@ -14,6 +14,25 @@ class Page
       return $this->db;
     }
 
+    public function getAdmins()
+    {
+        $query = 'SELECT * FROM dr_user WHERE user_id !=?';
+
+        $binders = "s";
+
+        $param = array(3);
+
+        $result = SelectCond($query, $binders, $param, $this->db);
+
+        $row = $result->get_result();
+
+        try {
+            return $row;
+        } catch (Error $e) {
+            return false;
+        } 
+    }
+
     public function getExpenseById($date)
     { 
         $query = 'SELECT * FROM dr_expenses WHERE date_created=?';
@@ -942,7 +961,13 @@ class Page
 
     public function getInventoryData()
     {
-        $result = SelectAllLatest('item_id', 'dr_inventory', $this->db);
+        $query = 'SELECT * FROM dr_inventory WHERE item_id !=? ORDER BY item_id DESC';
+
+        $BINDERS = "s";
+
+        $param = array(5);
+
+        $result = SelectCond($query, $BINDERS, $param, $this->db);
 
         $row = $result->get_result();
 
