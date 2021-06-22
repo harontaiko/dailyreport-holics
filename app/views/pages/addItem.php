@@ -9,7 +9,8 @@
             <div class="loading">
             </div>
         </div>
-        <div class="alert alert_success">
+        <div class="alert alert_success"
+            style=" color:#fff !important; font-size:x-large; background-color:#4CAF50!important">
             <p id="inventory-alert"></p>
         </div>
         <div class="payment-title">
@@ -46,7 +47,7 @@
                 </div>
             </div>
             <div class="fiel-container">
-                <button id="add-record-invent" class="add-inventory">Save</button>
+                <button id="add-record-invent" name="invent-button" class="add-inventory">Save</button>
             </div>
         </form>
         </ </main>

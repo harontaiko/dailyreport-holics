@@ -68,7 +68,7 @@
 
     <section id="realtime-charts">
         <div class="line-chart-report">
-            <h2 style="font-size: large;">3 Most Sold Items This Week</h2>
+            <h2 style="font-size: large;">3 Most Sold Items This Month</h2>
             <canvas id="line-month-chart-repo-mv" style="height:380px; width:420px"></canvas>
         </div>
         <div class="bar-chart-report">

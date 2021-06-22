@@ -100,5 +100,6 @@
         Total:<?php echo number_format(getExpenseTotal($data['date'], $data['db'])).'/='; ?>
     </h1>
 </body>
+<?php require(APPROOT . '/views/inc/footer.php'); ?>
 
 </html>

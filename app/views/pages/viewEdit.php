@@ -8,12 +8,16 @@
         <form action="" method="POST" id="form-add">
             <input type="hidden" id="recorddate"
                 value="<?php echo isset($data['recordDate']) ? $data['recordDate'] : ''; ?>">
-            <input type="datetime" name="date" id="date"
-                value="<?php echo isset($data['date']) ? $data['date'] : ''; ?>" readonly>
+            <input style="background: #81ec16;color: red;" type="datetime" name="date" id="date"
+                value="Created on:<?php echo isset($data['recordDate']) ? $data['recordDate'] : ''; ?>" readonly>
+            <div class="loader">
+                <div class="loading">
+                </div>
+            </div>
             <div class="alert alert_success" id="alert_add">
                 <p id="add-alert"></p>
             </div>
-            <input type="submit" class="save-record" value="save record">
+            <input type="submit" name="save-rec-edit" class="save-record" value="save changes">
             <div class="inner_grid">
                 <div class="income">
                     <h3>Income</h3>
@@ -100,7 +104,7 @@
                             class="dr_input">
                         <input type="number" name="expense-value" id="expense-value" placeholder="used(ksh)"
                             class="dr_input">
-                        <button disabled class="add-expense" id="n-expense" type="button">Add</button>
+                        <button class="add-expense" id="n-expense" type="button">Add</button>
                     </div>
                 </div>
             </div>

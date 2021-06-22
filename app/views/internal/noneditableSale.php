@@ -1,10 +1,9 @@
 <main>
-    <h2 id="add-title">This record can only be edited <a
-            href="#!">here</a>
+    <h2 id="add-title">This record can only be edited <a href="#!">here</a>
     </h2>
     <form action="" method="POST" id="form-add">
-        <input type="datetime" name="date" id="date" value="<?php echo isset($data['date']) ? $data['date'] : ''; ?>"
-            readonly>
+        <input style="background: #81ec16;color: red;" type="datetime" name="date" id="date"
+            value="<?php echo isset($data['date']) ? $data['date'] : ''; ?>" readonly>
         <div class="alert alert_success" id="alert_add">
             <p id="add-alert"></p>
         </div>

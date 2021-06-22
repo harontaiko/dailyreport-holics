@@ -2988,6 +2988,29 @@ function getLastActive($id, $db)
   } 
 }
 
+function getLastDateActive($id, $db)
+{
+  $query = 'SELECT date_logged FROM dr_login WHERE user_id=?';
+
+  $binders = "s";
+
+  $param =array($id);
+
+  $result = SelectCond($query, $binders, $param, $db);
+
+  $row = $result->get_result();
+
+  $rowItem = $row->fetch_assoc();
+
+  $totalmovie = isset($rowItem['date_logged']) ? $rowItem['date_logged'] : 'N/A';
+
+  try {
+      return $totalmovie;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
 /////////////////////////////////////////////////////////checks
 function checkForSaleDataToday($date, $db)
 {

@@ -135,7 +135,8 @@
             </div>
             <div class="general">
                 <h1><?php echo $user['username']; ?></h1>
-                <p>Last Active:<?php echo getLastActive($user['user_id'], $data['db']); ?></p>
+                <p>Last Active: On <?php echo getLastDateActive($user['user_id'], $data['db']); ?> at
+                    <?php echo getLastActive($user['user_id'], $data['db']); ?></p>
                 <span class="more">Mouse over the card for more info</span>
             </div>
         </div>

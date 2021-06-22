@@ -37,6 +37,10 @@ Inventory management and daily record keeping system, built on PHP OOP and Js, D
 
 - edit root url in js so the only editable thing on production is htaccess and config
 
+- update inventory in real time on edit success
+
+- left on editing main record
+
 ```
 
 ```

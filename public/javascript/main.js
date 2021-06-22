@@ -767,21 +767,14 @@ dailyreport = {
           var itemModel = document.querySelector("#model");
           itemImage = document.querySelector("#product-image");
 
-          /*           var check = [itemName, itemQt, itemBp, itemModel].forEach((item) => {
-            if (item.value == "") {
-              item.style.border = "1.2px solid red";
-              sleep(3500).then(() => {
-                item.style.border = "";
-              });
-            }
-            return false;
-          }); */
+          //disable btn after success to avoid further clicks
+          document.querySelector("#add-record-invent").disabled = true;
 
           //product image
           var fd = new FormData();
           var files = $("#product-image")[0].files[0];
           fd.append("product-image", files);
-
+          //save inventory item
           $.ajax({
             url: `${hostUrl}/pages/saveInventory`,
             type: "POST",
@@ -823,7 +816,11 @@ dailyreport = {
                     `${hostUrl}/public/images/images/open-box.png`
                   );
                   document.getElementById("product-image").value = "";
+
                   sleep(3500).then(() => {
+                    document.querySelector(
+                      "#add-record-invent"
+                    ).disabled = false;
                     document.querySelector(".alert_success").style.display =
                       "none";
                     document.getElementById("inventory-alert").innerHTML = "";
@@ -832,7 +829,7 @@ dailyreport = {
               } else if (dataResult.statusCode == 201) {
                 document.querySelector(".alert").style.display = "block";
                 document.getElementById("inventory-alert").style.color =
-                  "#f85f5f";
+                  "#f44336";
                 $("#inventory-alert").html(
                   "invalid file or missing field, please try again"
                 );
@@ -845,7 +842,7 @@ dailyreport = {
               } else if (dataResult.statusCode == 417) {
                 document.querySelector(".alert").style.display = "block";
                 document.getElementById("inventory-alert").style.color =
-                  "#f85f5f";
+                  "#f44336";
                 $("#inventory-alert").html(
                   "request could not be completed, check your connection"
                 );
@@ -858,7 +855,7 @@ dailyreport = {
               } else if (dataResult.statusCode == 317) {
                 document.querySelector(".alert").style.display = "block";
                 document.getElementById("inventory-alert").style.color =
-                  "#f85f5f";
+                  "#f44336";
                 $("#inventory-alert").html(
                   "please change the item name or image name, a similar record already exists"
                 );
@@ -1235,6 +1232,7 @@ dailyreport = {
           },
         });
 
+        //load sold items
         $.ajax({
           url: `${hostUrl}/pages/loadLatestSaleEdit/${Recorddate}`,
           type: "GET",
@@ -1294,6 +1292,504 @@ dailyreport = {
             }
           },
         });
+
+        $("form").on("submit", function (e) {
+          e.preventDefault();
+
+          var form = $(this);
+
+          //validate
+          if (salesProfit.value == "") {
+            document.getElementById("sales-cash").style.border =
+              "1.5px solid red";
+            document.getElementById("bought-item").style.border =
+              "1.5px solid red";
+            document.getElementById("bought-price").style.border =
+              "1.5px solid red";
+            document.getElementById("sales-till").style.border =
+              "1.5px solid red";
+            sleep(2500).then(() => {
+              document.getElementById("bought-item").style.border = "";
+              document.getElementById("bought-price").style.border = "";
+              document.getElementById("sales-cash").style.border = "";
+              document.getElementById("sales-till").style.border = "";
+            });
+          } else {
+            //add to db, item == itemId
+            var boughtsales = document.getElementById("bought-price").value;
+            var boughtItems = document.getElementById("bought-item").value;
+            var cashsales = document.getElementById("sales-cash").value;
+            var tillsales = document.getElementById("sales-till").value;
+            var profitsales = document.getElementById("sales-profit").value;
+            var itemsales = document.getElementById("product").value;
+
+            //save cash sales
+            $.ajax({
+              url: `${hostUrl}/pages/saveSaleCash`,
+              type: "POST",
+              data: form.serialize(),
+              dataType: "json",
+              success: function (dataResult) {
+                if (dataResult.statusCode == 200) {
+                  //success
+                  //clear all inputs
+                  [
+                    document.getElementById("bought-price"),
+                    document.getElementById("bought-item"),
+                    document.getElementById("sales-cash"),
+                    document.getElementById("sales-till"),
+                    document.getElementById("sales-profit"),
+                  ].forEach((item) => {
+                    item.value = "";
+                  });
+                  $("#product").prop("selected", function () {
+                    return this.defaultSelected;
+                  });
+                  //load sold items
+                  $.ajax({
+                    url: `${hostUrl}/pages/loadLatestSaleEdit/${Recorddate}`,
+                    type: "GET",
+                    dataType: "json",
+                    success: function (dataResult) {
+                      if (dataResult.statusCode == 200) {
+                        var string = "";
+                        dataResult.row.forEach((exp) => {
+                          string += `<p id="${exp.sales_id}" class="total-expense">${exp.sales_item} - ${exp.buying_price}
+                <button class="close-sale" type="button">&times;</button>
+                </p>`;
+                          $("#sl").html(string);
+                        });
+
+                        cancelExpense =
+                          document.querySelectorAll(".close-sale");
+
+                        for (var i = 0; i < cancelExpense.length; i++) {
+                          cancelExpense[i].addEventListener(
+                            "click",
+                            function (event) {
+                              if (!confirm("delete sale?")) {
+                                event.preventDefault();
+                              } else {
+                                //del from db
+                                currentId = this.parentNode.id;
+                                hideParent = this.parentElement.style.display =
+                                  "none";
+                                $.ajax({
+                                  url: `${hostUrl}/pages/DeleteSaleNow`,
+                                  type: "POST",
+                                  data: {
+                                    id: currentId,
+                                  },
+                                  dataType: "json",
+                                  success: function (dataResult) {
+                                    if (dataResult.statusCode == 200) {
+                                      //success, del element from DOM
+                                      hideParent;
+                                    } else if (dataResult.statusCode == 317) {
+                                      //for some reason, the id is not present once user accepts condition so,
+                                      //fx is true all the time
+                                      hideParent;
+                                    }
+                                  },
+                                });
+                              }
+                            }
+                          );
+                        }
+                      } else {
+                        document.querySelector(".alert").style.display =
+                          "block";
+                        document.getElementById("add-alert").style.color =
+                          "#fff";
+                        $("#add-alert").html(
+                          "an error occurred, record could not be fetched, please check your connection"
+                        );
+
+                        sleep(4700).then(() => {
+                          document.querySelector(
+                            ".alert_success"
+                          ).style.display = "none";
+                          document.getElementById("add-alert").innerHTML = "";
+                        });
+                      }
+                    },
+                  });
+                  //update inventory real time
+                } else if (dataResult.statusCode == 317) {
+                  [
+                    document.getElementById("bought-price"),
+                    document.getElementById("bought-item"),
+                    document.getElementById("sales-cash"),
+                    document.getElementById("sales-till"),
+                    document.getElementById("sales-profit"),
+                  ].forEach((item) => {
+                    item.value = "";
+                  });
+                  document.querySelector(".alert").style.display = "block";
+                  document.getElementById("add-alert").style.color = "#f85f5f";
+                  $("#add-alert").html(
+                    "connection error, check database or internet connection"
+                  );
+
+                  sleep(4700).then(() => {
+                    document.querySelector(".alert_success").style.display =
+                      "none";
+                    document.getElementById("add-alert").innerHTML = "";
+                  });
+                } else if (dataResult.statusCode == 318) {
+                  [
+                    document.getElementById("bought-price"),
+                    document.getElementById("bought-item"),
+                    document.getElementById("sales-cash"),
+                    document.getElementById("sales-till"),
+                    document.getElementById("sales-profit"),
+                  ].forEach((item) => {
+                    item.value = "";
+                  });
+                  document.querySelector(".alert").style.display = "block";
+                  document.getElementById("add-alert").style.color = "#fff";
+                  $("#add-alert").html(
+                    "the item is currently not in stock, add it to the inventory first!"
+                  );
+
+                  sleep(4700).then(() => {
+                    document.querySelector(".alert_success").style.display =
+                      "none";
+                    document.getElementById("add-alert").innerHTML = "";
+                  });
+                }
+              },
+            });
+          }
+        });
+
+        //add expense
+        $("#n-expense").click(function (e) {
+          //validate expense input
+          if (
+            document.getElementById("expense_n").value == "" ||
+            document.getElementById("expense-value").value == ""
+          ) {
+            document.getElementById("expense_n").style.border =
+              "1.5px solid red";
+            document.getElementById("expense-value").style.border =
+              "1.5px solid red";
+            sleep(2250).then(() => {
+              document.getElementById("expense_n").style.border = "";
+              document.getElementById("expense-value").style.border = "";
+            });
+          } else {
+            //submit expense
+            var expense_name = document.getElementById("expense_n").value;
+            var expense_val = document.getElementById("expense-value").value;
+            $.ajax({
+              url: `${hostUrl}/pages/SaveExpense`,
+              type: "POST",
+              data: {
+                expense: expense_name,
+                amount: expense_val,
+              },
+              dataType: "json",
+              success: function (dataResult) {
+                if (dataResult.statusCode == 200) {
+                  //clear inputs
+                  [
+                    document.getElementById("expense_n"),
+                    document.getElementById("expense-value"),
+                  ].forEach((item) => {
+                    item.value = "";
+                  });
+                  //load expense onto DOM
+                  $.ajax({
+                    url: `${hostUrl}/pages/loadLatestExpenseEdit/${Recorddate}`,
+                    type: "GET",
+                    dataType: "json",
+                    success: function (dataResult) {
+                      if (dataResult.statusCode == 200) {
+                        var string = "";
+                        dataResult.row.forEach((exp) => {
+                          string += `<p id="${exp.expense_id}" class="total-expense">${exp.expense_item} - ${exp.expense_cost}
+                                  <button class="close-expense" type="button">&times;</button>
+                                  </p>`;
+                          $("#exp").html(string);
+                        });
+
+                        cancelExpense =
+                          document.querySelectorAll(".close-expense");
+
+                        for (var i = 0; i < cancelExpense.length; i++) {
+                          cancelExpense[i].addEventListener(
+                            "click",
+                            function (event) {
+                              if (!confirm("delete expense?")) {
+                                event.preventDefault();
+                              } else {
+                                //del from db
+                                currentId = this.parentNode.id;
+                                hideParent = this.parentElement.style.display =
+                                  "none";
+                                $.ajax({
+                                  url: `${hostUrl}/pages/DeleteExpenseNow`,
+                                  type: "POST",
+                                  data: {
+                                    id: currentId,
+                                  },
+                                  dataType: "json",
+                                  success: function (dataResult) {
+                                    if (dataResult.statusCode == 200) {
+                                      //success, del element from DOM
+                                      hideParent;
+                                    } else if (dataResult.statusCode == 317) {
+                                      //for some reason, the id is not present once user accepts condition so,
+                                      //fx is true all the time
+                                      hideParent;
+                                    }
+                                  },
+                                });
+                              }
+                            }
+                          );
+                        }
+                      } else {
+                        document.querySelector(".alert").style.display =
+                          "block";
+                        document.getElementById("add-alert").style.color =
+                          "#fff";
+                        $("#add-alert").html(
+                          "an error occurred, record could not be fetched, please check your connection"
+                        );
+
+                        sleep(4700).then(() => {
+                          document.querySelector(
+                            ".alert_success"
+                          ).style.display = "none";
+                          document.getElementById("add-alert").innerHTML = "";
+                        });
+                      }
+                    },
+                  });
+                } else if (dataResult.statusCode == 317) {
+                  //error,
+                  $("#add-alert").html(
+                    "an error occurred while saving the expense, please check your connection"
+                  );
+
+                  sleep(4700).then(() => {
+                    document.querySelector(".alert_success").style.display =
+                      "none";
+                    document.getElementById("add-alert").innerHTML = "";
+                  });
+                }
+              },
+            });
+          }
+        });
+        salesCash.style.border = "";
+        salesTill.style.border = "";
+        boughtPrice.style.border = "";
+        salesProfit.style.border = "";
+        //save all edited sale
+        //create record of all sale
+        $(".save-record").click(function (e) {
+          e.preventDefault();
+          //validate relevant inputs
+          if (
+            cyberCash.value == "" ||
+            cyberTill.value == "" ||
+            movieCash.value == "" ||
+            movieTill.value == "" ||
+            psCash.value == "" ||
+            psTill.value == ""
+          ) {
+            cyberTill.style.border = "1.5px solid red";
+            cyberCash.style.border = "1.5px solid red";
+            movieTill.style.border = "1.5px solid red";
+            movieCash.style.border = "1.5px solid red";
+            psCash.style.border = "1.5px solid red";
+            psTill.style.border = "1.5px solid red";
+            sleep(2500).then(() => {
+              cyberTill.style.border = "";
+              cyberCash.style.border = "";
+              movieTill.style.border = "";
+              movieCash.style.border = "";
+              psCash.style.border = "";
+              psTill.style.border = "";
+            });
+          } else {
+            //check for atleast one sale & expense
+            //if none, proceed but with warning
+            var Recorddate = document.getElementById("recorddate").value;
+
+            $.ajax({
+              url: `${hostUrl}/pages/CheckSaleExpense`,
+              type: "GET",
+              dataType: "json",
+              success: function (dataResult) {
+                if (dataResult.statusCode == 200) {
+                  //status==okay, proceed
+                  result1 = confirm("confirm the changes made?");
+                  if (!result1) {
+                  } else {
+                    //save to db
+                    $.ajax({
+                      url: `${hostUrl}/pages/SaveSaleRecordEdit/${Recorddate}`,
+                      type: "POST",
+                      data: {
+                        cybercash: cyberCash.value,
+                        cybertill: cyberTill.value,
+                        moviecash: movieCash.value,
+                        movietill: movieTill.value,
+                        pscash: psCash.value,
+                        pstill: psTill.value,
+                      },
+                      dataType: "json",
+                      success: function (dataResult) {
+                        if (dataResult.statusCode == 200) {
+                          //save net total
+                          $.ajax({
+                            url: `${hostUrl}/pages/SaveNetTotal`,
+                            type: "POST",
+                            dataType: "json",
+                            success: function (dataResult) {
+                              if (dataResult.statusCode == 200) {
+                                //success, redirect to home page
+                                location.replace(`${hostUrl}/pages/index`);
+                              } else if (dataResult.statusCode == 317) {
+                                document.querySelector(".alert").style.display =
+                                  "block";
+                                document.getElementById(
+                                  "add-alert"
+                                ).style.color = "#fff";
+                                $("#add-alert").html(
+                                  "an error occurred, record could not be saved, please check your connection"
+                                );
+
+                                sleep(4700).then(() => {
+                                  document.querySelector(
+                                    ".alert_success"
+                                  ).style.display = "none";
+                                  document.getElementById(
+                                    "add-alert"
+                                  ).innerHTML = "";
+                                });
+                              }
+                            },
+                          });
+                        } else if (dataResult.statusCode == 317) {
+                          //not okay
+                          document.querySelector(".alert").style.display =
+                            "block";
+                          document.getElementById("add-alert").style.color =
+                            "#fff";
+                          $("#add-alert").html(
+                            "an error occurred, record could not be saved, please check your connection"
+                          );
+
+                          sleep(4700).then(() => {
+                            document.querySelector(
+                              ".alert_success"
+                            ).style.display = "none";
+                            document.getElementById("add-alert").innerHTML = "";
+                          });
+                        }
+                      },
+                    });
+                  }
+                } else if (dataResult.statusCode == 317) {
+                  //status=not ok, proceed with warning, no sale
+                  result2 = confirm(
+                    "No sale made, do you still want to continue?"
+                  );
+                  if (!result2) {
+                  } else {
+                    //proceed to confirm sale page
+                    $.ajax({
+                      url: `${hostUrl}/pages/SaveSaleRecord`,
+                      type: "POST",
+                      data: {
+                        cybercash: cyberCash.value,
+                        cybertill: cyberTill.value,
+                        moviecash: movieCash.value,
+                        movietill: movieTill.value,
+                        pscash: psCash.value,
+                        pstill: psTill.value,
+                      },
+                      dataType: "json",
+                      success: function (dataResult) {
+                        if (dataResult.statusCode == 200) {
+                          //save net total
+                          $.ajax({
+                            url: `${hostUrl}/pages/SaveNetTotal`,
+                            type: "POST",
+                            dataType: "json",
+                            success: function (dataResult) {
+                              if (dataResult.statusCode == 200) {
+                                //success, redirect to home page
+                                location.replace(`${hostUrl}/pages/index`);
+                              } else if (dataResult.statusCode == 317) {
+                                document.querySelector(".alert").style.display =
+                                  "block";
+                                document.getElementById(
+                                  "add-alert"
+                                ).style.color = "#fff";
+                                $("#add-alert").html(
+                                  "an error occurred, record could not be saved, please check your connection"
+                                );
+
+                                sleep(4700).then(() => {
+                                  document.querySelector(
+                                    ".alert_success"
+                                  ).style.display = "none";
+                                  document.getElementById(
+                                    "add-alert"
+                                  ).innerHTML = "";
+                                });
+                              }
+                            },
+                          });
+                        } else if (dataResult.statusCode == 317) {
+                          //not okay
+                          document.querySelector(".alert").style.display =
+                            "block";
+                          document.getElementById("add-alert").style.color =
+                            "#fff";
+                          $("#add-alert").html(
+                            "an error occurred, record could not be saved, please check your connection"
+                          );
+
+                          sleep(4700).then(() => {
+                            document.querySelector(
+                              ".alert_success"
+                            ).style.display = "none";
+                            document.getElementById("add-alert").innerHTML = "";
+                          });
+                        }
+                      },
+                    });
+                  }
+                } else if (dataResult.statusCode == 318) {
+                  //status=not ok, proceed with warning, no expense
+                  result2 = confirm(
+                    "No expenses added, please add null expense?"
+                  );
+                  if (!result2) {
+                  } else {
+                    //proceed to confirm sale page
+                  }
+                } else if (dataResult.statusCode == 319) {
+                  //status=not ok, proceed with warning, no expense and sale
+                  result2 = confirm(
+                    "No sale or expense today, do you still want to continue?"
+                  );
+                  if (!result2) {
+                  } else {
+                    //proceed to confirm sale page
+                  }
+                }
+              },
+            });
+          }
+        });
       });
     },
   },
@@ -1312,6 +1808,7 @@ dailyreport = {
   },
   editItem: {
     init: function _edititem() {
+      //edit inventory item
       $(document).ready(function () {
         $("form").on("submit", function (e) {
           e.preventDefault();

@@ -25,6 +25,7 @@
                                     <th>Item</th>
                                     <th>Item No.</th>
                                     <th>Quantity</th>
+                                    <th>model</th>
                                     <th>In Stock</th>
                                     <th>Sold</th>
                                     <th>Created on</th>
@@ -44,6 +45,8 @@
                                     <td>DR0<?php echo isset($inventory['item_id']) ? $inventory['item_id']: ''; ?>
                                     </td>
                                     <td><?php echo isset($inventory['item_quantity']) ? $inventory['item_quantity']: ''; ?>
+                                    </td>
+                                    <td><?php echo isset($inventory['item_model']) ? $inventory['item_model']: '';; ?>
                                     </td>
                                     <td><?php echo ($instock - $sold); ?>
                                     </td>

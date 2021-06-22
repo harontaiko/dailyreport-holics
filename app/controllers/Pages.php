@@ -790,29 +790,35 @@ class Pages extends Controller
   
           $ip = get_ip_address();
 
-          $inventory = [
-            'date' => $date,
-            'time' => $time,
-            'ip' => $ip,
-            'itemName' => $itemName,
-            'itemquantity' => $itemquantity,
-            'bp' => $itemBp,
-            'model' => $itemModel,
-            'creator' => $_SESSION['user_name'],
-          ];
-        
-  
-          $save = $this->pageModel->saveToInventoryNull($inventory);
-          if($save)
-          {
-            echo json_encode(array("statusCode"=>200));
+          if($this->pageModel->getItemByName($itemName) || $this->pageModel->getImageByName($photo)){
+            echo json_encode(array("statusCode"=>317));
+          }else{
+            $inventory = [
+              'date' => $date,
+              'time' => $time,
+              'ip' => $ip,
+              'itemName' => $itemName,
+              'itemquantity' => $itemquantity,
+              'bp' => $itemBp,
+              'model' => $itemModel,
+              'creator' => $_SESSION['user_name'],
+            ];
+          
+    
+            $save = $this->pageModel->saveToInventoryNull($inventory);
+            if($save)
+            {
+              echo json_encode(array("statusCode"=>200));
+            }
+            else{
+              echo json_encode(array("statusCode"=>417));
+            }
           }
-          else{
-            echo json_encode(array("statusCode"=>417));
-          }
+          
         }
       }
       else{
+        
         
         $itemName = $_POST['item-name'];
         $itemquantity = $_POST['item-quantity'];
@@ -824,26 +830,30 @@ class Pages extends Controller
         $time = date('H:i:s T', time());
 
         $ip = get_ip_address();
-
-        $inventory = [
-          'date' => $date,
-          'time' => $time,
-          'ip' => $ip,
-          'itemName' => $itemName,
-          'itemquantity' => $itemquantity,
-          'bp' => $itemBp,
-          'model' => $itemModel,
-          'creator' => $_SESSION['user_name'],
-        ];
-
-        $save = $this->pageModel->saveToInventoryNull($inventory);
-        if($save)
-        {
-          echo json_encode(array("statusCode"=>200));
+        if($this->pageModel->getItemByName($itemName) || $this->pageModel->getImageByName($photo)){
+          echo json_encode(array("statusCode"=>317));
+        }else{
+          $inventory = [
+            'date' => $date,
+            'time' => $time,
+            'ip' => $ip,
+            'itemName' => $itemName,
+            'itemquantity' => $itemquantity,
+            'bp' => $itemBp,
+            'model' => $itemModel,
+            'creator' => $_SESSION['user_name'],
+          ];
+  
+          $save = $this->pageModel->saveToInventoryNull($inventory);
+          if($save)
+          {
+            echo json_encode(array("statusCode"=>200));
+          }
+          else{
+            echo json_encode(array("statusCode"=>417));
+          }
         }
-        else{
-          echo json_encode(array("statusCode"=>417));
-        }
+      
       }
       
     }else{
@@ -859,7 +869,7 @@ class Pages extends Controller
       {
           $itemId = htmlspecialchars($date);
 
-          if($this->pageModel->getBuyingByDate($date)){
+          if($this->pageModel->getBuyingByDate($date,$itemName)){
             $bp = $this->pageModel->getBuyingByDate($date,$itemName);
             echo json_encode(array("statusCode"=>200, 'row'=>$bp));
           }else{
@@ -1077,6 +1087,51 @@ class Pages extends Controller
        die();
      } 
    }
+
+   public function SaveSaleRecordEdit($date){
+    if($_SERVER['REQUEST_METHOD'] == 'POST')
+    {
+      $cyber = [
+        'cash'=>htmlspecialchars($_POST['cybercash']), 
+        'till'=>htmlspecialchars($_POST['cybertill']),
+        'date' => date('Y-m-d', time()),
+        'time' => date('H:i:s T', time()),
+        'creator'=>$_SESSION['user_name'],
+        'ip'=>get_ip_address(),
+      ];
+
+      $ps = [
+        'cash'=>htmlspecialchars($_POST['pscash']), 
+        'till'=>htmlspecialchars($_POST['pstill']),
+        'date' => date('Y-m-d', time()),
+        'time' => date('H:i:s T', time()),
+        'creator'=>$_SESSION['user_name'],
+        'ip'=>get_ip_address(),
+      ];
+
+      $movie = [
+        'cash'=>htmlspecialchars($_POST['moviecash']), 
+        'till'=>htmlspecialchars($_POST['movietill']),
+        'date' => date('Y-m-d', time()),
+        'time' => date('H:i:s T', time()),
+        'creator'=>$_SESSION['user_name'],
+        'ip'=>get_ip_address(),
+      ];
+
+      if($this->pageModel->saveSaleRecordNow($cyber, $ps, $movie)){
+        echo json_encode(array("statusCode"=>200));
+      }else{
+        echo json_encode(array("statusCode"=>317));
+      }
+   
+    }
+    else
+    {
+      http_response_code(404);
+      include('../app/404.php');
+      die();
+    } 
+  }
    
    public function SaveSaleRecord(){
     if($_SERVER['REQUEST_METHOD'] == 'POST')
@@ -1121,6 +1176,26 @@ class Pages extends Controller
       include('../app/404.php');
       die();
     } 
+  }
+  
+  public function SaveNetTotalEdit(){
+    if($_SERVER['REQUEST_METHOD']=='POST'){
+      $data = [
+        'date' => date('Y-m-d', time()),
+        'time' => date('H:i:s T', time()),
+        'creator'=>$_SESSION['user_name'],
+        'ip'=>get_ip_address(),
+      ];
+      if($this->pageModel->saveNetTotalNow($data)){
+        echo json_encode(array("statusCode"=>200));
+      }else{
+        echo json_encode(array("statusCode"=>317));
+      }
+    }else{
+      http_response_code(404);
+      include('../app/404.php');
+      die();
+    }
   }
   
   public function SaveNetTotal(){
