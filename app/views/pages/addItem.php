@@ -20,11 +20,11 @@
 
                 <div class="field-container">
                     <label for="name">Item Name</label>
-                    <input id="item-name" name="item-name" maxlength="20" type="text" required>
+                    <input id="item-name" name="item-name" maxlength="50" type="text" required>
                 </div>
                 <div class="field-container">
                     <label for="name">Quantity</label>
-                    <input id="item-quantity" name="item-quantity" type="number" max="10" inputmode="numeric" required>
+                    <input id="item-quantity" name="item-quantity" type="number" max="100" inputmode="numeric" required>
                 </div>
                 <div class="field-container">
                     <label for="expirationdate">Buying (Ksh)</label>
@@ -53,12 +53,6 @@
 
 </body>
 
-<noscript>
-    <div id="no_script">This site requires and runs entirely on javascript, please Ensure Javascript
-        is enabled
-        on your browser for smooth & better experience</div>
-</noscript>
-<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
-<script src="<?php echo URLROOT; ?>/public/javascript/main.min.js"></script>
+<?php require(APPROOT . '/views/inc/footer.php'); ?>
 
 </html>

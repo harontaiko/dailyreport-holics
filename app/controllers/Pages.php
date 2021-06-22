@@ -853,6 +853,28 @@ class Pages extends Controller
     }    
   }
 
+    public function loadBuyingEdit($date, $itemName)
+    {
+      if($_SERVER['REQUEST_METHOD'] == 'GET' && isset($date) && isset($itemName))
+      {
+          $itemId = htmlspecialchars($date);
+
+          if($this->pageModel->getBuyingByDate($date)){
+            $bp = $this->pageModel->getBuyingByDate($date,$itemName);
+            echo json_encode(array("statusCode"=>200, 'row'=>$bp));
+          }else{
+            echo json_encode(array("statusCode"=>317));
+          }
+  
+      }
+      else
+      {
+        http_response_code(404);
+        include('../app/404.php');
+        die();
+      }
+    }
+
     public function loadBuying($id)
     {
       if($_SERVER['REQUEST_METHOD'] == 'GET' && isset($id))

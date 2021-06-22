@@ -11,22 +11,9 @@
     <link rel="host" href="<?php echo URLROOT; ?>">
     <link rel="canonical" href="<?php echo "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; ?>" />
     <meta name="og:url" content="<?php echo "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; ?>" />
-    <link rel="stylesheet" href="<?php echo URLROOT; ?>/public/stylesheets/css/bootstrap.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="<?php echo URLROOT; ?>/public/stylesheets/css/style.css" />
-    <script src="<?php echo URLROOT; ?>/public/javascript/fontawesome.min.js"></script>
     <script src="<?php echo URLROOT; ?>/public/javascript/jquery.min.js"></script>
-    <?php if (strpos($_SERVER['REQUEST_URI'], "pages/reports") !== false) :  ?>
-    <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.3.2/dist/chart.min.js"></script>
-    <?php elseif(strpos($_SERVER['REQUEST_URI'], 'pages/date') !== false): ?>
-    <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
-    <?php elseif(strpos($_SERVER['REQUEST_URI'], 'pages/invoice') !== false): ?>
-    <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
-    <?php elseif(strpos($_SERVER['REQUEST_URI'], 'pages/viewExpense') !== false): ?>
-    <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
-    <?php elseif(strpos($_SERVER['REQUEST_URI'], 'pages/viewItem') !== false): ?>
-    <script src="https://cdn.jsdelivr.net/npm/@mladenilic/threesixty.js/dist/threesixty.js"></script>
-    <?php endif ?>
     <link rel="icon" href="<?php echo URLROOT; ?>/public/images/images/dailyhackstore.ico" type="image/ico" />
     <link rel="shortcut icon" href="<?php echo URLROOT; ?>/public/images/images/dailyhackstore.ico" type="image/ico" />
     <title><?php echo $data['title']; ?></title>

@@ -15,6 +15,8 @@
                     <th>Created on</th>
                     <th>Creator</th>
                     <th>edit</th>
+                    <th>delete</th>
+                    <th>view</th>
                 </tr>
             </thead>
             <tbody>
@@ -45,7 +47,15 @@
                                   ); ?></td>
                     <td><?php echo isset($inventory['created_by']) ? $inventory['created_by']: ''; ?>
                     </td>
-                    <td><a href=""><i class="fas fa-pencil"></i></a></td>
+                    <td><a
+                            href="<?php echo URLROOT; ?>/pages/editInventory/<?php echo isset($inventory['item_id']) ? $inventory['item_id']: ''; ?>">edit</a>
+                    </td>
+                    <td><a
+                            href="<?php echo URLROOT; ?>/pages/removeItem/<?php echo isset($inventory['item_id']) ? $inventory['item_id']: ''; ?>">remove</a>
+                    </td>
+                    <td><a
+                            href="<?php echo URLROOT; ?>/pages/viewItem/<?php echo isset($inventory['item_id']) ? $inventory['item_id']: ''; ?>">view</a>
+                    </td>
                 </tr>
                 <?php endwhile ?>
             </tbody>

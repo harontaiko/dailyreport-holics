@@ -1020,6 +1020,29 @@ class Page
         }
     }
 
+    public function getBuyingByDate($date, $id)
+    {
+        $query = 'SELECT item_buying FROM dr_inventory WHERE date_created = ? AND item_id=?';
+
+        $binders = "ss";
+
+        $parameters = array($date, $id);
+
+        $result = SelectCond($query, $binders, $parameters, $this->db);
+
+        $row = $result->get_result();
+
+        $rowItem = $row->fetch_assoc();
+        
+        $buying = isset($rowItem['item_buying']) ? $rowItem['item_buying'] : 'id:not found';
+
+        try {
+            return $buying;
+        } catch (Error $e) {
+            return false;
+        }
+    }
+
     public function getBuyingByName($id)
     {
         $query = 'SELECT item_buying FROM dr_inventory WHERE item_id = ?';

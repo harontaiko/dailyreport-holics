@@ -388,11 +388,74 @@ dailyreport = {
                   if (!result2) {
                   } else {
                     //proceed to confirm sale page
+                    $.ajax({
+                      url: `${hostUrl}/pages/SaveSaleRecord`,
+                      type: "POST",
+                      data: {
+                        cybercash: cyberCash.value,
+                        cybertill: cyberTill.value,
+                        moviecash: movieCash.value,
+                        movietill: movieTill.value,
+                        pscash: psCash.value,
+                        pstill: psTill.value,
+                      },
+                      dataType: "json",
+                      success: function (dataResult) {
+                        if (dataResult.statusCode == 200) {
+                          //save net total
+                          $.ajax({
+                            url: `${hostUrl}/pages/SaveNetTotal`,
+                            type: "POST",
+                            dataType: "json",
+                            success: function (dataResult) {
+                              if (dataResult.statusCode == 200) {
+                                //success, redirect to home page
+                                location.replace(`${hostUrl}/pages/index`);
+                              } else if (dataResult.statusCode == 317) {
+                                document.querySelector(".alert").style.display =
+                                  "block";
+                                document.getElementById(
+                                  "add-alert"
+                                ).style.color = "#fff";
+                                $("#add-alert").html(
+                                  "an error occurred, record could not be saved, please check your connection"
+                                );
+
+                                sleep(4700).then(() => {
+                                  document.querySelector(
+                                    ".alert_success"
+                                  ).style.display = "none";
+                                  document.getElementById(
+                                    "add-alert"
+                                  ).innerHTML = "";
+                                });
+                              }
+                            },
+                          });
+                        } else if (dataResult.statusCode == 317) {
+                          //not okay
+                          document.querySelector(".alert").style.display =
+                            "block";
+                          document.getElementById("add-alert").style.color =
+                            "#fff";
+                          $("#add-alert").html(
+                            "an error occurred, record could not be saved, please check your connection"
+                          );
+
+                          sleep(4700).then(() => {
+                            document.querySelector(
+                              ".alert_success"
+                            ).style.display = "none";
+                            document.getElementById("add-alert").innerHTML = "";
+                          });
+                        }
+                      },
+                    });
                   }
                 } else if (dataResult.statusCode == 318) {
                   //status=not ok, proceed with warning, no expense
                   result2 = confirm(
-                    "No expenses added, do you still want to continue?"
+                    "No expenses added, please add null expense?"
                   );
                   if (!result2) {
                   } else {
@@ -1082,14 +1145,31 @@ dailyreport = {
       salesOptions.addEventListener("change", function LoadBuying() {
         currentOption = salesOptions.value;
         currentOptionText = this.options[this.selectedIndex].text;
+        var Recorddate = document.getElementById("recorddate").value;
+        //LOAD BUYING PRICE
+        $.ajax({
+          url: `${hostUrl}/pages/loadBuyingEdit/${Recorddate}/${currentOption}`,
+          type: "GET",
+          dataType: "json",
+          success: function (dataResult) {
+            if (dataResult.statusCode == 200) {
+              var bp = dataResult.row;
+              document.getElementById("bought-price").value = bp;
+              document.getElementById("bought-item").value = currentOptionText;
+            } else {
+              document.querySelector(".alert").style.display = "block";
+              document.getElementById("add-alert").style.color = "#fff";
+              $("#add-alert").html(
+                "an error occurred, record could not be fetched, please check your connection"
+              );
 
-        $("#sc").load(
-          `loadBuying/${currentOption}`,
-          function (res, status, http) {
-            document.getElementById("bought-price").value = res;
-            document.getElementById("bought-item").value = currentOptionText;
-          }
-        );
+              sleep(4700).then(() => {
+                document.querySelector(".alert_success").style.display = "none";
+                document.getElementById("add-alert").innerHTML = "";
+              });
+            }
+          },
+        });
       });
 
       $(document).ready(function () {

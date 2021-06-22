@@ -126,9 +126,10 @@
                             </td>
                             <td><?php echo number_format($net['cash_sales']); ?></td>
                             <td><?php echo number_format($net['till_sales']); ?></td>
-                            <td><a href=""><?php echo number_format(($net['cash_sales'] + $net['till_sales'] + getSaleTotal($net['date_created'], $data['db'])) - (getExpenseTotal($net['date_created'], $data['db']))) . '/=';?>
+                            <td><a href="#!"><?php echo number_format(($net['cash_sales'] + $net['till_sales'] + getSaleTotal($net['date_created'], $data['db'])) - (getExpenseTotal($net['date_created'], $data['db']))) . '/=';?>
                             </td>
-                            <td><a href="#!"><i class="fas fa-eye"></i></a></td>
+                            <td><a href="#!"><i
+                                        class="fas fa-eye"></i></a></td>
                         </tr>
                         <?php endwhile ?>
                     </tbody>
@@ -142,8 +143,7 @@
                 class="fas fa-sign-out-alt"></i></button>
     </form>
 </body>
-<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
-<script src="<?php echo URLROOT; ?>/public/javascript/main.min.js"></script>
+<?php require(APPROOT . '/views/inc/footer.php'); ?>
 
 </html>
 <!--

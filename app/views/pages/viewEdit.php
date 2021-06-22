@@ -110,11 +110,6 @@
 
 </body>
 
-<noscript>
-    <div id="no_script">This site requires and runs entirely on javascript, please Ensure Javascript
-        is enabled
-        on your browser for smooth & better experience</div>
-</noscript>
-<script src="<?php echo URLROOT; ?>/public/javascript/main.min.js"></script>
+<?php require(APPROOT . '/views/inc/footer.php'); ?>
 
 </html>

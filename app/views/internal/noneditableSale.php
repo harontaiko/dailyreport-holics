@@ -1,6 +1,6 @@
 <main>
     <h2 id="add-title">This record can only be edited <a
-            href="<?php echo URLROOT; ?>/pages/viewEdit/<?php echo empty($data['net'])? '':$data['net']['0']['sales_id'] ?>">here</a>
+            href="#!">here</a>
     </h2>
     <form action="" method="POST" id="form-add">
         <input type="datetime" name="date" id="date" value="<?php echo isset($data['date']) ? $data['date'] : ''; ?>"

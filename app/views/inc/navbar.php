@@ -30,6 +30,7 @@
                                     <th>Created on</th>
                                     <th>Creator</th>
                                     <th>edit</th>
+                                    <th>delete</th>
                                     <th>view</th>
                                 </tr>
                             </thead>
@@ -63,6 +64,9 @@
                                     </td>
                                     <td><a
                                             href="<?php echo URLROOT; ?>/pages/editInventory/<?php echo isset($inventory['item_id']) ? $inventory['item_id']: ''; ?>">edit</a>
+                                    </td>
+                                    <td><a
+                                            href="<?php echo URLROOT; ?>/pages/removeItem/<?php echo isset($inventory['item_id']) ? $inventory['item_id']: ''; ?>">remove</a>
                                     </td>
                                     <td><a
                                             href="<?php echo URLROOT; ?>/pages/viewItem/<?php echo isset($inventory['item_id']) ? $inventory['item_id']: ''; ?>">view</a>
