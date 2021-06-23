@@ -51,7 +51,7 @@
 
         </table>
 
-        <p>&larr; All time Income: <span
+        <p>&larr; Net Total(exclusive of expenses): <span
                 class="login-err"><?php echo number_format($data['sum'] - $data['diff']) . '/='; ?></span>&rarr;
         </p>
     </main>

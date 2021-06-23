@@ -9,6 +9,37 @@ class Pages extends Controller
     }
     
 
+    public function trends()
+    {
+          if (!isset($_SESSION["user_id"])) {
+            $data = [
+              "title" => "Daily Report",  
+            ];
+            redirect("users/index");
+          } 
+          
+          $db = $this->pageModel->getDatabaseConnection();
+
+          $users = $this->pageModel->getAdmins();
+     
+          $inventoryData = $this->pageModel->getInventoryData();
+
+          $total = $this->pageModel->getTotalExpenses();
+          $arr = array();
+          while($t = $total->fetch_assoc()){
+            array_push($arr, $t);
+          }
+
+          $avgsales = $this->pageModel->getAverageDailySales();
+          $avgcash = $this->pageModel->getAverageDailyCash();
+          $avgtill = $this->pageModel->getAverageDailyTill();
+          $avgincome = $this->pageModel->getAverageDailyIncome();
+  
+          $data = ['title'=>'Trends', 'row'=>$users, 'db'=>$db, 'inventory'=>$inventoryData, 'row'=>$arr, 'avgsales'=>$avgsales, 'avgcash'=>$avgcash, 'avgtill'=>$avgtill, 'avgincome'=>$avgincome];
+  
+          $this->view('pages/trends', $data);
+    }
+
     public function activity()
     {
   
@@ -538,6 +569,50 @@ class Pages extends Controller
       
     }
 
+    public function saveSaleCashEdit($date)
+    {
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+
+        $data = [
+          'name' =>$_POST['bought-item'],
+          'bought'=>$_POST['bought-price'],
+          'cash'=>$_POST['sales-cash'], 
+          'till'=>$_POST['sales-till'], 
+          'profit'=>$_POST['sales-profit'],
+          'date'=>$date, 
+          'time'=>date('H:i:s T', time()), 
+          'ip'=>get_ip_address(), 
+          'creator'=>$_SESSION['user_name']
+        ];
+
+        $inventoryData = $this->pageModel->getItemInventoryCount($data['name']);
+        $sold = getItemSoldCountInventory($data['name'],$this->pageModel->getDatabaseConnection());
+
+        while($state = $inventoryData->fetch_assoc()){
+          $instock = $state['item_quantity'];
+        }
+
+        if(($instock - $sold) >= 1){
+          if($this->pageModel->saveToSales($data)){
+          echo json_encode(array("statusCode"=>200, "name"=>$data['name']));
+          }else{
+            echo json_encode(array("statusCode"=>317));
+          }
+        }
+        else
+        {
+          echo json_encode(array("statusCode"=>318));
+        }
+      
+      }
+      else{
+        http_response_code(404);
+        include('../app/404.php');
+        die();
+      }
+      
+    }
+
     public function saveSaleCash()
     {
         if($_SERVER['REQUEST_METHOD'] == 'POST'){
@@ -607,7 +682,7 @@ class Pages extends Controller
         if (in_array($fileActualExtension, $allowedExtensions)) {
           
           $itemName = $_POST['item-name'];
-          $itemquantity = $_POST['item-quantity'];
+          $itemquantity = $_POST['item-current-qty'];
           $itemBp = $_POST['item-bp'];
           $itemModel = $_POST['item-model'];
 
@@ -643,7 +718,7 @@ class Pages extends Controller
         else
         {
           $itemName = $_POST['item-name'];
-          $itemquantity = $_POST['item-quantity'];
+          $itemquantity = $_POST['item-current-qty'];
           $itemBp = $_POST['item-bp'];
           $itemModel = $_POST['item-model'];
   
@@ -680,7 +755,7 @@ class Pages extends Controller
       else{
         
         $itemName = $_POST['item-name'];
-        $itemquantity = $_POST['item-quantity'];
+        $itemquantity = $_POST['item-current-qty'];
         $itemBp = $_POST['item-bp'];
         $itemModel = $_POST['item-model'];
 
@@ -1050,6 +1125,31 @@ class Pages extends Controller
       } 
     }
 
+    public function SaveExpenseEdit($date){
+      if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['expense']) && isset($_POST['amount']))
+      {
+        $data = [
+          'name'=>htmlspecialchars($_POST['expense']), 
+          'amount'=>htmlspecialchars($_POST['amount']),
+          'date' => $date,
+          'time' => date('H:i:s T', time()),
+          'creator'=>$_SESSION['user_name'],
+          'ip'=>get_ip_address(),
+        ];
+        if($this->pageModel->SaveExpenseToday($data)){
+          echo json_encode(array("statusCode"=>200));
+        }else{
+          echo json_encode(array("statusCode"=>317));
+        }
+      }
+      else
+      {
+        http_response_code(404);
+        include('../app/404.php');
+        die();
+      } 
+    }
+
     public function DeleteExpenseNow(){
       if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id']))
      {
@@ -1118,7 +1218,7 @@ class Pages extends Controller
         'ip'=>get_ip_address(),
       ];
 
-      if($this->pageModel->saveSaleRecordNow($cyber, $ps, $movie)){
+      if($this->pageModel->saveSaleRecordNowEdit($cyber, $ps, $movie, $date)){
         echo json_encode(array("statusCode"=>200));
       }else{
         echo json_encode(array("statusCode"=>317));

@@ -1,5 +1,5 @@
 <main>
-    <h2 id="add-title">This record can only be edited <a href="#!">here</a>
+    <h2 id="add-title">This record can only be edited <a href="<?php echo URLROOT; ?>">here</a>
     </h2>
     <form action="" method="POST" id="form-add">
         <input style="background: #81ec16;color: red;" type="datetime" name="date" id="date"
@@ -7,7 +7,7 @@
         <div class="alert alert_success" id="alert_add">
             <p id="add-alert"></p>
         </div>
-        <input type="submit" class="save-record" value="create record">
+        <input type="submit" disabled class="save-record" value="create record">
         <div class="inner_grid">
             <div class="income">
                 <h3>Income</h3>
@@ -86,7 +86,7 @@
                             placeholder="sell..till/other" class="dr_input" readonly>
                         <input readonly type="number" name="sales-profit" id="sales-profit" placeholder="profit"
                             class="dr_input">
-                        <input class="add-product" id="add-sale-btn" type="submit" value="Add">
+                        <input disabled class="add-product" id="add-sale-btn" type="submit" value="Add">
                     </form>
                 </div>
             </div>
@@ -102,7 +102,7 @@
                         class="dr_input" readonly>
                     <input type="number" name="expense-value" id="expense-value" placeholder="used(ksh)"
                         class="dr_input" readonly>
-                    <button class="add-expense" id="n-expense" type="button">Add</button>
+                    <button disabled class="add-expense" id="n-expense" type="button">Add</button>
                 </div>
             </div>
         </div>

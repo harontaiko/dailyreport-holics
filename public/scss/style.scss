@@ -2581,3 +2581,69 @@ input:checked + .slider:before {
   right: 1rem;
   font-size: 0.9em;
 }
+
+.auto-grid {
+  --auto-grid-min-size: 16rem;
+
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(var(--auto-grid-min-size), 1fr)
+  );
+  grid-gap: 1rem;
+  padding: 3rem;
+}
+
+/* Presentational styles */
+.auto-grid li {
+  list-style-type: none;
+  padding: 5rem 1rem;
+  text-align: center;
+  font-size: 1.2rem;
+  background: #eb4d4b;
+  color: #ffffff;
+  border: 1px solid #009c7c;
+  border-radius: 4px;
+}
+
+.auto-grid h3 {
+  font-size: 2.2rem;
+  font-style: oblique;
+  margin: 1rem;
+}
+
+.highlight {
+  margin-top: 1rem;
+  color: #fff;
+  background-color: rgb(15, 189, 73);
+  padding: 7px;
+  border-radius: 5px;
+}
+
+.auto-grid li:nth-child(2) {
+  background: #382f2f;
+}
+.auto-grid li:nth-child(3) {
+  background: #257e7e;
+}
+.auto-grid li:nth-child(4) {
+  background: #382f2f;
+}
+.auto-grid li:nth-child(5) {
+  background: #dd6363;
+}
+.auto-grid li:nth-child(6) {
+  background: #b15bac;
+}
+.auto-grid li:nth-child(7) {
+  background: #4f6272;
+}
+.auto-grid li:nth-child(8) {
+  background: #a6df85;
+}
+.auto-grid li:nth-child(9) {
+  background: #83c955fa;
+}
+.auto-grid li:nth-child(10) {
+  background: #706767;
+}

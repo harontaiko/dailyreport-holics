@@ -10,7 +10,7 @@
             </div>
         </div>
         <div class="alert alert_success"
-            style=" color:#fff !important; font-size:x-large; background-color:#4CAF50!important">
+            style="color:#fff !important; font-size:x-large; background-color:#4CAF50!important">
             <p id="inventory-alert"></p>
         </div>
         <div class="payment-title">

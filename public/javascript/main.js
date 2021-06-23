@@ -460,6 +460,69 @@ dailyreport = {
                   if (!result2) {
                   } else {
                     //proceed to confirm sale page
+                    $.ajax({
+                      url: `${hostUrl}/pages/SaveSaleRecord`,
+                      type: "POST",
+                      data: {
+                        cybercash: cyberCash.value,
+                        cybertill: cyberTill.value,
+                        moviecash: movieCash.value,
+                        movietill: movieTill.value,
+                        pscash: psCash.value,
+                        pstill: psTill.value,
+                      },
+                      dataType: "json",
+                      success: function (dataResult) {
+                        if (dataResult.statusCode == 200) {
+                          //save net total
+                          $.ajax({
+                            url: `${hostUrl}/pages/SaveNetTotal`,
+                            type: "POST",
+                            dataType: "json",
+                            success: function (dataResult) {
+                              if (dataResult.statusCode == 200) {
+                                //success, redirect to home page
+                                location.replace(`${hostUrl}/pages/index`);
+                              } else if (dataResult.statusCode == 317) {
+                                document.querySelector(".alert").style.display =
+                                  "block";
+                                document.getElementById(
+                                  "add-alert"
+                                ).style.color = "#fff";
+                                $("#add-alert").html(
+                                  "an error occurred, record could not be saved, please check your connection"
+                                );
+
+                                sleep(4700).then(() => {
+                                  document.querySelector(
+                                    ".alert_success"
+                                  ).style.display = "none";
+                                  document.getElementById(
+                                    "add-alert"
+                                  ).innerHTML = "";
+                                });
+                              }
+                            },
+                          });
+                        } else if (dataResult.statusCode == 317) {
+                          //not okay
+                          document.querySelector(".alert").style.display =
+                            "block";
+                          document.getElementById("add-alert").style.color =
+                            "#fff";
+                          $("#add-alert").html(
+                            "an error occurred, record could not be saved, please check your connection"
+                          );
+
+                          sleep(4700).then(() => {
+                            document.querySelector(
+                              ".alert_success"
+                            ).style.display = "none";
+                            document.getElementById("add-alert").innerHTML = "";
+                          });
+                        }
+                      },
+                    });
                   }
                 } else if (dataResult.statusCode == 319) {
                   //status=not ok, proceed with warning, no expense and sale
@@ -469,6 +532,69 @@ dailyreport = {
                   if (!result2) {
                   } else {
                     //proceed to confirm sale page
+                    $.ajax({
+                      url: `${hostUrl}/pages/SaveSaleRecord`,
+                      type: "POST",
+                      data: {
+                        cybercash: cyberCash.value,
+                        cybertill: cyberTill.value,
+                        moviecash: movieCash.value,
+                        movietill: movieTill.value,
+                        pscash: psCash.value,
+                        pstill: psTill.value,
+                      },
+                      dataType: "json",
+                      success: function (dataResult) {
+                        if (dataResult.statusCode == 200) {
+                          //save net total
+                          $.ajax({
+                            url: `${hostUrl}/pages/SaveNetTotal`,
+                            type: "POST",
+                            dataType: "json",
+                            success: function (dataResult) {
+                              if (dataResult.statusCode == 200) {
+                                //success, redirect to home page
+                                location.replace(`${hostUrl}/pages/index`);
+                              } else if (dataResult.statusCode == 317) {
+                                document.querySelector(".alert").style.display =
+                                  "block";
+                                document.getElementById(
+                                  "add-alert"
+                                ).style.color = "#fff";
+                                $("#add-alert").html(
+                                  "an error occurred, record could not be saved, please check your connection"
+                                );
+
+                                sleep(4700).then(() => {
+                                  document.querySelector(
+                                    ".alert_success"
+                                  ).style.display = "none";
+                                  document.getElementById(
+                                    "add-alert"
+                                  ).innerHTML = "";
+                                });
+                              }
+                            },
+                          });
+                        } else if (dataResult.statusCode == 317) {
+                          //not okay
+                          document.querySelector(".alert").style.display =
+                            "block";
+                          document.getElementById("add-alert").style.color =
+                            "#fff";
+                          $("#add-alert").html(
+                            "an error occurred, record could not be saved, please check your connection"
+                          );
+
+                          sleep(4700).then(() => {
+                            document.querySelector(
+                              ".alert_success"
+                            ).style.display = "none";
+                            document.getElementById("add-alert").innerHTML = "";
+                          });
+                        }
+                      },
+                    });
                   }
                 }
               },
@@ -1325,7 +1451,7 @@ dailyreport = {
 
             //save cash sales
             $.ajax({
-              url: `${hostUrl}/pages/saveSaleCash`,
+              url: `${hostUrl}/pages/saveSaleCashEdit/${Recorddate}`,
               type: "POST",
               data: form.serialize(),
               dataType: "json",
@@ -1483,7 +1609,7 @@ dailyreport = {
             var expense_name = document.getElementById("expense_n").value;
             var expense_val = document.getElementById("expense-value").value;
             $.ajax({
-              url: `${hostUrl}/pages/SaveExpense`,
+              url: `${hostUrl}/pages/SaveExpenseEdit/${Recorddate}`,
               type: "POST",
               data: {
                 expense: expense_name,
@@ -1645,36 +1771,8 @@ dailyreport = {
                       dataType: "json",
                       success: function (dataResult) {
                         if (dataResult.statusCode == 200) {
-                          //save net total
-                          $.ajax({
-                            url: `${hostUrl}/pages/SaveNetTotal`,
-                            type: "POST",
-                            dataType: "json",
-                            success: function (dataResult) {
-                              if (dataResult.statusCode == 200) {
-                                //success, redirect to home page
-                                location.replace(`${hostUrl}/pages/index`);
-                              } else if (dataResult.statusCode == 317) {
-                                document.querySelector(".alert").style.display =
-                                  "block";
-                                document.getElementById(
-                                  "add-alert"
-                                ).style.color = "#fff";
-                                $("#add-alert").html(
-                                  "an error occurred, record could not be saved, please check your connection"
-                                );
-
-                                sleep(4700).then(() => {
-                                  document.querySelector(
-                                    ".alert_success"
-                                  ).style.display = "none";
-                                  document.getElementById(
-                                    "add-alert"
-                                  ).innerHTML = "";
-                                });
-                              }
-                            },
-                          });
+                          //redirect to index
+                          location.replace(`${hostUrl}/pages/index`);
                         } else if (dataResult.statusCode == 317) {
                           //not okay
                           document.querySelector(".alert").style.display =
@@ -1694,17 +1792,16 @@ dailyreport = {
                         }
                       },
                     });
+                    location.replace(`${hostUrl}/pages/index`);
                   }
                 } else if (dataResult.statusCode == 317) {
                   //status=not ok, proceed with warning, no sale
-                  result2 = confirm(
-                    "No sale made, do you still want to continue?"
-                  );
+                  result2 = confirm("confirm changes made?");
                   if (!result2) {
                   } else {
                     //proceed to confirm sale page
                     $.ajax({
-                      url: `${hostUrl}/pages/SaveSaleRecord`,
+                      url: `${hostUrl}/pages/SaveSaleRecordEdit/${Recorddate}`,
                       type: "POST",
                       data: {
                         cybercash: cyberCash.value,
@@ -1717,36 +1814,8 @@ dailyreport = {
                       dataType: "json",
                       success: function (dataResult) {
                         if (dataResult.statusCode == 200) {
-                          //save net total
-                          $.ajax({
-                            url: `${hostUrl}/pages/SaveNetTotal`,
-                            type: "POST",
-                            dataType: "json",
-                            success: function (dataResult) {
-                              if (dataResult.statusCode == 200) {
-                                //success, redirect to home page
-                                location.replace(`${hostUrl}/pages/index`);
-                              } else if (dataResult.statusCode == 317) {
-                                document.querySelector(".alert").style.display =
-                                  "block";
-                                document.getElementById(
-                                  "add-alert"
-                                ).style.color = "#fff";
-                                $("#add-alert").html(
-                                  "an error occurred, record could not be saved, please check your connection"
-                                );
-
-                                sleep(4700).then(() => {
-                                  document.querySelector(
-                                    ".alert_success"
-                                  ).style.display = "none";
-                                  document.getElementById(
-                                    "add-alert"
-                                  ).innerHTML = "";
-                                });
-                              }
-                            },
-                          });
+                          //redirect to index
+                          location.replace(`${hostUrl}/pages/index`);
                         } else if (dataResult.statusCode == 317) {
                           //not okay
                           document.querySelector(".alert").style.display =
@@ -1766,24 +1835,94 @@ dailyreport = {
                         }
                       },
                     });
+                    location.replace(`${hostUrl}/pages/index`);
                   }
                 } else if (dataResult.statusCode == 318) {
                   //status=not ok, proceed with warning, no expense
-                  result2 = confirm(
-                    "No expenses added, please add null expense?"
-                  );
+                  result2 = confirm("confirm changes made?");
                   if (!result2) {
                   } else {
                     //proceed to confirm sale page
+                    //save to db
+                    $.ajax({
+                      url: `${hostUrl}/pages/SaveSaleRecordEdit/${Recorddate}`,
+                      type: "POST",
+                      data: {
+                        cybercash: cyberCash.value,
+                        cybertill: cyberTill.value,
+                        moviecash: movieCash.value,
+                        movietill: movieTill.value,
+                        pscash: psCash.value,
+                        pstill: psTill.value,
+                      },
+                      dataType: "json",
+                      success: function (dataResult) {
+                        if (dataResult.statusCode == 200) {
+                          //redirect to index
+                          location.replace(`${hostUrl}/pages/index`);
+                        } else if (dataResult.statusCode == 317) {
+                          //not okay
+                          document.querySelector(".alert").style.display =
+                            "block";
+                          document.getElementById("add-alert").style.color =
+                            "#fff";
+                          $("#add-alert").html(
+                            "an error occurred, record could not be saved, please check your connection"
+                          );
+
+                          sleep(4700).then(() => {
+                            document.querySelector(
+                              ".alert_success"
+                            ).style.display = "none";
+                            document.getElementById("add-alert").innerHTML = "";
+                          });
+                        }
+                      },
+                    });
+                    location.replace(`${hostUrl}/pages/index`);
                   }
                 } else if (dataResult.statusCode == 319) {
                   //status=not ok, proceed with warning, no expense and sale
-                  result2 = confirm(
-                    "No sale or expense today, do you still want to continue?"
-                  );
+                  result2 = confirm("confirm changes made?");
                   if (!result2) {
                   } else {
                     //proceed to confirm sale page
+                    $.ajax({
+                      url: `${hostUrl}/pages/SaveSaleRecordEdit/${Recorddate}`,
+                      type: "POST",
+                      data: {
+                        cybercash: cyberCash.value,
+                        cybertill: cyberTill.value,
+                        moviecash: movieCash.value,
+                        movietill: movieTill.value,
+                        pscash: psCash.value,
+                        pstill: psTill.value,
+                      },
+                      dataType: "json",
+                      success: function (dataResult) {
+                        if (dataResult.statusCode == 200) {
+                          //redirect to index
+                          location.replace(`${hostUrl}/pages/index`);
+                        } else if (dataResult.statusCode == 317) {
+                          //not okay
+                          document.querySelector(".alert").style.display =
+                            "block";
+                          document.getElementById("add-alert").style.color =
+                            "#fff";
+                          $("#add-alert").html(
+                            "an error occurred, record could not be saved, please check your connection"
+                          );
+
+                          sleep(4700).then(() => {
+                            document.querySelector(
+                              ".alert_success"
+                            ).style.display = "none";
+                            document.getElementById("add-alert").innerHTML = "";
+                          });
+                        }
+                      },
+                    });
+                    location.replace(`${hostUrl}/pages/index`);
                   }
                 }
               },
@@ -1808,6 +1947,25 @@ dailyreport = {
   },
   editItem: {
     init: function _edititem() {
+      //increment stock
+      itemQty = document.getElementById("item-quantity").value;
+
+      document
+        .getElementById("item-increase")
+        .addEventListener("change", () => {
+          var sum =
+            parseInt(itemQty) +
+            parseInt(document.getElementById("item-increase").value);
+          document.getElementById("item-current-qty").value = sum;
+        });
+
+      document.getElementById("item-increase").addEventListener("input", () => {
+        var sum =
+          parseFloat(itemQty) +
+          parseFloat(document.getElementById("item-increase").value);
+        document.getElementById("item-current-qty").value = sum;
+      });
+
       //edit inventory item
       $(document).ready(function () {
         $("form").on("submit", function (e) {
@@ -1861,10 +2019,7 @@ dailyreport = {
                   document.getElementById("inventory-alert").style.color =
                     "#fff";
                   document.getElementById("inventory-alert").innerHTML =
-                    "item edited successfully!";
-
-                  //load new data to inventory UI
-                  $("#open-modal").load(`loadInventoryData`);
+                    "changes saved successfully!";
 
                   $("#product-avatar").attr(
                     "src",

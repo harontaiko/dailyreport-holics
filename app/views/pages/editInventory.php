@@ -10,7 +10,8 @@
             <div class="loading">
             </div>
         </div>
-        <div class="alert alert_success">
+        <div style="color:#fff !important; font-size:x-large; background-color:#4CAF50!important"
+            class="alert alert_success">
             <p id="inventory-alert"></p>
         </div>
         <div class="payment-title">
@@ -26,9 +27,19 @@
                 </div>
                 <div class="field-container">
                     <label for="name">Quantity</label>
-                    <input id="item-quantity" name="item-quantity"
+                    <input readonly id="item-quantity" name="item-quantity"
                         value="<?php print_r($data['row']['0']['item_quantity']) ?>" type="number" max="10"
                         inputmode="numeric" required>
+                    <!--input value increment-->
+                </div>
+                <div class="field-container">
+                    <label for="expirationdate">Increase stock by</label>
+                    <input id="item-increase" value="" type="number" name="item-increase" required>
+                </div>
+                <div class="field-container">
+                    <label for="model">New quantity</label>
+                    <input id="item-current-qty" value="" name="item-current-qty" type="number"
+                        placeholder="current qty" required>
                 </div>
                 <div class="field-container">
                     <label for="expirationdate">Buying (Ksh)</label>

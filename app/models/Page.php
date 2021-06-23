@@ -14,6 +14,186 @@ class Page
       return $this->db;
     }
 
+    public function getAverageDailyIncome()
+    {
+        $query = 'SELECT AVG(totalincome) AS totalincome FROM dr_nettotal GROUP BY DATE_SUB(NOW(), INTERVAL 1 DAY)';
+
+        $result = SelectCondFree($query, 'dr_nettotal', $this->db);
+
+        $row = $result->get_result();
+
+        $rowItem = $row->fetch_assoc();
+        
+        $avgsales = isset($rowItem['totalincome']) ? $rowItem['totalincome'] : 'N/A';
+
+        try {
+            return $avgsales;
+        } catch (Error $e) {
+            return false;
+        } 
+    }
+
+    public function getAverageDailyTill()
+    {
+        $query = 'SELECT AVG(till_sales) AS totaltill FROM dr_nettotal GROUP BY DATE_SUB(NOW(), INTERVAL 1 DAY)';
+
+        $result = SelectCondFree($query, 'dr_nettotal', $this->db);
+
+        $row = $result->get_result();
+
+        $rowItem = $row->fetch_assoc();
+        
+        $avgsales = isset($rowItem['totaltill']) ? $rowItem['totaltill'] : 'N/A';
+
+        try {
+            return $avgsales;
+        } catch (Error $e) {
+            return false;
+        } 
+    }
+
+    public function getAverageDailyCash()
+    {
+        $query = 'SELECT AVG(cash_sales) AS totalcash FROM dr_nettotal GROUP BY DATE_SUB(NOW(), INTERVAL 1 DAY)';
+
+        $result = SelectCondFree($query, 'dr_nettotal', $this->db);
+
+        $row = $result->get_result();
+
+        $rowItem = $row->fetch_assoc();
+        
+        $avgsales = isset($rowItem['totalcash']) ? $rowItem['totalcash'] : 'N/A';
+
+        try {
+            return $avgsales;
+        } catch (Error $e) {
+            return false;
+        } 
+    }
+
+    public function getAverageDailySales()
+    {
+        $query = 'SELECT AVG(total_sales) AS totalsales FROM dr_nettotal GROUP BY DATE_SUB(NOW(), INTERVAL 1 DAY)';
+
+        $result = SelectCondFree($query, 'dr_nettotal', $this->db);
+
+        $row = $result->get_result();
+
+        $rowItem = $row->fetch_assoc();
+        
+        $avgsales = isset($rowItem['totalsales']) ? $rowItem['totalsales'] : 'N/A';
+
+        try {
+            return $avgsales;
+        } catch (Error $e) {
+            return false;
+        } 
+    }
+
+    public function getTotalExpenses()
+    {
+        $query = 'SELECT SUM(totalexpense) AS exp_total, SUM(cash_sales) AS cash_total, SUM(till_sales) AS till_total, SUM(totalincome) AS incometotal, SUM(totalprofit) AS profittotal, SUM(total_sales) AS sales_total FROM dr_nettotal GROUP BY date_created';
+
+        $result = SelectCondFree($query, 'dr_nettotal', $this->db);
+
+        $row = $result->get_result();
+
+        try {
+            return $row;
+        } catch (Error $e) {
+            return false;
+        } 
+    }
+
+    public function saveSaleRecordNowEdit($cyber, $ps, $movie,$date)
+    {
+
+      //update movie shop  
+      $query = 'UPDATE dr_movieshop SET cash=?, till=?, edited_by=? WHERE date_created=?';
+
+      $binders = "ssss";
+      
+      $values = array($movie['cash'], $movie['till'], date('y-m-d h:i:s A',time()),$date); 
+
+      //update ps
+      $query2 = 'UPDATE dr_playstation SET cash=?, till=?, edited_by=? WHERE date_created=?';
+
+      $binders2 = "ssss";
+      
+      $values2 = array($ps['cash'], $ps['till'], date('y-m-d h:i:s A',time()),$date); 
+
+      //update cyber
+      $query3 = 'UPDATE dr_cybershop SET cash=?, till=?, edited_by=? WHERE date_created=?';
+
+      $binders3 = "ssss";
+      
+      $values3 = array($cyber['cash'], $cyber['till'], date('y-m-d h:i:s A',time()),$date); 
+
+      $query6 = 'SELECT SUM(expense_cost) AS exp_total FROM dr_expenses WHERE date_created=? GROUP BY date_created';
+
+      $binders6 = "s";
+
+      $parameters6 = array($date);
+
+      $result6 = SelectCond($query6, $binders6, $parameters6, $this->db);
+
+      $row6 = $result6->get_result();
+
+      $rowItem6 = $row6->fetch_assoc();
+      
+      $expTotal = isset($rowItem6['exp_total']) ? $rowItem6['exp_total'] : '';
+
+      $query7 = 'SELECT SUM(cash) + SUM(till) AS total_sales FROM dr_sales WHERE date_created = ?';
+
+      $binders7 = "s";
+
+      $parameters7 = array($date);
+
+      $result7 = SelectCond($query7, $binders7, $parameters7, $this->db);
+
+      $row7 = $result7->get_result();
+
+      $rowItem7 = $row7->fetch_assoc();
+      
+      $totalsales = isset($rowItem7['total_sales']) ? $rowItem7['total_sales'] : '';
+      //total profit
+      $query8 = 'SELECT SUM(profit) AS total_profit FROM dr_sales WHERE date_created = ?';
+
+      $binders8 = "s";
+
+      $parameters8 = array($date);
+
+      $result8 = SelectCond($query8, $binders8, $parameters8, $this->db);
+
+      $row8 = $result8->get_result();
+
+      $rowItem8 = $row8->fetch_assoc();
+       
+      $totalprofit = isset($rowItem8['total_profit']) ? $rowItem8['total_profit'] : '';
+
+      
+      //update net total
+      $totalcash = $cyber['cash'] + $ps['cash'] + $$movie['cash'];
+      $totaltill = $cyber['till'] + $ps['till'] + $$movie['till'];
+      $totalincome = $totalcash + $totaltill;
+
+      $querynet = 'UPDATE dr_nettotal SET total_sales=?, totalprofit=?, totalincome=?, totalexpense=?, cash_sales=?, till_sales=?, edited_by=? WHERE date_created=?';
+
+      $bindersnet = "ssssssss";
+      
+      $valuesnet = array($totalsales, $totalprofit, $totalincome, $expTotal, $totalcash, $totaltill, date('y-m-d h:i:s A',time()), $date); 
+
+      try { 
+          Update($query, $binders, $values, 'dr_movieshop',$this->db);
+          Update($query2, $binders2, $values2, 'dr_playstation',$this->db);
+          Update($query3, $binders3, $values3, 'dr_cybershop',$this->db);
+          Update($querynet, $bindersnet, $valuesnet, 'dr_nettotal',$this->db);
+          return true;
+      } catch (Error $e) {
+          return false;
+      }
+    }
+
     public function getAdmins()
     {
         $query = 'SELECT * FROM dr_user WHERE user_id !=?';
@@ -1022,11 +1202,11 @@ class Page
 
     public function getBuyingByDate($date, $id)
     {
-        $query = 'SELECT item_buying FROM dr_inventory WHERE date_created = ? AND item_id=?';
+        $query = 'SELECT item_buying FROM dr_inventory WHERE item_id=?';
 
-        $binders = "ss";
+        $binders = "s";
 
-        $parameters = array($date, $id);
+        $parameters = array($id);
 
         $result = SelectCond($query, $binders, $parameters, $this->db);
 
@@ -1069,11 +1249,11 @@ class Page
     public function saveToInventoryEdit($data)
     {
 
-      $query = 'UPDATE dr_inventory SET item_name=?, item_quantity=?, item_buying=?, item_model=?, `image`=?, date_created=?, time_created=?, created_by=?, edited_by=? WHERE item_id=?';
+      $query = 'UPDATE dr_inventory SET item_name=?, item_quantity=?, item_buying=?, item_model=?, `image`=?, edited_by=? WHERE item_id=?';
 
-      $binders = "ssssssssss";
+      $binders = "sssssss";
       
-      $values = array($data['itemName'], $data['itemquantity'], $data['bp'], $data['model'], $data['imagename'], $data['date'], $data['time'], $data['creator'], $data['edited_by'], $data['id']); 
+      $values = array($data['itemName'], $data['itemquantity'], $data['bp'], $data['model'], $data['imagename'], $data['edited_by'], $data['id']); 
 
       try { 
           Update($query, $binders, $values, 'dr_inventory',$this->db);

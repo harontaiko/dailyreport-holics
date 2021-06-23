@@ -131,9 +131,11 @@
                 <?php if (strpos($_SERVER['REQUEST_URI'], "pages/trends") !== false) :  ?>
                 <i class="fas fa-star star_active"></i>
                 <?php endif; ?>
-                <span class="coming_soon">coming soon</span>
+                <!-- <span class="coming_soon">coming soon</span> -->
             </a></li>
-        <li><a href="<?php echo URLROOT; ?>/pages/cashOut">Cash Out <span class="coming_soon">coming soon</span></a>
+        <li><a href="<?php echo URLROOT; ?>/pages/cashOut">Cash Out
+                <span class="coming_soon">coming soon</span>
+            </a>
         </li>
         <?php if (strpos($_SERVER['REQUEST_URI'], "pages/index") !== false) :  ?>
         <?php else: ?>
