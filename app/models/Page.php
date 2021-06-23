@@ -92,7 +92,7 @@ class Page
 
     public function getTotalExpenses()
     {
-        $query = 'SELECT SUM(totalexpense) AS exp_total, SUM(cash_sales) AS cash_total, SUM(till_sales) AS till_total, SUM(totalincome) AS incometotal, SUM(totalprofit) AS profittotal, SUM(total_sales) AS sales_total FROM dr_nettotal GROUP BY date_created';
+        $query = 'SELECT SUM(totalexpense) AS exp_total, SUM(cash_sales) AS cash_total, SUM(till_sales) AS till_total, SUM(totalincome) AS incometotal, SUM(totalprofit) AS profittotal, SUM(total_sales) AS sales_total FROM dr_nettotal';
 
         $result = SelectCondFree($query, 'dr_nettotal', $this->db);
 

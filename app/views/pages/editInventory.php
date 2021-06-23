@@ -38,7 +38,7 @@
                 </div>
                 <div class="field-container">
                     <label for="model">New quantity</label>
-                    <input id="item-current-qty" value="" name="item-current-qty" type="number"
+                    <input readonly id="item-current-qty" value="" name="item-current-qty" type="number"
                         placeholder="current qty" required>
                 </div>
                 <div class="field-container">
