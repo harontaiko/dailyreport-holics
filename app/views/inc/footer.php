@@ -3,7 +3,8 @@
         is enabled
         on your browser for smooth & better experience</div>
 </noscript>
-<script async="true" src="<?php echo URLROOT; ?>/public/javascript/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script src="<?php echo URLROOT; ?>/public/javascript/fontawesome.min.js"></script>
 <?php if (strpos($_SERVER['REQUEST_URI'], "pages/reports") !== false) :  ?>
 <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
@@ -16,5 +17,7 @@
 <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
 <?php elseif(strpos($_SERVER['REQUEST_URI'], 'pages/viewItem') !== false): ?>
 <script src="https://cdn.jsdelivr.net/npm/@mladenilic/threesixty.js/dist/threesixty.js"></script>
+<?php elseif(strpos($_SERVER['REQUEST_URI'], 'pages/cashReceipt') !== false): ?>
+<script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
 <?php endif ?>
 <script src="<?php echo URLROOT; ?>/public/javascript/main.min.js"></script>

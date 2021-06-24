@@ -133,7 +133,7 @@
                 <?php endif; ?>
                 <!-- <span class="coming_soon">coming soon</span> -->
             </a></li>
-        <li><a href="<?php echo URLROOT; ?>/pages/cashOut">Cash Out
+        <li><a href="#!">Cash Out
                 <span class="coming_soon">coming soon</span>
             </a>
         </li>

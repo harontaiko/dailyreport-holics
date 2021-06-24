@@ -14,6 +14,94 @@ class Page
       return $this->db;
     }
 
+    public function DeleteItem($id)
+    {
+        $query = 'DELETE FROM dr_inventory WHERE item_id=?';
+
+        $binders = "s";
+
+        $parameters = array($id);
+
+        try {
+            Delete($query, $binders, $parameters, 'dr_inventory', $this->db);
+            return true;
+        } catch (Error $e) {
+            return false;
+        }
+    }
+
+    public function getItemsInStock()
+    {
+        $query2 = 'SELECT COUNT(*) AS count_total FROM dr_sales';
+
+        $result2 = SelectCondFree($query2, 'dr_sales', $this->db);
+
+        $row2 = $result2->get_result();
+
+        $rowItem2 = $row2->fetch_assoc();
+        
+        $countsales = isset($rowItem2['count_total']) ? $rowItem2['count_total'] : 'N/A';
+
+        $query = 'SELECT SUM(item_quantity - ?) AS stock FROM dr_inventory';
+
+        $binders = "s";
+
+        $param = array($countsales);
+
+        $result = SelectCond($query, $binders, $param, $this->db);
+
+        $row = $result->get_result();
+
+        $rowItem = $row->fetch_assoc();
+        
+        $instock = isset($rowItem['stock']) ? $rowItem['stock'] : 'N/A';
+
+        try {
+            return $instock;
+        } catch (Error $e) {
+            return false;
+        } 
+    }
+
+
+    public function getItemsInventory()
+    {
+        $query = 'SELECT SUM(item_quantity) AS count_total FROM dr_inventory';
+
+        $result = SelectCondFree($query, 'dr_inventory', $this->db);
+
+        $row = $result->get_result();
+
+        $rowItem = $row->fetch_assoc();
+        
+        $countsales = isset($rowItem['count_total']) ? $rowItem['count_total'] : 'N/A';
+
+        try {
+            return $countsales;
+        } catch (Error $e) {
+            return false;
+        } 
+    }
+
+    public function getItemsInventoryWeek()
+    {
+        $query = 'SELECT COUNT(item_quantity) AS count_total FROM dr_inventory WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 WEEK)';
+
+        $result = SelectCondFree($query, 'dr_inventory', $this->db);
+
+        $row = $result->get_result();
+
+        $rowItem = $row->fetch_assoc();
+        
+        $countsales = isset($rowItem['count_total']) ? $rowItem['count_total'] : 'N/A';
+
+        try {
+            return $countsales;
+        } catch (Error $e) {
+            return false;
+        } 
+    }
+
     public function getAverageDailyIncome()
     {
         $query = 'SELECT AVG(totalincome) AS totalincome FROM dr_nettotal GROUP BY DATE_SUB(NOW(), INTERVAL 1 DAY)';
@@ -90,8 +178,29 @@ class Page
         } 
     }
 
+    public function getItemsSold()
+    {
+        //all except salary
+        $query = 'SELECT COUNT(*) AS count_total FROM dr_sales';
+
+        $result = SelectCondFree($query, 'dr_sales', $this->db);
+
+        $row = $result->get_result();
+
+        $rowItem = $row->fetch_assoc();
+        
+        $countsales = isset($rowItem['count_total']) ? $rowItem['count_total'] : 'N/A';
+
+        try {
+            return $countsales;
+        } catch (Error $e) {
+            return false;
+        } 
+    }
+
     public function getTotalExpenses()
     {
+        //all except salary
         $query = 'SELECT SUM(totalexpense) AS exp_total, SUM(cash_sales) AS cash_total, SUM(till_sales) AS till_total, SUM(totalincome) AS incometotal, SUM(totalprofit) AS profittotal, SUM(total_sales) AS sales_total FROM dr_nettotal';
 
         $result = SelectCondFree($query, 'dr_nettotal', $this->db);
@@ -1153,6 +1262,29 @@ class Page
 
         try {
             return $row;
+        } catch (Error $e) {
+            return false;
+        }
+    }
+
+    public function getItemById($id)
+    {
+        $query = 'SELECT * FROM dr_inventory WHERE item_id = ?';
+
+        $binders = "s";
+
+        $parameters = array($id);
+
+        $result = SelectCond($query, $binders, $parameters, $this->db);
+
+        $row = $result->get_result();
+
+        $rowItem = $row->fetch_assoc();
+        
+        $count = isset($rowItem['item_name']) ? $rowItem['item_name'] : 'id:not found';
+
+        try {
+            return $count;
         } catch (Error $e) {
             return false;
         }

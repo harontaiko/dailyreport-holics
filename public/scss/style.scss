@@ -2647,3 +2647,197 @@ input:checked + .slider:before {
 .auto-grid li:nth-child(10) {
   background: #706767;
 }
+
+@keyframes fade {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+.confirm {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  min-width: 280px;
+  max-width: 500px;
+  height: auto;
+  background: #e2e2e2;
+  border-radius: 10px;
+  padding: 0;
+  margin: 0;
+  border-top: 1px solid white;
+  animation: fade 1s ease 1 forwards;
+}
+.confirm h1 {
+  text-align: center;
+  font-size: 1.2rem;
+  margin: 1.5rem 1rem 0.5rem;
+}
+.confirm p {
+  text-align: center;
+  font-size: 1.56rem;
+  margin: 0 2rem 4.5rem;
+}
+.confirm button {
+  background: transparent;
+  border: none;
+  color: #1678e5;
+  height: 3rem;
+  font-size: 1rem;
+  width: 50%;
+  position: absolute;
+  bottom: 0;
+  cursor: pointer;
+}
+.confirm button:nth-of-type(1) {
+  border-top: 1px solid #b4b4b4;
+  border-right: 1px solid #b4b4b4;
+  left: 0;
+  border-radius: 0 0 0 10px;
+}
+.confirm button:nth-of-type(2) {
+  border-top: 1px solid #b4b4b4;
+  right: 0;
+  border-radius: 0 0 10px 0;
+}
+.confirm button:focus,
+.confirm button:hover {
+  font-weight: bold;
+  background: #efefef;
+}
+.confirm button:active {
+  background: #d6d6d6;
+}
+
+.betslip-container {
+  padding: 0.6rem;
+  margin: auto 5rem auto 5rem;
+  border-top: 4px solid #ffe71f;
+  border-radius: 5px;
+  width: 375px;
+  background-color: #222;
+  color: white;
+  height: fit-content;
+}
+.betslip-header-container {
+  font-size: 20px;
+  background-color: #333;
+  color: #999;
+  padding-right: 16px;
+  padding-left: 16px;
+}
+
+.betslip-type-container {
+  padding: 10px;
+}
+.betslip-type {
+  font-weight: bold;
+  font-family: sans-serif;
+}
+.betslip-system {
+  display: flex;
+  width: 100%;
+}
+.betslip-system-tab {
+  color: rgb(153, 153, 153);
+  background-color: #333;
+  font-size: 16px;
+  width: 33.33%;
+  border: none;
+  cursor: pointer;
+  padding: 14px 16px;
+}
+
+.betslip-clear {
+  text-align: right;
+  color: rgb(153, 153, 153);
+  font-size: 14px;
+  padding: 10px;
+  text-decoration: underline;
+}
+.betslip-pick {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  width: 100%;
+}
+.betslip-pick div {
+  display: inline-block;
+  border: 1px solid grey;
+  padding: 10px;
+}
+.betslip-pick .pick-details {
+  width: 60%;
+}
+.betslip-pick .pick-odds {
+  flex: 1;
+  float: right;
+}
+.pick-dismiss {
+  font-size: 2em;
+}
+
+.pick-details {
+  font-size: 12px;
+}
+.betslip-accumulator {
+  display: flex;
+}
+.accumulator-name {
+  display: inline-block;
+  padding: 10px;
+  font-weight: bold;
+}
+.accumulator-amount {
+  display: inline-block;
+  float: right;
+  padding: 10px;
+}
+
+.accumulator-amount input {
+  width: 60px;
+  border-radius: 5px;
+}
+
+.betslip-cashout {
+  background-color: green;
+  border: none;
+  margin: 10px;
+  color: white;
+}
+
+.betslip-details {
+  padding: 10px;
+  font-size: 12px;
+  color: rgb(153, 153, 153);
+  border: 1px solid #333;
+}
+.betslip-total-stake-value,
+.betslip-total-odds-value,
+.betslip-potential-payout-value {
+  float: right;
+  font-size: 12px;
+  font-weight: bold;
+  color: white;
+}
+.betslip-submit {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.betslip-submit-button {
+  width: 90%;
+  background-color: #ffe71f;
+  margin: 10px;
+  height: 30px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+}

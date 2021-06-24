@@ -158,3 +158,18 @@ time_logged varchar(64) NOT NULL,
 user_ip varchar(256) NULL
 )ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci
 ';
+
+$cashout =
+'
+CREATE TABLE ' .
+  $this->DB_PREFIX .
+  '_cashout( 
+cash_id int(11) AUTO_INCREMENT PRIMARY KEY NOT NULL,
+cash_amount varchar(64) NOT NULL,
+cash_usage varchar(64) NOT NULL,
+cash_from varchar(64) NULL,
+cash_handler varchar(64) NULL,
+cash_receipt_number varchar(64) NULL,
+date_created varchar(64) NOT NULL
+)ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci
+';

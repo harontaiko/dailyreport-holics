@@ -63,7 +63,8 @@ class Schema extends Database
         $nettotal_table,
         $user_table,
         $inventory_table,
-        $login_table
+        $login_table,
+        $cashout
       ];
 
       $this->nw_table_names = [
@@ -77,6 +78,7 @@ class Schema extends Database
         "" . $this->DB_PREFIX . "_user",
         "" . $this->DB_PREFIX . "_inventory",
         "" . $this->DB_PREFIX . "_login",
+        "" . $this->DB_PREFIX . "_cashout",
       ];
 
       //default execution first

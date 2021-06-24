@@ -269,6 +269,16 @@ dailyreport = {
 
       //add sale
       $(document).ready(function () {
+        //arrange selling items alphabetically
+        $("#product").append(
+          $("#product option")
+            .remove()
+            .sort(function (a, b) {
+              var at = $(a).text(),
+                bt = $(b).text();
+              return at > bt ? 1 : at < bt ? -1 : 0;
+            })
+        );
         //load expense onto DOM
         $("#exp").load(`loadLatestExpense`);
         //load sold i==onto DOM
@@ -2064,6 +2074,81 @@ dailyreport = {
             },
           });
         });
+      });
+    },
+  },
+  removeItem: {
+    init: function _removeitem() {
+      var cancel = document.getElementById("cancel-remove");
+      var accept = document.getElementById("accept-remove");
+
+      $("#cancel-remove").click(function (e) {
+        history.back();
+      });
+      $("#accept-remove").click(function (e) {
+        //delete item
+        var id = document.getElementById("item-id").value;
+        $.ajax({
+          url: `${hostUrl}/pages/DeleteItem`,
+          type: "POST",
+          data: {
+            ID: id,
+          },
+          dataType: "json",
+          success: function (dataResult) {
+            if (dataResult.statusCode == 200) {
+              history.back();
+            } else {
+              document.querySelector(".alert").style.display = "block";
+              document.getElementById("add-alert").style.color = "#fff";
+              $("#add-alert").html(
+                "an error occurred, item could not be removed, please check your connection"
+              );
+
+              sleep(4700).then(() => {
+                document.querySelector(".alert_success").style.display = "none";
+                document.getElementById("add-alert").innerHTML = "";
+              });
+            }
+          },
+        });
+      });
+    },
+  },
+  __cashOut: {
+    init: function _cashout() {
+      function makeid(length) {
+        var result = "";
+        var characters =
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        var charactersLength = characters.length;
+        for (var i = 0; i < length; i++) {
+          result += characters.charAt(
+            Math.floor(Math.random() * charactersLength)
+          );
+        }
+        return result;
+      }
+
+      document.getElementById("receipt-num").value = makeid(8);
+
+      $("form").on("submit", function (e) {
+        e.preventDefault();
+        //submit to receipt
+        var amount = document.getElementById("amount").value;
+        var usage = document.getElementById("usage").value;
+        var cashFrom = document.getElementById("cash-from").value;
+        var date = document.getElementById("date-").value;
+        var handler = document.getElementById("handler").value;
+        var receipt = document.getElementById("receipt-num").value;
+
+        cash = [amount, usage, cashFrom, date, handler, receipt];
+        console.log(cash);
+        $.ajax({
+          url: `${hostUrl}/pages/cashReceipt/${cash}`,
+          type: "POST",
+        });
+        location.replace(`${hostUrl}/pages/cashReceipt/${cash}`);
       });
     },
   },

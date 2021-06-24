@@ -7,6 +7,110 @@ class Pages extends Controller
     {
       $this->pageModel = $this->model('Page'); 
     }
+
+    public function cashReceipt($val)
+    {
+      if(isset($val)){
+        if (!isset($_SESSION["user_id"])) {
+          $data = [
+            "title" => "Daily Report",  
+          ];
+          redirect("users/index");
+        } 
+        
+        $db = $this->pageModel->getDatabaseConnection();
+
+        $inventoryData = $this->pageModel->getInventoryData();
+
+        $arr = explode(',', $val);
+        $data = ['title'=>'Cashout Receipt', "inventory" => $inventoryData, 'db'=>$db, 'val'=>$arr];
+
+        $this->view('pages/cashReceipt', $data);
+      }else{
+        http_response_code(404);
+        include('../app/404.php');
+        die();
+      }
+    }
+
+    public function cashOut()
+    {
+      if (!isset($_SESSION["user_id"])) {
+        $data = [
+          "title" => "Daily Report",  
+        ];
+        redirect("users/index");
+      } 
+      //get all sales data
+      $net = $this->pageModel->getNetTotal();
+      
+      $db = $this->pageModel->getDatabaseConnection();
+
+      $inventoryData = $this->pageModel->getInventoryData();
+
+      $data = ['title'=>'Cash Out', "inventory" => $inventoryData, 'db'=>$db, 'net'=>$net];
+
+      $this->view('pages/cashOut', $data);
+    }
+
+    public function DeleteItem()
+    {
+      if (!isset($_SESSION["user_id"])) {
+        $data = [
+          "title" => "Daily Report",  
+        ];
+        redirect("users/index");
+      } 
+
+      $data = ['title'=>'Daily Report'];
+
+      if($_SERVER['REQUEST_METHOD'] == 'POST')
+      {
+          $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+
+          $data = ['title' => 'Daily Report',
+          'id'=>$_POST['ID'],
+        ];
+
+        if($this->pageModel->DeleteItem($data['id'])){
+          echo json_encode(array('statusCode'=>200));
+        }
+        else{
+          echo json_encode(array('statusCode'=>317));
+        }
+      }
+      else{
+        http_response_code(404);
+        include('../app/404.php');
+        die();
+      } 
+    }
+
+    public function removeItem($id)
+    {
+      if(isset($id)){
+        if (!isset($_SESSION["user_id"])) {
+          $data = [
+            "title" => "Daily Report",  
+          ];
+          redirect("users/index");
+        } 
+        
+        $db = $this->pageModel->getDatabaseConnection();
+
+        $inventoryData = $this->pageModel->getInventoryData();
+
+        $name = $this->pageModel->getItemById($id);
+
+        $data = ['title'=>'Delete '.$name.'', "inventory" => $inventoryData, 'db'=>$db, 'id'=>htmlspecialchars($id)];
+
+        $this->view('pages/removeItem', $data);
+      }else{
+        http_response_code(404);
+        include('../app/404.php');
+        die();
+      }
+    }
     
 
     public function trends()
@@ -34,8 +138,13 @@ class Pages extends Controller
           $avgcash = $this->pageModel->getAverageDailyCash();
           $avgtill = $this->pageModel->getAverageDailyTill();
           $avgincome = $this->pageModel->getAverageDailyIncome();
+          $itemssold = $this->pageModel->getItemsSold();
+          $itemsinventory = $this->pageModel->getItemsInventory();
+          $itemsinventoryWeek = $this->pageModel->getItemsInventoryWeek();
+          $itemsInStock = $this->pageModel->getItemsInStock();
+          $itemsoutStock = $itemsinventory - $itemssold;
   
-          $data = ['title'=>'Trends', 'row'=>$users, 'db'=>$db, 'inventory'=>$inventoryData, 'row'=>$arr, 'avgsales'=>$avgsales, 'avgcash'=>$avgcash, 'avgtill'=>$avgtill, 'avgincome'=>$avgincome];
+          $data = ['title'=>'Trends', 'row'=>$users, 'weeklycount'=>$itemsinventoryWeek, 'out'=>$itemsoutStock, 'sold'=>$itemssold, 'allitems'=>$itemsinventory, 'stock'=>$itemsInStock, 'db'=>$db, 'inventory'=>$inventoryData, 'row'=>$arr, 'avgsales'=>$avgsales, 'avgcash'=>$avgcash, 'avgtill'=>$avgtill, 'avgincome'=>$avgincome];
   
           $this->view('pages/trends', $data);
     }

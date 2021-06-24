@@ -5,8 +5,23 @@
     <?php require(APPROOT . '/views/inc/navbar.php'); ?>
     <ul class="auto-grid">
         <li>
-            <h3>Losses From Expenses: <strong>
-                    <p class="highlight"><?php echo number_format($data['row']['0']['exp_total']); ?></p>
+            <h3>Items Sold: <strong>
+                    <p class="highlight"><?php echo number_format($data['sold']); ?></p>
+                </strong></h3>
+        </li>
+        <li>
+            <h3>Items In Stock: <strong>
+                    <p class="highlight"><?php echo number_format($data['stock']); ?></p>
+                </strong></h3>
+        </li>
+        <li>
+            <h3>Removed: <strong>
+                    <p class="highlight">N/A</p>
+                </strong></h3>
+        </li>
+        <li>
+            <h3>Created(weekly): <strong>
+                    <p class="highlight"><?php echo number_format($data['weeklycount']); ?></p>
                 </strong></h3>
         </li>
         <li>
