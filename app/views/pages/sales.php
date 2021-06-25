@@ -27,6 +27,22 @@
                 <button type="button" class="get-repo-btw" id="get-repo-btw">get</button>
             </form>
         </section>
+        <select name="filter-movieshop" id="fiter-movieshop" class="dr_input">
+            <option value="default">CASH OUTS MADE -
+                <?php echo getCashoutCount('sales', $data['db']); ?>(@<?php echo getCashoutTotal('sales', $data['db']); ?>)
+            </option>
+            <?php
+             $row = getCashout('sales', $data['db']);
+             while($cash = $row->fetch_assoc()):
+             ?>
+            <option value="<?php echo isset($cash['cash_receipt_number']) ? $cash['cash_receipt_number']: '' ?>">Cashed
+                out By
+                <?php echo isset($cash['cash_handler']) ? $cash['cash_handler']: ''; ?> For
+                <?php echo isset($cash['cash_usage']) ? $cash['cash_usage']: ''; ?>
+                @<?php echo isset($cash['cash_amount']) ? $cash['cash_amount']: ''; ?> on
+                <?php echo isset($cash['date_created']) ? $cash['date_created']: ''; ?></option>
+            <?php endwhile ?>
+        </select>
         <table class="rwd-table">
             <tr>
                 <th>Date</th>
@@ -53,7 +69,7 @@
         <p>&larr; Sold a total of <span class="login-err"><?php echo number_format($data['count']); ?></span> items up
             to
             <?php echo isset($data['date']) ? $data['date']: ''; ?> For a total of <span
-                class="login-err"><?php echo number_format($data['totalsales']); ?></span>&rarr;
+                class="login-err"><?php $cashout = getCashoutTotal('sales', $data['db']); echo number_format($data['totalsales'] - $cashout); ?></span>&rarr;
         </p>
     </main>
 

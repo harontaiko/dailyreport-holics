@@ -14,6 +14,125 @@ class Page
       return $this->db;
     }
 
+    public function getStationTotal($station)
+    {
+        if($station === "movie")
+        {
+            $query = 'SELECT SUM(cash) + SUM(till) AS current_total FROM dr_movieshop';
+
+            $result = SelectCondFree($query, 'dr_movieshop', $this->db);
+    
+            $row = $result->get_result();
+    
+            $rowItem = $row->fetch_assoc();
+            
+            $salescurrenttotal = isset($rowItem['current_total']) ? $rowItem['current_total'] : '';
+    
+            try {
+                return $salescurrenttotal;
+            } catch (Error $e) {
+                return false;
+            } 
+        }
+        else if($station === "ps")
+        {
+            $query = 'SELECT SUM(cash) + SUM(till) AS current_total FROM dr_playstation';
+
+            $result = SelectCondFree($query, 'dr_playstation', $this->db);
+    
+            $row = $result->get_result();
+    
+            $rowItem = $row->fetch_assoc();
+            
+            $salescurrenttotal = isset($rowItem['current_total']) ? $rowItem['current_total'] : '';
+    
+            try {
+                return $salescurrenttotal;
+            } catch (Error $e) {
+                return false;
+            } 
+        }
+        else if($station === "cyber")
+        {
+            $query = 'SELECT SUM(cash) + SUM(till) AS current_total FROM dr_cybershop';
+
+            $result = SelectCondFree($query, 'dr_cybershop', $this->db);
+    
+            $row = $result->get_result();
+    
+            $rowItem = $row->fetch_assoc();
+            
+            $salescurrenttotal = isset($rowItem['current_total']) ? $rowItem['current_total'] : '';
+    
+            try {
+                return $salescurrenttotal;
+            } catch (Error $e) {
+                return false;
+            } 
+        }
+        else if($station === "sales")
+        {
+            $query = 'SELECT SUM(selling_price) AS current_total FROM dr_sales';
+
+            $result = SelectCondFree($query, 'dr_sales', $this->db);
+    
+            $row = $result->get_result();
+    
+            $rowItem = $row->fetch_assoc();
+            
+            $salescurrenttotal = isset($rowItem['current_total']) ? $rowItem['current_total'] : '';
+    
+            try {
+                return $salescurrenttotal;
+            } catch (Error $e) {
+                return false;
+            } 
+        }
+        else if($station === "total")
+        {
+            $query = 'SELECT SUM(total_sales) + SUM(totalincome) AS current_total FROM dr_nettotal';
+
+            $result = SelectCondFree($query, 'dr_nettotal', $this->db);
+    
+            $row = $result->get_result();
+    
+            $rowItem = $row->fetch_assoc();
+            
+            $salescurrenttotal = isset($rowItem['current_total']) ? $rowItem['current_total'] : '';
+    
+            try {
+                return $salescurrenttotal;
+            } catch (Error $e) {
+                return false;
+            } 
+        }
+    }
+
+    public function SaveCashout($data)
+    {
+        $fields = array('cash_amount', 'cash_usage', 'cash_from', 'cash_handler', 'cash_receipt_number', 'date_created');
+
+        $placeholders = array('?', '?', '?', '?', '?', '?');
+  
+        $bindersCountNew = "ssssss";
+  
+        $values = array($data['Amount'], $data['Usage'], $data['From'], $data['Handler'], $data['Receipt'], $data['Date']);
+  
+        try {
+            Insert(
+                $fields,
+                $placeholders,
+                $bindersCountNew,
+                $values,
+                'dr_cashout',
+                $this->db
+            );          
+            return true;
+        } catch (Error $e) {
+            return false;
+        }
+    }
+
     public function DeleteItem($id)
     {
         $query = 'DELETE FROM dr_inventory WHERE item_id=?';

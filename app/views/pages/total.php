@@ -27,6 +27,22 @@
                 <button type="button" class="get-repo-btw" id="get-repo-btw">get</button>
             </form>
         </section>
+        <select name="filter-movieshop" id="fiter-movieshop" class="dr_input">
+            <option value="default">CASH OUTS MADE -
+                <?php echo getCashoutCount('total', $data['db']); ?>(@<?php echo getCashoutTotal('total', $data['db']); ?>)
+            </option>
+            <?php
+             $row = getCashout('total', $data['db']);
+             while($cash = $row->fetch_assoc()):
+             ?>
+            <option value="<?php echo isset($cash['cash_receipt_number']) ? $cash['cash_receipt_number']: '' ?>">Cashed
+                out By
+                <?php echo isset($cash['cash_handler']) ? $cash['cash_handler']: ''; ?> For
+                <?php echo isset($cash['cash_usage']) ? $cash['cash_usage']: ''; ?>
+                @<?php echo isset($cash['cash_amount']) ? $cash['cash_amount']: ''; ?> on
+                <?php echo isset($cash['date_created']) ? $cash['date_created']: ''; ?></option>
+            <?php endwhile ?>
+        </select>
         <table class="rwd-table">
             <tr>
                 <th>Date</th>
@@ -52,7 +68,7 @@
         </table>
 
         <p>&larr; Net Total(exclusive of expenses): <span
-                class="login-err"><?php echo number_format($data['sum'] - $data['diff']) . '/='; ?></span>&rarr;
+                class="login-err"><?php $cashout = getCashoutTotal('total', $data['db']); echo number_format($data['sum'] - $data['diff'] - $cashout) . '/='; ?></span>&rarr;
         </p>
     </main>
 

@@ -3030,3 +3030,326 @@ function checkForSaleDataToday($date, $db)
     return false;
   }
 }
+
+/////////////////////////////////////////////////////CASHOUTS
+function getCashoutCount($shopname, $db)
+{
+  if($shopname === "movie")
+  {
+    $query = 'SELECT COUNT(*) AS count_ FROM dr_cashout WHERE cash_from=?';
+
+    $binders ="s";
+
+    $params = array('movie');
+
+    $result = SelectCond($query, $binders, $params, $db);
+  
+    $row = $result->get_result();
+
+    $rowItem = $row->fetch_assoc();
+
+    $count = isset($rowItem['count_']) ? $rowItem['count_'] : 'N/A';
+  
+    try {
+        return $count;
+    } catch (Error $e) {
+        return false;
+    }
+  }
+  else if($shopname === "ps")
+  {
+    $query = 'SELECT COUNT(*) AS count_ FROM dr_cashout WHERE cash_from=?';
+
+    $binders ="s";
+
+    $params = array('ps');
+
+    $result = SelectCond($query, $binders, $params, $db);
+  
+    $row = $result->get_result();
+
+    $rowItem = $row->fetch_assoc();
+
+    $count = isset($rowItem['count_']) ? $rowItem['count_'] : 'N/A';
+  
+    try {
+        return $count;
+    } catch (Error $e) {
+        return false;
+    }
+  }
+  else if($shopname === "cyber")
+  {
+    $query = 'SELECT COUNT(*) AS count_ FROM dr_cashout WHERE cash_from=?';
+
+    $binders ="s";
+
+    $params = array('cyber');
+
+    $result = SelectCond($query, $binders, $params, $db);
+  
+    $row = $result->get_result();
+
+    $rowItem = $row->fetch_assoc();
+
+    $count = isset($rowItem['count_']) ? $rowItem['count_'] : 'N/A';
+  
+    try {
+        return $count;
+    } catch (Error $e) {
+        return false;
+    }
+  }
+  else if($shopname === "sales")
+  {
+    $query = 'SELECT COUNT(*) AS count_ FROM dr_cashout WHERE cash_from=?';
+
+    $binders ="s";
+
+    $params = array('sales');
+
+    $result = SelectCond($query, $binders, $params, $db);
+  
+    $row = $result->get_result();
+
+    $rowItem = $row->fetch_assoc();
+
+    $count = isset($rowItem['count_']) ? $rowItem['count_'] : 'N/A';
+  
+    try {
+        return $count;
+    } catch (Error $e) {
+        return false;
+    }
+  }
+  else if($shopname === "total")
+  {
+    $query = 'SELECT COUNT(*) AS count_ FROM dr_cashout WHERE cash_from=?';
+
+    $binders ="s";
+
+    $params = array('total');
+
+    $result = SelectCond($query, $binders, $params, $db);
+  
+    $row = $result->get_result();
+
+    $rowItem = $row->fetch_assoc();
+
+    $count = isset($rowItem['count_']) ? $rowItem['count_'] : 'N/A';
+  
+    try {
+        return $count;
+    } catch (Error $e) {
+        return false;
+    }
+  }
+}
+
+function getCashout($shopname, $db)
+{
+  if($shopname === "movie")
+  {
+    $query = 'SELECT * FROM dr_cashout WHERE cash_from=?';
+
+    $binders ="s";
+
+    $params = array('movie');
+
+    $result = SelectCond($query, $binders, $params, $db);
+  
+    $row = $result->get_result();
+  
+    try {
+        return $row;
+    } catch (Error $e) {
+        return false;
+    }
+  }
+  else if($shopname === "ps")
+  {
+    $query = 'SELECT * FROM dr_cashout WHERE cash_from=?';
+
+    $binders ="s";
+
+    $params = array('ps');
+
+    $result = SelectCond($query, $binders, $params, $db);
+  
+    $row = $result->get_result();
+  
+    try {
+        return $row;
+    } catch (Error $e) {
+        return false;
+    }
+  }
+  else if($shopname === "cyber")
+  {
+    $query = 'SELECT * FROM dr_cashout WHERE cash_from=?';
+
+    $binders ="s";
+
+    $params = array('cyber');
+
+    $result = SelectCond($query, $binders, $params, $db);
+  
+    $row = $result->get_result();
+  
+    try {
+        return $row;
+    } catch (Error $e) {
+        return false;
+    }
+  }
+  else if($shopname === "sales")
+  {
+    $query = 'SELECT * FROM dr_cashout WHERE cash_from=?';
+
+    $binders ="s";
+
+    $params = array('sales');
+
+    $result = SelectCond($query, $binders, $params, $db);
+  
+    $row = $result->get_result();
+  
+    try {
+        return $row;
+    } catch (Error $e) {
+        return false;
+    }
+  }
+  else if($shopname === "total")
+  {
+    $query = 'SELECT * FROM dr_cashout WHERE cash_from=?';
+
+    $binders ="s";
+
+    $params = array('total');
+
+    $result = SelectCond($query, $binders, $params, $db);
+  
+    $row = $result->get_result();
+  
+    try {
+        return $row;
+    } catch (Error $e) {
+        return false;
+    }
+  }
+}
+
+function getCashoutTotal($shopname, $db)
+{
+  if($shopname === "movie")
+  {
+    $query = 'SELECT SUM(cash_amount) AS total FROM dr_cashout WHERE cash_from=?';
+
+    $binders ="s";
+
+    $params = array('movie');
+
+    $result = SelectCond($query, $binders, $params, $db);
+  
+    $row = $result->get_result();
+
+    $rowItem = $row->fetch_assoc();
+
+    $count = isset($rowItem['total']) ? $rowItem['total'] : 'N/A';
+  
+    try {
+        return $count;
+    } catch (Error $e) {
+        return false;
+    }
+  }
+  else if($shopname === "ps")
+  {
+    $query = 'SELECT SUM(cash_amount) AS total FROM dr_cashout WHERE cash_from=?';
+
+    $binders ="s";
+
+    $params = array('ps');
+
+    $result = SelectCond($query, $binders, $params, $db);
+  
+    $row = $result->get_result();
+
+    $rowItem = $row->fetch_assoc();
+
+    $count = isset($rowItem['total']) ? $rowItem['total'] : 'N/A';
+  
+    try {
+        return $count;
+    } catch (Error $e) {
+        return false;
+    }
+  }
+  else if($shopname === "cyber")
+  {
+    $query = 'SELECT SUM(cash_amount) AS total FROM dr_cashout WHERE cash_from=?';
+
+    $binders ="s";
+
+    $params = array('cyber');
+
+    $result = SelectCond($query, $binders, $params, $db);
+  
+    $row = $result->get_result();
+
+    $rowItem = $row->fetch_assoc();
+
+    $count = isset($rowItem['total']) ? $rowItem['total'] : 'N/A';
+  
+    try {
+        return $count;
+    } catch (Error $e) {
+        return false;
+    }
+  }    
+  else if($shopname === "sales")
+  {
+    $query = 'SELECT SUM(cash_amount) AS total FROM dr_cashout WHERE cash_from=?';
+
+    $binders ="s";
+
+    $params = array('sales');
+
+    $result = SelectCond($query, $binders, $params, $db);
+  
+    $row = $result->get_result();
+
+    $rowItem = $row->fetch_assoc();
+
+    $count = isset($rowItem['total']) ? $rowItem['total'] : 'N/A';
+  
+    try {
+        return $count;
+    } catch (Error $e) {
+        return false;
+    } 
+  }
+  else if($shopname === "total")
+  {
+    $query = 'SELECT SUM(cash_amount) AS total FROM dr_cashout WHERE cash_from=?';
+
+    $binders ="s";
+
+    $params = array('total');
+
+    $result = SelectCond($query, $binders, $params, $db);
+  
+    $row = $result->get_result();
+
+    $rowItem = $row->fetch_assoc();
+
+    $count = isset($rowItem['total']) ? $rowItem['total'] : 'N/A';
+  
+    try {
+        return $count;
+    } catch (Error $e) {
+        return false;
+    }
+  }
+}

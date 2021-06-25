@@ -2152,4 +2152,69 @@ dailyreport = {
       });
     },
   },
+  __cashReceipt: {
+    init: function _cashreceipt() {
+      $("#save-cashout").click(function (e) {
+        //load
+        document.getElementsByClassName("load-wrapp")[0].style.display =
+          "block";
+
+        var amount = document.getElementById("amount").value;
+        var usage = document.getElementById("usage").value;
+        var cashFrom = document.getElementById("from").value;
+        var date = document.getElementById("date__").value;
+        var handler = document.getElementById("handler").value;
+        var receipt = document.getElementById("receipt").value;
+
+        $.ajax({
+          url: `${hostUrl}/pages/saveCashout`,
+          type: "POST",
+          data: {
+            Amount: amount,
+            Usage: usage,
+            From: cashFrom,
+            Date: date,
+            Handler: handler,
+            Receipt: receipt,
+          },
+          dataType: "json",
+          success: function (dataResult) {
+            if (dataResult.statusCode == 200) {
+              if (cashFrom === "movie") {
+                location.replace(`${hostUrl}/pages/movieShop`);
+              } else if (cashFrom === "ps") {
+                location.replace(`${hostUrl}/pages/playstation`);
+              } else if (cashFrom === "cyber") {
+                location.replace(`${hostUrl}/pages/cyber`);
+              } else if (cashFrom === "sales") {
+                location.replace(`${hostUrl}/pages/sales`);
+              } else if (cashFrom === "total") {
+                location.replace(`${hostUrl}/pages/total`);
+              }
+            } else if (dataResult.statusCode == 318) {
+              document.getElementsByClassName("load-wrapp")[0].style.display =
+                "none";
+              document.querySelector(".alert_failed").style.display = "block";
+              $("#add-alert").html(
+                `The requested station does not have enough money to make that cashout, please try another station`
+              );
+              sleep(4700).then(() => {
+                document.querySelector(".alert_failed").style.display = "none";
+                $("#add-alert").html("");
+              });
+            } else if (dataResult.statusCode == 317) {
+              document.getElementsByClassName("load-wrapp")[0].style.display =
+                "none";
+              document.querySelector(".alert_failed").style.display = "block";
+              $("#add-alert").html("connection error, please try again");
+              sleep(4700).then(() => {
+                document.querySelector(".alert_failed").style.display = "none";
+                $("#add-alert").html("");
+              });
+            }
+          },
+        });
+      });
+    },
+  },
 };

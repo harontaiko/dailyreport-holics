@@ -111,7 +111,7 @@ while($mv2 = $mv->fetch_assoc()){
                                 <td>Bill To:</td>
                             </tr>
                             <tr style="font-weight:bold;">
-                                <td>jeff</td>
+                                <td>By jeff</td>
                             </tr>
                             <tr>
                                 <td>&#9993; ndenderuhub@gmail.com</td>

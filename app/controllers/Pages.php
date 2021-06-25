@@ -8,8 +8,77 @@ class Pages extends Controller
       $this->pageModel = $this->model('Page'); 
     }
 
+    public function list()
+    {
+      unset($_SESSION['cash']);
+      if (!isset($_SESSION["user_id"])) {
+        $data = [
+          "title" => "Daily Report",  
+        ];
+        redirect("users/index");
+      } 
+      //get all sales data
+      $net = $this->pageModel->getNetTotal();
+      
+      $db = $this->pageModel->getDatabaseConnection();
+
+      $inventoryData = $this->pageModel->getInventoryData();
+
+      $data = ['title'=>'Inventory', "inventory" => $inventoryData, 'db'=>$db, 'net'=>$net];
+
+      $this->view('pages/list', $data);
+    }
+
+    public function saveCashout()
+    {
+      if (!isset($_SESSION["user_id"])) {
+        $data = [
+          "title" => "Daily Report",  
+        ];
+        redirect("users/index");
+      } 
+
+      $data = ['title'=>'Daily Report'];
+
+      
+      if($_SERVER['REQUEST_METHOD'] == 'POST')
+      {
+          $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+
+          $data = ['title' => 'Daily Report',
+          'Amount'=>$_POST['Amount'],
+          'Usage'=>$_POST['Usage'],
+          'Date'=>$_POST['Date'],
+          'Handler'=>$_POST['Handler'],
+          'From'=>$_POST['From'],
+          'Receipt'=>$_POST['Receipt'],
+        ];
+
+        //check for enough cash in station
+        $currentstationNet = $this->pageModel->getStationTotal($data['From']);
+        if($data['Amount'] > $currentstationNet){
+          echo json_encode(array('statusCode'=>318));
+        }else{
+          if($this->pageModel->SaveCashout($data)){
+            echo json_encode(array('statusCode'=>200));
+          }
+          else{
+            echo json_encode(array('statusCode'=>317));
+          }
+        }
+      }
+      else{
+        http_response_code(404);
+        include('../app/404.php');
+        die();
+      }
+  
+    }
+
     public function cashReceipt($val)
     {
+      //unset cash
+      unset($_SESSION['cash']);
       if(isset($val)){
         if (!isset($_SESSION["user_id"])) {
           $data = [
@@ -17,13 +86,16 @@ class Pages extends Controller
           ];
           redirect("users/index");
         } 
-        
+
         $db = $this->pageModel->getDatabaseConnection();
 
         $inventoryData = $this->pageModel->getInventoryData();
 
         $arr = explode(',', $val);
         $data = ['title'=>'Cashout Receipt', "inventory" => $inventoryData, 'db'=>$db, 'val'=>$arr];
+
+        //store in session
+        $_SESSION['cash'] = $arr;
 
         $this->view('pages/cashReceipt', $data);
       }else{
@@ -170,6 +242,7 @@ class Pages extends Controller
 
     public function index()
     {
+      unset($_SESSION['cash']);
       if (!isset($_SESSION["user_id"])) {
         $data = [
           "title" => "Daily Report",  
@@ -429,6 +502,8 @@ class Pages extends Controller
 
     public function movieShop()
     {
+      //unset cash
+      unset($_SESSION['cash']);      
       if (!isset($_SESSION["user_id"])) {
         $data = [
           "title" => "Daily Report",
@@ -454,6 +529,8 @@ class Pages extends Controller
 
     public function cyber()
     {
+      //unset cash
+      unset($_SESSION['cash']);      
       if (!isset($_SESSION["user_id"])) {
         $data = [
           "title" => "Daily Report",
@@ -479,6 +556,8 @@ class Pages extends Controller
 
     public function playstation()
     {
+      //unset cash
+      unset($_SESSION['cash']);      
       if (!isset($_SESSION["user_id"])) {
         $data = [
           "title" => "Daily Report",
@@ -546,6 +625,8 @@ class Pages extends Controller
 
     public function sales()
     {
+      //unset cash
+      unset($_SESSION['cash']);
       if (!isset($_SESSION["user_id"])) {
         $data = [
           "title" => "Daily Report",
@@ -600,6 +681,8 @@ class Pages extends Controller
 
     public function total()
     {
+      //unset cash
+      unset($_SESSION['cash']);
       if (!isset($_SESSION["user_id"])) {
         $data = [
           "title" => "Daily Report",
