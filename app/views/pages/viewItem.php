@@ -14,11 +14,11 @@
         </p>
         <?php if(empty($data['row']['0']['image'])): ?>
         <h2><strong>no image</strong></h2>
-        <img style="display:none; width:60% !important; height:auto !important;"
+        <img style="display:none; width:60% !important; height:auto !important; background-color:teal;" loading="lazy"
             src="<?php echo URLROOT; ?>/public/images/images/no-image.svg" id="item-image"
             alt="no image for <?php print_r($data['row']['0']['item_name']); ?>">
         <?php else: ?>
-        <img style="display:none;"
+        <img style="display:none;background-color:teal;" loading="lazy"
             src="<?php echo URLROOT; ?>/public/uploads/<?php print_r($data['row']['0']['image']); ?>" id="item-image"
             alt="<?php print_r($data['row']['0']['image']); ?>">
         <?php endif; ?>
@@ -34,6 +34,22 @@
             ?>
             </h2>
         </div>
+        <nav id="carousel-btns">
+            <?php if($data['id'] == $data['first']): ?>
+            <a class="cr-link" href="#!"><button disabled class="nav prev">Prev</button></a>
+            <?php else: ?>
+            <a class="cr-link" href="<?php echo URLROOT; ?>/pages/viewItem/<?php echo $data['prev']; ?>"><button
+                    class="nav prev">Prev</button></a>
+            <?php endif; ?>
+            <?php if($data['id'] == $data['last']): ?>
+            <a class="cr-link" href="#!" title="the end"><button disabled class="nav next">Next</button></a>
+            <?php else: ?>
+            <a class="cr-link" href="<?php echo URLROOT; ?>/pages/viewItem/<?php echo $data['next']; ?>"><button
+                    class="nav next">Next</button></a>
+            <?php endif; ?>
+        </nav>
+        <a id="add-record" style="float: left;" title="see inventory" href="<?php echo URLROOT; ?>/pages/list"><i
+                class="fas fa-dolly fa-2x"></i></a>
     </div>
     <?php else: ?>
     <div class="box">

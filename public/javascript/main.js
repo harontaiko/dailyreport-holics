@@ -2217,4 +2217,9 @@ dailyreport = {
       });
     },
   },
+  __list:{
+    init:function _list(){
+      
+    }
+  }
 };

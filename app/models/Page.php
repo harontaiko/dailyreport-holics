@@ -14,6 +14,91 @@ class Page
       return $this->db;
     }
 
+
+    public function getNextId($currentId)
+    {
+        $query = 'SELECT item_id AS id FROM dr_inventory WHERE item_id = (SELECT min(item_id) FROM dr_inventory WHERE item_id > ?)';
+
+        $binders ="s";
+
+        $param = array($currentId);
+
+        $result = SelectCond($query, $binders, $param, $this->db);
+
+        $row = $result->get_result();
+
+        $rowItem = $row->fetch_assoc();
+        
+        $id = isset($rowItem['id']) ? $rowItem['id'] : '';
+
+        try {
+            return $id;
+        } catch (Error $e) {
+            return false;
+        } 
+    }
+
+    public function getPreviousId($currentId)
+    {
+        $query = 'SELECT item_id AS id FROM dr_inventory WHERE item_id < ? ORDER BY item_id DESC LIMIT 1';
+
+        $binders ="s";
+
+        $param = array($currentId);
+
+        $result = SelectCond($query, $binders, $param, $this->db);
+
+        $row = $result->get_result();
+
+        $rowItem = $row->fetch_assoc();
+        
+        $id = isset($rowItem['id']) ? $rowItem['id'] : '';
+
+        try {
+            return $id;
+        } catch (Error $e) {
+            return false;
+        } 
+    }
+
+    public function getFirstId()
+    {
+        $query = 'SELECT MIN(item_id) AS id FROM dr_inventory';
+
+        $result = SelectCondFree($query, 'dr_inventory', $this->db);
+
+        $row = $result->get_result();
+
+        $rowItem = $row->fetch_assoc();
+        
+        $id = isset($rowItem['id']) ? $rowItem['id'] : '';
+
+        try {
+            return $id;
+        } catch (Error $e) {
+            return false;
+        } 
+    }
+
+    public function getLastId()
+    {
+        $query = 'SELECT MAX(item_id) AS id FROM dr_inventory';
+
+        $result = SelectCondFree($query, 'dr_inventory', $this->db);
+
+        $row = $result->get_result();
+
+        $rowItem = $row->fetch_assoc();
+        
+        $id = isset($rowItem['id']) ? $rowItem['id'] : '';
+
+        try {
+            return $id;
+        } catch (Error $e) {
+            return false;
+        } 
+    }
+
     public function getStationTotal($station)
     {
         if($station === "movie")

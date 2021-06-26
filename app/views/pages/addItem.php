@@ -4,6 +4,8 @@
 <body class="addItem __addItem site-wrap">
     <?php require(APPROOT . '/views/inc/navbar.php'); ?>
     <main>
+        <a id="add-record" title="inventory" href="<?php echo URLROOT; ?>/pages/list"><i
+                class="fas fa-dolly fa-2x"></i></a>
         <?php flash('add-error'); ?>
         <div class="loader">
             <div class="loading">

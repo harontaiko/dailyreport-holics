@@ -4,7 +4,8 @@
 <body class="home __home site-wrap">
     <?php require(APPROOT . '/views/inc/navbar.php'); ?>
     <main>
-        <a id="add-record" style="float: left;" title="see inventory" href="#!"><i class="fas fa-dolly fa-2x"></i></a>
+        <a id="add-record" style="float: left;" title="see inventory" href="<?php echo URLROOT; ?>/pages/list"><i
+                class="fas fa-dolly fa-2x"></i></a>
         <a id="add-record" title="add sale" href="<?php echo URLROOT; ?>/pages/add"><i class="fas fa-plus"></i></a>
         <header>
             <?php flash('add-error'); ?>

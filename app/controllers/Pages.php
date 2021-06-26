@@ -407,7 +407,13 @@ class Pages extends Controller
           array_push($itemarray, $item);
         }
 
-        $data = ['title'=>'View Item', "inventory" => $inventoryData, 'db'=>$db, 'id'=>htmlspecialchars($itemId), 'row'=>$itemarray];
+        //next id
+        $next = $this->pageModel->getNextId($itemId);
+        $prev = $this->pageModel->getPreviousId($itemId);
+        $last = $this->pageModel->getLastId();
+        $first = $this->pageModel->getFirstId();
+
+        $data = ['title'=>'View Item', 'first'=>$first, 'last'=>$last, 'prev'=>$prev, 'next'=>$next, "inventory" => $inventoryData, 'db'=>$db, 'id'=>htmlspecialchars($itemId), 'row'=>$itemarray];
 
         $this->view('pages/viewItem', $data);
       }else{

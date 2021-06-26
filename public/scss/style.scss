@@ -2984,12 +2984,19 @@ input:checked + .slider:before {
   -webkit-box-flex: auto;
   -ms-flex: auto;
   flex: auto;
-  width: 200px;
+  width: 100px;
   margin: 0.5vw;
 }
 #list-inventory div img {
-  width: 100%;
-  height: auto;
+  width: 70% !important;
+  height: 57% !important;
+}
+
+.item-name {
+  position: relative;
+  font-size: 1.2rem;
+  text-align: justify;
+  font-weight: bold;
 }
 @media screen and (max-width: 400px) {
   #list-inventory div {
@@ -3000,37 +3007,152 @@ input:checked + .slider:before {
   }
 }
 
-.search {
-  width: 100%;
+.cf:before,
+.cf:after {
+  content: "";
+  display: table;
+}
+
+.cf:after {
+  clear: both;
+}
+
+.cf {
+  zoom: 1;
+}
+
+/* Form wrapper styling */
+.search-wrapper {
+  width: 220px;
+  margin: 45px auto 50px auto;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.4) inset,
+    0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* Form text input */
+
+.search-wrapper input {
+  width: 138px;
+  height: 42px;
+  padding: 10px 5px;
+  float: left;
+  font: bold 15px "lucida sans", "trebuchet MS", "Tahoma";
+  border: 0;
+  background: #eee;
+  border-radius: 3px 0 0 3px;
+}
+
+.lazy {
+  background: #7e7e7e;
+  display: block;
+  border: 0;
+}
+
+.search-wrapper input:focus {
+  outline: 0;
+  background: #fff;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.8) inset;
+}
+
+.search-wrapper input::-webkit-input-placeholder {
+  color: #999;
+  font-weight: normal;
+  font-style: italic;
+}
+
+.search-wrapper input:-moz-placeholder {
+  color: #999;
+  font-weight: normal;
+  font-style: italic;
+}
+
+.search-wrapper input:-ms-input-placeholder {
+  color: #999;
+  font-weight: normal;
+  font-style: italic;
+}
+
+/* Form submit button */
+.search-wrapper button {
+  overflow: visible;
   position: relative;
-  display: flex;
-}
-
-.searchTerm {
-  width: 100%;
-  border: 3px solid #00b4cc;
-  border-right: none;
-  padding: 5px;
-  height: 20px;
-  border-radius: 5px 0 0 5px;
-  outline: none;
-  color: #9dbfaf;
-}
-
-.searchTerm:focus {
-  color: #00b4cc;
-}
-
-.searchButton {
-  width: 40px;
-  height: 36px;
-  border: 1px solid #00b4cc;
-  background: #00b4cc;
-  text-align: center;
-  color: #fff;
-  border-radius: 0 5px 5px 0;
+  float: right;
+  border: 0;
+  padding: 0;
   cursor: pointer;
-  font-size: 20px;
+  height: 40px;
+  width: 72px;
+  font: bold 15px/40px "lucida sans", "trebuchet MS", "Tahoma";
+  color: white;
+  text-transform: uppercase;
+  background: #d83c3c;
+  border-radius: 0 3px 3px 0;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
 }
 
-/*Resize the wrap to see the search bar change!*/
+.search-wrapper button:hover {
+  background: #e54040;
+}
+
+.search-wrapper button:active,
+.search-wrapper button:focus {
+  background: #c42f2f;
+  outline: 0;
+}
+
+.search-wrapper button:before {
+  /* left arrow */
+  content: "";
+  position: absolute;
+  border-width: 8px 8px 8px 0;
+  border-style: solid solid solid none;
+  border-color: transparent #d83c3c transparent;
+  top: 12px;
+  left: -6px;
+}
+
+.search-wrapper button:hover:before {
+  border-right-color: #e54040;
+}
+
+.search-wrapper button:focus:before,
+.search-wrapper button:active:before {
+  border-right-color: #c42f2f;
+}
+
+.search-wrapper button::-moz-focus-inner {
+  /* remove extra button spacing for Mozilla Firefox */
+  border: 0;
+  padding: 0;
+}
+
+.list {
+  padding: 2rem;
+}
+
+#carousel-btns {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0 0;
+
+  button {
+    flex: 0 0 auto;
+    margin: 0 5px;
+
+    cursor: pointer;
+
+    color: #333;
+    background: none;
+    border: 1px solid;
+    letter-spacing: 1px;
+    padding: 5px 10px;
+    &:hover {
+      background-color: #009c7c;
+      color: #fff;
+    }
+  }
+}
+
+.cr-link:hover {
+  text-decoration: none !important;
+}
