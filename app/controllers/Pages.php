@@ -8,6 +8,30 @@ class Pages extends Controller
       $this->pageModel = $this->model('Page'); 
     }
 
+    public function attatchReceipt($date)
+    {
+      if(isset($date)){
+        if (!isset($_SESSION["user_id"])) {
+          $data = [
+            "title" => "Daily Report",  
+          ];
+          redirect("users/index");
+        } 
+        
+        $db = $this->pageModel->getDatabaseConnection();
+
+        $inventoryData = $this->pageModel->getInventoryData();
+
+        $data = ['title'=>'Attatch Receipt', "inventory" => $inventoryData, 'db'=>$db, 'date'=>htmlspecialchars($date)];
+
+        $this->view('pages/attatchReceipt', $data);
+      }else{
+        http_response_code(404);
+        include('../app/404.php');
+        die();
+      }
+    }
+
     public function list()
     {
       unset($_SESSION['cash']);

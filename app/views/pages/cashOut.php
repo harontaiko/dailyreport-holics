@@ -13,6 +13,21 @@
             style="color:#fff !important; font-size:x-large; background-color:#4CAF50!important">
             <p id="inventory-alert"></p>
         </div>
+        <div class="cashouts-made">
+            <p id="sales-made-p">Cashouts</p>
+            <?php  
+             $row = getCashout('cyber', $data['db']);
+             while($cash = $row->fetch_assoc()):   ?>
+            <p id="<?php echo isset($cash['cash_id']) ? $cash['cash_id']: 'N/A'; ?>" class="total-expense">
+                <a href="#!"> <?php echo isset($cash['cash_usage']) ? $cash['cash_usage']: 'N/A';?> by
+                    <?php echo isset($cash['cash_handler']) ? $cash['cash_handler']: 'N/A';?> -
+                    <?php echo isset($cash['cash_amount']) ? $cash['cash_amount']: 'N/A';?></a>
+                <button class="close-expense" type="button">&times;</button>
+            </p>
+
+            <?php  endwhile   ?>
+        </div>
+
         <div class="payment-title">
             <h1>Cash Out <i class="fas fa-cash-register fa-2x"></i></h1>
         </div>

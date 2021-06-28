@@ -1565,6 +1565,10 @@ th {
   justify-content: center;
 }
 
+.close-expense:hover {
+  color: red;
+}
+
 #no_script {
   position: fixed;
   top: 0;
@@ -2416,7 +2420,7 @@ input:checked + .slider:before {
   position: absolute;
   top: 50%;
   left: 50%;
-  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
 
 .card {
@@ -2795,7 +2799,7 @@ input:checked + .slider:before {
   font-weight: bold;
 }
 .accumulator-amount {
-  display: inline-block;
+  display: block;
   float: right;
   padding: 10px;
 }
@@ -3155,4 +3159,12 @@ input:checked + .slider:before {
 
 .cr-link:hover {
   text-decoration: none !important;
+}
+
+.cashouts-made {
+  width: 20%;
+  float: left;
+  position: fixed;
+  left: 20%;
+  top: 31%;
 }

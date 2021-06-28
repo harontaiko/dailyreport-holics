@@ -15,7 +15,7 @@
         <?php if(empty($data['row']['0']['image'])): ?>
         <h2><strong>no image</strong></h2>
         <img style="display:none; width:60% !important; height:auto !important; background-color:teal;" loading="lazy"
-            src="<?php echo URLROOT; ?>/public/images/images/no-image.svg" id="item-image"
+            src="<?php echo URLROOT; ?>/public/images/images/placeholder.png" id="item-image"
             alt="no image for <?php print_r($data['row']['0']['item_name']); ?>">
         <?php else: ?>
         <img style="display:none;background-color:teal;" loading="lazy"

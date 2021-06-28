@@ -44,5 +44,5 @@ Inventory management and daily record keeping system, built on PHP OOP and Js, D
 - error items in stock
 
 ```
-
+<?php echo URLROOT; ?>/pages/attatchReceipt/<?php echo isset($exp['date_created']) ? $exp['date_created']: 'N/A' ?>
 ```

@@ -3,7 +3,7 @@
 
 <body class="expense __expense site-wrap">
     <?php require(APPROOT . '/views/inc/navbar.php'); ?>
-    <main>
+    <main style="padding: 2rem;">
         <?php flash('add-error'); ?>
         <h2 class="movie-title">Expenses <i class="fas fa-pen fa-2x"></i></h2>
         <select name="filter-expense" id="filter-expense" class="dr_input">
@@ -33,6 +33,7 @@
                 <th>Expense(s)</th>
                 <th>Spent(ksh)</th>
                 <th>Total</th>
+                <th>attatch receipt</th>
                 <th>See</th>
             </tr>
             <?php while ($exp = $data['expenses']->fetch_assoc()) :  ?>
@@ -58,6 +59,7 @@
                     <?php echo number_format(getExpenseTotal($exp['date_created'], $data['db'])); ?></td>
                 <td data-th="expense-total">
                     <?php echo number_format(getExpenseTotal($exp['date_created'], $data['db'])).'/='; ?></td>
+                <td data-th="see"><a style="color: #fff;" href="#!"><i class="fas fa-receipt"></i></a></td>
                 <td data-th="see"><a style="color: #fff;"
                         href="<?php echo URLROOT; ?>/pages/viewExpense/<?php echo isset($exp['date_created']) ? $exp['date_created']: 'N/A' ?>"><i
                             class="fas fa-eye"></i></a></td>

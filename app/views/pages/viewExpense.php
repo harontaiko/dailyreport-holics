@@ -20,6 +20,8 @@
                     <?php echo isset($data['exp']['0']['time_created']) ? $data['exp']['0']['time_created']: 'N/A'; ?>
                 </p>
             </div>
+            <a id="add-record" style="float: left;" title="see inventory" href="#!">attatch
+                receipt</a>
         </div>
     </header>
 
