@@ -31,8 +31,8 @@
                 <?php echo $mv['date_created']; ?></td>
             <td style="color: black;"><?php echo number_format($mv['cash_sales']); ?></td>
             <td style="color: black;"><?php echo number_format($mv['till_sales']); ?></td>
-            <td style="color: black;"><?php echo number_format($mv['totalincome']); ?>
             <td style="color: black;"><?php echo number_format($mv['totalexpense']); ?>
+            <td style="color: black;"><?php echo number_format($mv['totalincome']); ?>
             <td style="color: black;"><?php echo ($mv['created_by']); ?>
             <td style="color: black;"><?php echo ($mv['creator_ip']); ?>
             </td>
