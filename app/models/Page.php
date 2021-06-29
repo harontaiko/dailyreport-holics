@@ -14,6 +14,22 @@ class Page
       return $this->db;
     }
 
+    public function getHighestExpense()
+    {
+        //weekly
+        $query = 'SELECT MAX(expense_cost) AS highest, expense_item FROM dr_expenses WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 WEEK) GROUP BY date_created';
+
+        $result = SelectCondFree($query, 'dr_expenses', $this->db);
+
+        $row = $result->get_result();
+
+        try {
+            return $row;
+        } catch (Error $e) {
+            return false;
+        } 
+    }
+
 
     public function getNextId($currentId)
     {
@@ -509,7 +525,7 @@ class Page
 
     public function getAdmins()
     {
-        $query = 'SELECT * FROM dr_user WHERE user_id !=?';
+        $query = 'SELECT `user_id`, username, email, `password`, is_admin, date_created, time_created, created_by, creator_ip FROM dr_user WHERE user_id !=?';
 
         $binders = "s";
 
@@ -528,7 +544,7 @@ class Page
 
     public function getExpenseById($date)
     { 
-        $query = 'SELECT * FROM dr_expenses WHERE date_created=?';
+        $query = 'SELECT expense_id, expense_item, expense_cost, date_created, time_created, created_by, creator_ip FROM dr_expenses WHERE date_created=?';
 
         $binders = "s";
 
@@ -547,7 +563,7 @@ class Page
 
     public function getAllRecordNetT($id)
     { 
-        $query = 'SELECT * FROM dr_nettotal WHERE sales_id=?';
+        $query = 'SELECT sales_id, total_sales, totalprofit, totalincome, totalexpense, cash_sales, till_sales, date_created, time_created, created_by, creator_ip FROM dr_nettotal WHERE sales_id=?';
 
         $binders = "s";
 
@@ -874,7 +890,7 @@ class Page
 
     public function getNetValuesByDate($date)
     {
-        $query = 'SELECT * FROM dr_nettotal WHERE date_created=?';
+        $query = 'SELECT sales_id, total_sales, totalprofit, totalincome, totalexpense, cash_sales, till_sales, date_created, time_created, created_by, creator_ip FROM dr_nettotal WHERE date_created=?';
 
         $binders= "s";
 
@@ -1237,7 +1253,7 @@ class Page
 
     public function getSaleTodayEdit($date)
     {
-        $query = 'SELECT * FROM dr_sales WHERE date_created=?';
+        $query = 'SELECT sales_id, sales_item, buying_price, selling_price, cash, till, profit, date_created, time_created, created_by, creator_ip FROM dr_sales WHERE date_created=?';
 
         $binders = "s";
 
@@ -1367,7 +1383,7 @@ class Page
 
     public function getInventoryItemByIdII($id)
     {
-        $query = 'SELECT * FROM dr_inventory WHERE item_id = ?';
+        $query = 'SELECT item_id, item_name, item_quantity, item_buying, item_model, `image`, date_created, time_created, created_by, edited_by, creator_ip FROM dr_inventory WHERE item_id = ?';
 
         $binders = "s";
 
@@ -1409,7 +1425,7 @@ class Page
 
     public function getItemSaleByName($name)
     {
-        $query = 'SELECT * FROM dr_sales WHERE sales_item = ?';
+        $query = 'SELECT sales_id, sales_item, buying_price, selling_price, cash, till, profit, date_created, time_created, created_by, creator_ip FROM dr_sales WHERE sales_item = ?';
 
         $binders = "s";
 
@@ -1454,7 +1470,7 @@ class Page
 
     public function getInventoryData()
     {
-        $query = 'SELECT * FROM dr_inventory WHERE item_id !=? ORDER BY item_id DESC';
+        $query = 'SELECT item_id, item_name, item_quantity, item_buying, item_model, `image`, date_created, time_created, created_by, edited_by, creator_ip FROM dr_inventory WHERE item_id !=? ORDER BY item_id DESC';
 
         $BINDERS = "s";
 
@@ -1473,7 +1489,7 @@ class Page
 
     public function getItemById($id)
     {
-        $query = 'SELECT * FROM dr_inventory WHERE item_id = ?';
+        $query = 'SELECT item_id, item_name, item_quantity, item_buying, item_model, `image`, date_created, time_created, created_by, edited_by, creator_ip FROM dr_inventory WHERE item_id = ?';
 
         $binders = "s";
 
@@ -1496,7 +1512,7 @@ class Page
 
     public function getItemByName($name)
     {
-        $query = 'SELECT * FROM dr_inventory WHERE item_name = ?';
+        $query = 'SELECT item_id, item_name, item_quantity, item_buying, item_model, `image`, date_created, time_created, created_by, edited_by, creator_ip FROM dr_inventory WHERE item_name = ?';
 
         $binders = "s";
 
@@ -1517,7 +1533,7 @@ class Page
 
     public function getImageByName($name)
     {
-        $query = 'SELECT * FROM dr_inventory WHERE `image` = ?';
+        $query = 'SELECT item_id, item_name, item_quantity, item_buying, item_model, `image`, date_created, time_created, created_by, edited_by, creator_ip FROM dr_inventory WHERE `image` = ?';
 
         $binders = "s";
 

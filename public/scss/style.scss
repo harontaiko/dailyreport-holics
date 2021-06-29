@@ -3168,3 +3168,460 @@ input:checked + .slider:before {
   left: 20%;
   top: 31%;
 }
+
+.todo li {
+  list-style-type: none;
+  width: 20%;
+  float: right;
+}
+
+*,
+*::before,
+*::after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.container-tabs {
+  max-width: 65em;
+  margin: 30px;
+}
+
+.container-tabs > input[type="radio"] {
+  position: absolute;
+  left: -200vw;
+}
+
+.container-tabs > label {
+  position: relative;
+  display: inline-block;
+  padding: 15px 15px 25px;
+  border: 1px solid transparent;
+  border-bottom: 0;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.container-tabs > label::after {
+  content: "";
+  position: absolute;
+  left: 15px;
+  bottom: 10px;
+  width: 22px;
+  height: 4px;
+  background: #8d8d8d;
+}
+
+.container-tabs > label:hover,
+.container-tabs > input:focus + label {
+  color: #06c;
+}
+
+.container-tabs > label:hover::after,
+.container-tabs > input:focus + label::after,
+.container-tabs > input:checked + label::after {
+  background: #06c;
+}
+
+.container-tabs > input:checked + label {
+  border-color: #ccc;
+  border-bottom: 1px solid #fff;
+  margin-bottom: -1px;
+}
+
+.tab-content {
+  border-top: 1px solid #ccc;
+}
+
+.tab-content section.tab-panel {
+  padding: 30px 0;
+}
+
+/* The magic */
+.container-tabs section.tab-panel {
+  display: none;
+}
+
+.container-tabs
+  > input:first-child:checked
+  ~ .tab-content
+  > section.tab-panel:first-child,
+.container-tabs
+  > input:nth-child(3):checked
+  ~ .tab-content
+  > section.tab-panel:nth-child(2),
+.container-tabs
+  > input:nth-child(5):checked
+  ~ .tab-content
+  > section.tab-panel:nth-child(3) {
+  display: block;
+}
+
+.container-cashouts {
+  display: block;
+  position: relative;
+  margin: 40px auto;
+  height: auto;
+  width: 500px;
+  padding: 20px;
+}
+
+.container-cashouts h2 {
+  color: #aaaaaa;
+}
+
+.container-cashouts ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+}
+
+.container-cashouts ul li {
+  color: #aaaaaa;
+  display: block;
+  position: relative;
+  float: left;
+  width: 100%;
+  height: 100px;
+  border-bottom: 1px solid #333;
+}
+
+.container-cashouts ul li input[type="radio"] {
+  position: absolute;
+  visibility: hidden;
+}
+
+.container-cashouts ul li label {
+  display: block;
+  position: relative;
+  font-weight: 300;
+  font-size: 1.35em;
+  padding: 25px 25px 25px 80px;
+  margin: 10px auto;
+  height: 30px;
+  z-index: 9;
+  cursor: pointer;
+  transition: all 0.25s linear;
+}
+
+.container-cashouts ul li:hover label {
+  color: #ffffff;
+}
+
+.container-cashouts ul li .check {
+  display: block;
+  position: absolute;
+  border: 5px solid #aaaaaa;
+  border-radius: 100%;
+  height: 25px;
+  width: 25px;
+  top: 30px;
+  left: 20px;
+  z-index: 5;
+  transition: border 0.25s linear;
+  -webkit-transition: border 0.25s linear;
+}
+
+.container-cashouts ul li:hover .check {
+  border: 5px solid #ffffff;
+}
+
+.container-cashouts ul li .check::before {
+  display: block;
+  position: absolute;
+  content: "";
+  border-radius: 100%;
+  height: 15px;
+  width: 15px;
+  top: 5px;
+  left: 5px;
+  margin: auto;
+  transition: background 0.25s linear;
+  -webkit-transition: background 0.25s linear;
+}
+
+.container-cashouts input[type="radio"]:checked ~ .check {
+  border: 5px solid #0dff92;
+}
+
+.container-cashouts input[type="radio"]:checked ~ .check::before {
+  background: #0dff92;
+}
+
+.container-cashouts input[type="radio"]:checked ~ label {
+  color: #0dff92;
+}
+
+.container-cashouts .signature {
+  margin: 10px auto;
+  padding: 10px 0;
+  width: 100%;
+}
+
+.container-cashouts .signature p {
+  text-align: center;
+  font-family: Helvetica, Arial, Sans-Serif;
+  font-size: 0.85em;
+  color: #aaaaaa;
+}
+
+.container-cashouts .signature .much-heart {
+  display: inline-block;
+  position: relative;
+  margin: 0 4px;
+  height: 10px;
+  width: 10px;
+  background: #ac1d3f;
+  border-radius: 4px;
+  -ms-transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+.signature .much-heart::before,
+.signature .much-heart::after {
+  display: block;
+  content: "";
+  position: absolute;
+  margin: auto;
+  height: 10px;
+  width: 10px;
+  border-radius: 5px;
+  background: #ac1d3f;
+  top: -4px;
+}
+
+.signature .much-heart::after {
+  bottom: 0;
+  top: auto;
+  left: -4px;
+}
+
+.signature a {
+  color: #aaaaaa;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+#fullpageloading {
+  display: none;
+  position: fixed;
+  z-index: 10000000;
+  width: 100%;
+  height: 100%;
+  background: rgba(36, 35, 35, 0.7);
+}
+
+#fullpageloading .spinner-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-left: -50px;
+  margin-top: -50px;
+}
+
+#fullpageloading .spinner-container .spinner-left {
+  width: 80px;
+  height: 80px;
+}
+
+#fullpageloading .spinner-container .spinner-right {
+  width: 50px;
+  height: 50px;
+  top: -75px;
+}
+
+#innermost {
+  width: 35px !important;
+  height: 35px !important;
+  top: -155px;
+}
+
+.spinner {
+  box-sizing: content-box;
+  background-color: transparent;
+  border: 5px solid #2589db;
+  opacity: 1;
+  border-radius: 50px;
+  margin: 0 auto;
+}
+
+.spinner-right {
+  position: relative;
+  border-right: 5px solid rgba(0, 0, 0, 0);
+  border-left: 5px solid rgba(0, 0, 0, 0);
+  animation: spin 2s infinite;
+  -webkit-animation: spin 2s infinite;
+  -ms-animation: spin 2s infinite;
+  -o-animation: spin 2s infinite;
+}
+.spinner-left {
+  position: relative;
+  border-top: 5px solid rgba(0, 0, 0, 0);
+  border-bottom: 5px solid rgba(0, 0, 0, 0);
+  animation: spinoff 1s infinite;
+  -webkit-animation: spinoff 1s infinite;
+  -ms-animation: spinoff 1s infinite;
+  -o-animation: spinoff 1s infinite;
+}
+.spinnertext {
+  position: relative;
+  color: #adadad;
+  top: -50px;
+  animation: spinnertext-opacity 2s linear 0s infinite normal;
+}
+
+@-moz-keyframes spin {
+  0% {
+    -moz-transform: rotate(0deg);
+  }
+  20% {
+    -moz-transform: rotate(-50deg);
+  }
+
+  80% {
+    -moz-transform: rotate(780deg);
+  }
+
+  100% {
+    -moz-transform: rotate(720deg);
+  }
+}
+@-moz-keyframes spinoff {
+  0% {
+    -moz-transform: rotate(0deg);
+  }
+  100% {
+    -moz-transform: rotate(-360deg);
+  }
+}
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  20% {
+    -webkit-transform: rotate(-50deg);
+  }
+  80% {
+    -webkit-transform: rotate(780deg);
+  }
+  100% {
+    -webkit-transform: rotate(720deg);
+  }
+}
+@-webkit-keyframes spinoff {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(-360deg);
+  }
+}
+
+@-ms-keyframes spin {
+  0% {
+    -ms-transform: rotate(0deg);
+  }
+  20% {
+    -ms-transform: rotate(-50deg);
+  }
+  80% {
+    -ms-transform: rotate(780deg);
+  }
+  100% {
+    -ms-transform: rotate(720deg);
+  }
+}
+@-ms-keyframes spinoff {
+  0% {
+    -ms-transform: rotate(0deg);
+  }
+  100% {
+    -ms-transform: rotate(-360deg);
+  }
+}
+
+@-o-keyframes spin {
+  0% {
+    -o-transform: rotate(0deg);
+  }
+  20% {
+    -o-transform: rotate(-50deg);
+  }
+  80% {
+    -o-transform: rotate(780deg);
+  }
+  100% {
+    -o-transform: rotate(720deg);
+  }
+}
+@keyframes spinoff {
+  0% {
+    -o-transform: rotate(0deg);
+  }
+  100% {
+    -o-transform: rotate(-360deg);
+  }
+}
+
+@keyframes spinnertext-opacity {
+  0% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes spinnertext-opacity {
+  0% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@-ms-keyframes spinnertext-opacity {
+  0% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@-o-keyframes spinnertext-opacity {
+  0% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}

@@ -182,6 +182,8 @@ class Users extends Controller
                if ($loggedinUser) {
                  //authentication == true
                  $this->createUserSession($loggedinUser);
+                 //create loading animation
+                 $this->createLoadingAnime($loggedinUser);
                } else {
                  $data["err"] =
                    "incorrect password, please check your password";
@@ -269,6 +271,11 @@ class Users extends Controller
         sleep(1.1);
 
         redirect("pages/index");
+      }
+
+      public function createLoadingAnime($user)
+      {
+        $_SESSION["anime"] = $user["user_id"].'anime';
       }
 
       // Logout & Destroy Session

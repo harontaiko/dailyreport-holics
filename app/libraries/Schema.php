@@ -51,7 +51,7 @@ class Schema extends Database
     $this->table_num = $this->table_num_result->num_rows;
 
     if (!$this->table_num) {
-      require_once "../app/helpers/schema.php";
+      require "../app/helpers/schema.php";
 
       //CREATE TABLE STATEMENTS
       $this->tables = [

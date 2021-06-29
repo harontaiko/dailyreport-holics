@@ -36,5 +36,24 @@
             </td>
         </tr>
         <?php endwhile; ?>
+        <?php 
+                  $arr = array();
+                  $d =  getFileteredReportTotal($data['from'], $data['to'], 'ps', $data['db']);
+                  while($p =$d->fetch_assoc()){
+                      array_push($arr, $p);
+                  }
+            ?>
+        <tr>
+            <td></td>
+            <td style="font-weight: bolder;"><strong>cash:
+                    <?php echo isset($arr['0']['cash']) ? number_format($arr['0']['cash']): 'N/A'; ?></strong>
+            </td>
+            <td style="font-weight: bolder;">till:
+                <?php echo isset($arr['0']['till']) ? number_format($arr['0']['till']): 'N/A'; ?></td>
+            <td style="font-weight: bolder;"><strong>Total:
+                    <?php echo isset($arr['0']['total']) ? number_format($arr['0']['total']): 'N/A'; ?></strong>
+            </td>
+            <td></td>
+        </tr>
     </table>
 </div>

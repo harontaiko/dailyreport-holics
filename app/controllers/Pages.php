@@ -8,6 +8,29 @@ class Pages extends Controller
       $this->pageModel = $this->model('Page'); 
     }
 
+    public function cashOuts()
+    {
+      unset($_SESSION['cash']);
+      if (!isset($_SESSION["user_id"])) {
+        $data = [
+          "title" => "Daily Report",  
+        ];
+        redirect("users/index");
+      } 
+      //get all sales data
+      $net = $this->pageModel->getNetTotal();
+      
+      $db = $this->pageModel->getDatabaseConnection();
+
+      $inventoryData = $this->pageModel->getInventoryData();
+
+      $out = getCashout('', $db);
+
+      $data = ['title'=>'Receipts', 'out'=>$out, "inventory" => $inventoryData, 'db'=>$db, 'net'=>$net];
+
+      $this->view('pages/cashOuts', $data);
+    }
+
     public function attatchReceipt($date)
     {
       if(isset($date)){
@@ -704,7 +727,15 @@ class Pages extends Controller
 
       $diff = $this->pageModel->getCurrentNetDiffTotal();
 
-      $data = ['title'=>'Daily Report', 'date'=>$currentdate, "inventory" => $inventoryData, 'db'=>$db, 'expenses'=>$expenses, 'diff'=>$diff];
+      $highest = $this->pageModel->getHighestExpense();
+
+      $arr = array();
+      while($h = $highest->fetch_assoc())
+      {
+        array_push($arr, $h);
+      }
+
+      $data = ['title'=>'Daily Report', 'highest'=>$arr, 'date'=>$currentdate, "inventory" => $inventoryData, 'db'=>$db, 'expenses'=>$expenses, 'diff'=>$diff];
 
       $this->view('pages/expenses', $data);
     }

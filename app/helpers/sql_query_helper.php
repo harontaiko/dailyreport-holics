@@ -583,7 +583,7 @@ function getExpenseTotalCount($date, $db)
 
 function getNetExpenses($date,$db)
 {
-    $query = 'SELECT * FROM dr_expenses WHERE date_created=?';
+    $query = 'SELECT expense_id, expense_item, expense_cost, date_created, time_created, created_by, creator_ip FROM dr_expenses WHERE date_created=?';
 
     $binders="s";
 
@@ -851,7 +851,7 @@ function getPsTotal($date, $db)
 
 function saleRecord($db, $date)
 {
-  $query = 'SELECT * FROM dr_sales WHERE date_created = ?';
+  $query = 'SELECT sales_id, sales_item, buying_price, selling_price, cash, till, profit, date_created, time_created, created_by, creator_ip FROM dr_sales WHERE date_created = ?';
 
   $binders = "s";
 
@@ -874,7 +874,7 @@ function saleRecord($db, $date)
 
 function getSalesAllDate($date, $db)
 {
-  $query = 'SELECT * FROM dr_sales WHERE date_created=?';
+  $query = 'SELECT sales_id, sales_item, buying_price, selling_price, cash, till, profit, date_created, time_created, created_by, creator_ip FROM dr_sales WHERE date_created=?';
 
   $binders="s";
 
@@ -1205,7 +1205,7 @@ function getSalesYear($db)
 /////////////////////////////////////////////////////////////////////expenses
 function getExpenseAllDate($date, $db)
 {
-  $query = 'SELECT * FROM dr_expenses WHERE date_created=?';
+  $query = 'SELECT expense_id, expense_item, expense_cost, date_created, time_created, created_by, creator_ip FROM dr_expenses WHERE date_created=?';
 
   $binders="s";
 
@@ -1443,7 +1443,7 @@ function getExpenseGrossYear($db)
 ////////////////////////////////////////////////////////////////////NET TOTAL
 function getNetAllDate($date, $db)
 {
-  $query = 'SELECT * FROM dr_nettotal WHERE date_created=?';
+  $query = 'SELECT sales_id, total_sales, totalprofit, totalincome, totalexpense, cash_sales, till_sales, date_created, time_created, created_by, creator_ip FROM dr_nettotal WHERE date_created=?';
 
   $binders="s";
 
@@ -2827,7 +2827,7 @@ function getFileteredReportBetween($from, $to, $shopname, $db)
         return false;
     } 
   }else if($shopname == "total"){
-    $query = 'SELECT * FROM dr_nettotal WHERE date_created BETWEEN ? AND ?';
+    $query = 'SELECT sales_id, total_sales, totalprofit, totalincome, totalexpense, cash_sales, till_sales, date_created, time_created, created_by, creator_ip FROM dr_nettotal WHERE date_created BETWEEN ? AND ?';
 
     $binders ="ss";
 
@@ -2843,7 +2843,7 @@ function getFileteredReportBetween($from, $to, $shopname, $db)
         return false;
     } 
   }else if($shopname == "expense"){
-    $query = 'SELECT * FROM dr_expenses WHERE date_created BETWEEN ? AND ? ORDER BY date_created DESC';
+    $query = 'SELECT expense_id, expense_item, expense_cost, date_created, time_created, created_by, creator_ip FROM dr_expenses WHERE date_created BETWEEN ? AND ? ORDER BY date_created DESC';
 
     $binders ="ss";
 
@@ -2860,7 +2860,7 @@ function getFileteredReportBetween($from, $to, $shopname, $db)
     }
   }
   else if($shopname == "sales"){
-    $query = 'SELECT * FROM dr_sales WHERE date_created BETWEEN ? AND ? ORDER BY date_created DESC';
+    $query = 'SELECT sales_id, sales_item, buying_price, selling_price, cash, till, profit, date_created, time_created, created_by, creator_ip FROM dr_sales WHERE date_created BETWEEN ? AND ? ORDER BY date_created DESC';
 
     $binders ="ss";
 
@@ -2878,10 +2878,140 @@ function getFileteredReportBetween($from, $to, $shopname, $db)
   }
 }
 
+function getFileteredReportTotal($from, $to, $shopname, $db)
+{
+  if($shopname == "movie"){
+    $query = 'SELECT SUM(cash+till) AS total, SUM(till) AS till, SUM(cash) AS cash FROM dr_movieshop WHERE date_created BETWEEN ? AND ?';
+
+    $binders ="ss";
+
+    $params = array($from, $to);
+
+    $result = SelectCond($query, $binders, $params, $db);
+  
+    $row = $result->get_result();
+  
+    try {
+        return $row;
+    } catch (Error $e) {
+        return false;
+    } 
+  }else if($shopname == "cyber"){
+    $query = 'SELECT SUM(cash+till) AS total, SUM(till) AS till, SUM(cash) AS cash FROM dr_cybershop WHERE date_created BETWEEN ? AND ?';
+
+    $binders ="ss";
+
+    $params = array($from, $to);
+
+    $result = SelectCond($query, $binders, $params, $db);
+  
+    $row = $result->get_result();
+  
+    try {
+        return $row;
+    } catch (Error $e) {
+        return false;
+    } 
+  }else if($shopname == "ps"){
+    $query = 'SELECT SUM(cash+till) AS total, SUM(till) AS till, SUM(cash) AS cash FROM dr_playstation WHERE date_created BETWEEN ? AND ?';
+
+    $binders ="ss";
+
+    $params = array($from, $to);
+
+    $result = SelectCond($query, $binders, $params, $db);
+  
+    $row = $result->get_result();
+  
+    try {
+        return $row;
+    } catch (Error $e) {
+        return false;
+    }
+  }else if($shopname == "total"){
+    $query = 'SELECT SUM(cash_sales) AS totalcash, SUM(till_sales) AS totaltill, SUM(totalexpense) AS expensetotal, SUM(total_sales) AS totalsales, SUM(totalincome) AS incometotal FROM dr_nettotal WHERE date_created BETWEEN ? AND ?';
+
+    $binders ="ss";
+
+    $params = array($from, $to);
+
+    $result = SelectCond($query, $binders, $params, $db);
+  
+    $row = $result->get_result();
+  
+    try {
+        return $row;
+    } catch (Error $e) {
+        return false;
+    } 
+  }else if($shopname == "expense"){
+    $query = 'SELECT SUM(expense_cost) AS exp_total FROM dr_expenses WHERE date_created BETWEEN ? AND ?';
+
+    $binders ="ss";
+
+    $params = array($from, $to);
+
+    $result = SelectCond($query, $binders, $params, $db);
+  
+    $row = $result->get_result();
+
+    $rowItem = $row->fetch_assoc();
+
+    $total = isset($rowItem['exp_total']) ? $rowItem['exp_total'] : 'N/A';
+  
+    try {
+        return $total;
+    } catch (Error $e) {
+        return false;
+    }
+  }
+  else if($shopname == "sales"){
+    $query = 'SELECT SUM(selling_price) AS selling, SUM(profit) AS pr FROM dr_sales WHERE date_created BETWEEN ? AND ? ORDER BY date_created DESC';
+
+    $binders ="ss";
+
+    $params = array($from, $to);
+
+    $result = SelectCond($query, $binders, $params, $db);
+  
+    $row = $result->get_result();
+
+  
+    try {
+        return $row;
+    } catch (Error $e) {
+        return false;
+    }
+  }
+}
+
+  function getGross($from ,$to, $db)
+{
+  $query = 'SELECT SUM(total_sales + totalincome) AS net FROM dr_nettotal WHERE date_created BETWEEN ? AND ?';
+
+  $binders ="ss";
+
+  $params = array($from, $to);
+
+  $result = SelectCond($query, $binders, $params, $db);
+
+  $row = $result->get_result();
+
+  $rowItem = $row->fetch_assoc();
+
+  $total = isset($rowItem['net']) ? $rowItem['net'] : 'N/A';
+
+  try {
+      return $total;
+  } catch (Error $e) {
+      return false;
+  }
+}
+
 ///////////////////////////////////////////////////////////////////invoice
 function getSaleItemById($id,$db)
 {
-  $query = 'SELECT * FROM dr_sales WHERE sales_id=?';
+  $query = 'SELECT sales_id, sales_item, buying_price, selling_price, cash, till, profit, date_created, time_created, created_by, creator_ip FROM dr_sales WHERE sales_id=?';
 
   $binders ="s";
 
@@ -3150,7 +3280,7 @@ function getCashout($shopname, $db)
 {
   if($shopname === "movie")
   {
-    $query = 'SELECT * FROM dr_cashout WHERE cash_from=?';
+    $query = 'SELECT cash_id, cash_amount, cash_usage, cash_from, cash_handler, cash_receipt_number, date_created FROM dr_cashout WHERE cash_from=?';
 
     $binders ="s";
 
@@ -3166,9 +3296,23 @@ function getCashout($shopname, $db)
         return false;
     }
   }
+  else if($shopname == "")
+  {
+    $query = 'SELECT cash_id, cash_amount, cash_usage, cash_from, cash_handler, cash_receipt_number, date_created FROM dr_cashout';
+
+    $result = SelectCondFree($query, 'dr_cashout', $db);
+  
+    $row = $result->get_result();
+  
+    try {
+        return $row;
+    } catch (Error $e) {
+        return false;
+    }
+  }
   else if($shopname === "ps")
   {
-    $query = 'SELECT * FROM dr_cashout WHERE cash_from=?';
+    $query = 'SELECT cash_id, cash_amount, cash_usage, cash_from, cash_handler, cash_receipt_number, date_created FROM dr_cashout WHERE cash_from=?';
 
     $binders ="s";
 
@@ -3186,7 +3330,7 @@ function getCashout($shopname, $db)
   }
   else if($shopname === "cyber")
   {
-    $query = 'SELECT * FROM dr_cashout WHERE cash_from=?';
+    $query = 'SELECT cash_id, cash_amount, cash_usage, cash_from, cash_handler, cash_receipt_number, date_created FROM dr_cashout WHERE cash_from=?';
 
     $binders ="s";
 
@@ -3204,7 +3348,7 @@ function getCashout($shopname, $db)
   }
   else if($shopname === "sales")
   {
-    $query = 'SELECT * FROM dr_cashout WHERE cash_from=?';
+    $query = 'SELECT cash_id, cash_amount, cash_usage, cash_from, cash_handler, cash_receipt_number, date_created FROM dr_cashout WHERE cash_from=?';
 
     $binders ="s";
 
@@ -3222,7 +3366,7 @@ function getCashout($shopname, $db)
   }
   else if($shopname === "total")
   {
-    $query = 'SELECT * FROM dr_cashout WHERE cash_from=?';
+    $query = 'SELECT cash_id, cash_amount, cash_usage, cash_from, cash_handler, cash_receipt_number, date_created FROM dr_cashout WHERE cash_from=?';
 
     $binders ="s";
 

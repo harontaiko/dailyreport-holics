@@ -27,6 +27,17 @@
                 <button type="button" class="get-repo-btw" id="get-repo-btw">get</button>
             </form>
         </section>
+        <section class="todo">
+            <li>
+                <h3>Highest Expense Cost(weekly) <strong>
+                        <p class="highlight">
+                            <?php echo isset($data['highest']['0']['highest']) ? $data['highest']['0']['highest']: 'N/A'; ?>
+                            -
+                            <?php echo isset($data['highest']['0']['expense_item']) ? $data['highest']['0']['expense_item']: 'N/A'; ?>
+                        </p>
+                    </strong></h3>
+            </li>
+        </section>
         <table class="rwd-table">
             <tr>
                 <th>Date</th>

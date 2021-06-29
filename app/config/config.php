@@ -1,6 +1,11 @@
 <?php
 session_start();
 
+//check if page is not index, then unset anime
+if (strpos($_SERVER['REQUEST_URI'], "pages/index") === false){
+unset($_SESSION['anime']);
+}
+
 //db params
 DEFINE('DB_HOST', 'localhost');
 DEFINE('DB_USER', 'dailyreport');

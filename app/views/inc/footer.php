@@ -21,3 +21,4 @@
 <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
 <?php endif ?>
 <script src="<?php echo URLROOT; ?>/public/javascript/main.min.js"></script>
+<?php  $data['db']->close(); ?>

@@ -17,7 +17,7 @@ class User
      // Find user by username
      public function findUserByName($username)
      {
-         $query = 'SELECT * FROM dr_user WHERE username = ?';
+         $query = 'SELECT `user_id`, username, email, `password`, is_admin, date_created, time_created, created_by, creator_ip FROM dr_user WHERE username = ?';
  
          $binders = "s";
  
@@ -69,7 +69,7 @@ class User
 
      public function getUserEmail($username)
      {
-      $query = 'SELECT * FROM dr_user WHERE username = ?';
+      $query = 'SELECT `user_id`, username, email, `password`, is_admin, date_created, time_created, created_by, creator_ip FROM dr_user WHERE username = ?';
  
       $binders = "s";
 
@@ -90,7 +90,7 @@ class User
     
     public function login($username, $password, $ip)
     {
-      $query = 'SELECT * FROM dr_user WHERE username = ?';
+      $query = 'SELECT `user_id`, username, email, `password`, is_admin, date_created, time_created, created_by, creator_ip FROM dr_user WHERE username = ?';
 
       $binders = "s";
 
@@ -110,7 +110,7 @@ class User
       //verify salt and password
       if (password_verify($password, $hashedPassword)) {
           //set record 
-          $queryLogin = 'SELECT * FROM dr_login WHERE user_id = ?';
+          $queryLogin = 'SELECT `user_id`, login_count, is_admin, date_logged, time_logged, user_ip FROM dr_login WHERE `user_id` = ?';
 
           $bindersLogin = "s";
 
@@ -134,7 +134,7 @@ class User
 
               $realCountLogin = $login['login_count'];
 
-              $queryUpdate = 'UPDATE dr_login SET user_ip=?, login_count=?, date_logged=?, time_logged=? WHERE user_id=?';
+              $queryUpdate = 'UPDATE dr_login SET user_ip=?, login_count=?, date_logged=?, time_logged=? WHERE `user_id`=?';
 
               $bindersCount = "sssss";
 

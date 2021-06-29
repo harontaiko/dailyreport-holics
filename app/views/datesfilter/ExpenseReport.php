@@ -36,5 +36,17 @@
             </td>
         </tr>
         <?php endwhile; ?>
+        <tr>
+            <td></td>
+            <td></td>
+            <td style="font-weight: bolder;"><strong>Amount:
+                    <?php echo number_format(getFileteredReportTotal($data['from'], $data['to'], 'expense', $data['db'])); ?></strong>
+            </td>
+            <td style="font-weight: bolder;">Net:
+                <?php echo number_format(getFileteredReportTotal($data['from'], $data['to'], 'expense', $data['db'])); ?>
+            </td>
+            <td></td>
+            <td></td>
+        </tr>
     </table>
 </div>

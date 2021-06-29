@@ -63,4 +63,9 @@ class Database
     {
         return $this->stmt->execute();
     }
+
+    public function close()
+    {
+        return $this->conn->close();
+    }
 }

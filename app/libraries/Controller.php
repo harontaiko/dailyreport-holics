@@ -19,7 +19,7 @@ class Controller
     public function model($model)
     {
         //require model file
-        require_once('../app/models/' . $model . '.php');
+        require('../app/models/' . $model . '.php');
 
         //instanciate
         return new $model;
@@ -29,7 +29,7 @@ class Controller
     {
         //check for view file
         if (file_exists('../app/views/' . $view . '.php')) {
-            require_once('../app/views/' . $view . '.php');
+            require('../app/views/' . $view . '.php');
         } else {
             //throw 404 not found
             http_response_code(404);

@@ -30,11 +30,30 @@
                 <?php echo $mv['date_created']; ?></td>
             <td style="color: black;"><?php echo number_format($mv['cash']); ?></td>
             <td style="color: black;"><?php echo number_format($mv['till']); ?></td>
-            <td style="color: black;"><?php echo number_format($mv['cash'] + $mv['till']); ?>
-            <td style="color: black;"><?php echo ($mv['created_by']); ?>
+            <td style="color: black;"><?php echo number_format($mv['cash'] + $mv['till']); ?></td>
+            <td style="color: black;"><?php echo ($mv['created_by']); ?></td>
             <td style="color: black;"><?php echo ($mv['creator_ip']); ?>
             </td>
         </tr>
         <?php endwhile; ?>
+        <?php 
+                  $arr = array();
+                  $d =  getFileteredReportTotal($data['from'], $data['to'], 'movie', $data['db']);
+                  while($p =$d->fetch_assoc()){
+                      array_push($arr, $p);
+                  }
+            ?>
+        <tr>
+            <td></td>
+            <td style="font-weight: bolder;"><strong>cash:
+                    <?php echo isset($arr['0']['cash']) ? number_format($arr['0']['cash']): 'N/A'; ?></strong>
+            </td>
+            <td style="font-weight: bolder;">till:
+                <?php echo isset($arr['0']['till']) ? number_format($arr['0']['till']): 'N/A'; ?></td>
+            <td style="font-weight: bolder;"><strong>Total:
+                    <?php echo isset($arr['0']['total']) ? number_format($arr['0']['total']): 'N/A'; ?></strong>
+            </td>
+            <td></td>
+        </tr>
     </table>
 </div>

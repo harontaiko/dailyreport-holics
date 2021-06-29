@@ -134,7 +134,14 @@
                 <!-- <span class="coming_soon">coming soon</span> -->
             </a></li>
         <li><a href="<?php echo URLROOT; ?>/pages/cashOut">Cash Out
-        <?php if (strpos($_SERVER['REQUEST_URI'], "pages/cashOut") !== false) :  ?>
+                <?php if (strpos($_SERVER['REQUEST_URI'], "pages/cashOut") !== false) :  ?>
+                <i class="fas fa-star star_active"></i>
+                <?php endif; ?>
+                <!-- <span class="coming_soon">coming soon</span> -->
+            </a>
+        </li>
+        <li><a href="<?php echo URLROOT; ?>/pages/cashOuts">Receipts
+                <?php if (strpos($_SERVER['REQUEST_URI'], "pages/cashOuts") !== false) :  ?>
                 <i class="fas fa-star star_active"></i>
                 <?php endif; ?>
                 <!-- <span class="coming_soon">coming soon</span> -->

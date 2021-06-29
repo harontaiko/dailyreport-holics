@@ -2,8 +2,17 @@
 
 
 <body class="home __home site-wrap">
+    <div id="fullpageloading">
+        <div class="spinner-container">
+            <div class="spinner spinner-left"></div>
+            <div class="spinner spinner-right"></div>
+            <span class="spinnertext" style="font-size: 1.55rem; font-weight: bold;">setting up inventory..</span>
+        </div>
+    </div>
     <?php require(APPROOT . '/views/inc/navbar.php'); ?>
     <main>
+
+        <input type="hidden" value="<?php echo isset($_SESSION['anime']) ?  $_SESSION['anime']: '';?>" id="anime">
         <a id="add-record" style="float: left;" title="see inventory" href="<?php echo URLROOT; ?>/pages/list"><i
                 class="fas fa-dolly fa-2x"></i></a>
         <a id="add-record" title="add sale" href="<?php echo URLROOT; ?>/pages/add"><i class="fas fa-plus"></i></a>

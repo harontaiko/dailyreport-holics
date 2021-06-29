@@ -42,6 +42,7 @@ Inventory management and daily record keeping system, built on PHP OOP and Js, D
 - left on editing main record
 
 - error items in stock
+- use switch instead of elseif
 
 ```
 <?php echo URLROOT; ?>/pages/attatchReceipt/<?php echo isset($exp['date_created']) ? $exp['date_created']: 'N/A' ?>
