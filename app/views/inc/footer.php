@@ -19,6 +19,8 @@
 <script src="https://cdn.jsdelivr.net/npm/@mladenilic/threesixty.js/dist/threesixty.js"></script>
 <?php elseif(strpos($_SERVER['REQUEST_URI'], 'pages/cashReceipt') !== false): ?>
 <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
+<?php elseif(strpos($_SERVER['REQUEST_URI'], 'pages/receipts') !== false): ?>
+<script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
 <?php endif ?>
 <script src="<?php echo URLROOT; ?>/public/javascript/main.min.js"></script>
 <?php  $data['db']->close(); ?>

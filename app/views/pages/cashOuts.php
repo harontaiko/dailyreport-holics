@@ -23,13 +23,16 @@
                         <?php while($cash = $data['out']->fetch_assoc()): ?>
                         <li>
                             <!--push to array for get vars-->
-                            <?php $arr = implode(',', $cash); print_r($arr); ?>
+                            <?php $arr = implode(',', $cash); ?>
                             <input type="radio" id="f-option" name="selector">
-                            <a href="<?php echo URLROOT; ?>/pages/receipts/<?php echo $arr; ?>"><label
-                                    for="f-option"><?php echo isset($cash['date_created']) ? $cash['date_created']: 'N/A' ?>,
-                                    <?php echo isset($cash['cash_usage']) ? $cash['cash_usage']: 'N/A' ?>
-                                    @<?php echo isset($cash['cash_amount']) ? $cash['cash_amount']: 'N/A' ?></label></a>
-
+                            <label
+                                for="f-option"><?php echo isset($cash['date_created']) ? $cash['date_created']: 'N/A' ?>,
+                                <?php echo isset($cash['cash_usage']) ? $cash['cash_usage']: 'N/A' ?>
+                                @<?php echo isset($cash['cash_amount']) ? $cash['cash_amount']: 'N/A' ?></label> <i
+                                class="fas link"></i>
+                            <a class="link-cashouts"
+                                href="<?php echo URLROOT; ?>/pages/receipts/cashout/<?php echo $arr; ?>"><i
+                                    class="fas fa-link"></i></a>
                             <div class="check"></div>
                         </li>
                         <?php endwhile ?>
@@ -37,7 +40,7 @@
                 </div>
 
                 <div class="signature">
-                    <p>Made with <i class="much-heart"></i> by <a href="#!">The Fundraiser</a></p>
+                    <p>Made with <i class="fas fa-heart"></i> by <a href="#!">The Fundraiser</a></p>
                 </div>
             </section>
             <section class="tab-panel" id="tab-2">

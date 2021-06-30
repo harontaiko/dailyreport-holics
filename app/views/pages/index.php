@@ -6,7 +6,8 @@
         <div class="spinner-container">
             <div class="spinner spinner-left"></div>
             <div class="spinner spinner-right"></div>
-            <span class="spinnertext" style="font-size: 1.55rem; font-weight: bold;">setting up inventory..</span>
+            <span class="spinnertext" style="font-size: 1.55rem; font-weight: bold;">setting up
+                inventory..</span>
         </div>
     </div>
     <?php require(APPROOT . '/views/inc/navbar.php'); ?>

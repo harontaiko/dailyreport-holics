@@ -21,18 +21,6 @@ Inventory management and daily record keeping system, built on PHP OOP and Js, D
 
 - all static js fetched thru jsdeliver,
 
-- load sales in real time
-
-- delete sale and expense record, if user leave spage without saving record
-
-- change url root in `main.js & Loadlatestsold`
-
-- change jquery, bootstrap to cdn, all resources in header must use fast cdn
-
-- loss from expense
-
-- massive bug in editing main report
-
 - Handle responsiveness later on
 
 - edit root url in js so the only editable thing on production is htaccess and config
@@ -43,7 +31,3 @@ Inventory management and daily record keeping system, built on PHP OOP and Js, D
 
 - error items in stock
 - use switch instead of elseif
-
-```
-<?php echo URLROOT; ?>/pages/attatchReceipt/<?php echo isset($exp['date_created']) ? $exp['date_created']: 'N/A' ?>
-```

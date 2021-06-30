@@ -8,6 +8,32 @@ class Pages extends Controller
       $this->pageModel = $this->model('Page'); 
     }
 
+    public function receipts($for, $val)
+    {
+      //unset cash
+      unset($_SESSION['cash']);
+      if(isset($val) && isset($val)){
+        if (!isset($_SESSION["user_id"])) {
+          $data = [
+            "title" => "Daily Report",  
+          ];
+          redirect("users/index");
+        } 
+
+        $db = $this->pageModel->getDatabaseConnection();
+
+        $inventoryData = $this->pageModel->getInventoryData();
+
+        $data = ['title'=>''.$for.' receipt', "inventory" => $inventoryData, 'db'=>$db, 'val'=>$val, 'for'=>$for];
+
+        $this->view('pages/receipts', $data);
+      }else{
+        http_response_code(404);
+        include('../app/404.php');
+        die();
+      }
+    }
+
     public function cashOuts()
     {
       unset($_SESSION['cash']);

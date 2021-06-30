@@ -1,19 +1,25 @@
 <?php require(APPROOT . '/views/inc/header.php'); ?>
 
 <body class="date __date ">
-    <?php if($data['shopname'] =="movie"): ?>
+    <?php switch($data['shopname']): case 'movie':?>
     <?php include APPROOT .'/views/datesfilter/MovieShopReport.php'; ?>
-    <?php elseif($data['shopname'] == "cyber"): ?>
+    <?php break;?>
+    <?php case "cyber": ?>
     <?php include APPROOT .'/views/datesfilter/CyberReport.php'; ?>
-    <?php elseif($data['shopname'] == "ps"): ?>
+    <?php break;?>
+    <?php case "ps": ?>
     <?php include APPROOT .'/views/datesfilter/PsReport.php'; ?>
-    <?php elseif($data['shopname'] == "total"): ?>
+    <?php break;?>
+    <?php case "total": ?>
     <?php include APPROOT .'/views/datesfilter/NetReport.php'; ?>
-    <?php elseif($data['shopname'] == "expense"): ?>
+    <?php break;?>
+    <?php case "expense": ?>
     <?php include APPROOT .'/views/datesfilter/ExpenseReport.php'; ?>
-    <?php elseif($data['shopname'] == "sales"): ?>
+    <?php break;?>
+    <?php case "sales": ?>
     <?php include APPROOT .'/views/datesfilter/SalesReport.php'; ?>
-    <?php endif ?>
+    <?php break;?>
+    <?php endswitch; ?>
 </body>
 <?php require(APPROOT . '/views/inc/footer.php'); ?>
 
