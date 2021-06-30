@@ -2,14 +2,7 @@
 
 
 <body class="home __home site-wrap">
-    <div id="fullpageloading">
-        <div class="spinner-container">
-            <div class="spinner spinner-left"></div>
-            <div class="spinner spinner-right"></div>
-            <span class="spinnertext" style="font-size: 1.55rem; font-weight: bold;">setting up
-                inventory..</span>
-        </div>
-    </div>
+    <div class="loading" id="fullpageloading">Loading&#8230;</div>
     <?php require(APPROOT . '/views/inc/navbar.php'); ?>
     <main>
 

@@ -12,17 +12,19 @@ $detect = new Mobile_Detect;
  
 // Any mobile device (phones or tablets).
 if ( $detect->isMobile() ) {
-    include('../app/404.php');
+    header('location: http://mobilereport.dailyhackstore.co.ke');
 }
  
 // Any tablet device.
 if( $detect->isTablet() ){
-    include('../app/404.php');
+        header('location: http://mobilereport.dailyhackstore.co.ke');
+
 }
  
 // Exclude tablets.
 if( $detect->isMobile() && !$detect->isTablet() ){
-    include('../app/404.php');
+        header('location: http://mobilereport.dailyhackstore.co.ke');
+
 }
  
 // Check for a specific platform with the help of the magic methods:
