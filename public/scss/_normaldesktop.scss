@@ -1,0 +1,25 @@
+main {
+  padding: 3rem;
+  height: 100vh;
+  overflow-x: hidden;
+}
+
+.__home table {
+  overflow-x: auto !important;
+}
+
+table {
+  overflow-x: auto !important;
+}
+
+.__reports {
+  padding: 3.5rem !important;
+}
+
+#realtime-charts {
+  padding: 3.5rem !important;
+}
+
+#realtime-charts div {
+  width: 50%;
+}
