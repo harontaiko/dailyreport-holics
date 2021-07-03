@@ -1063,7 +1063,7 @@ function getSalesTotalMonth($db)
 
 function getSalesDatesMonth($db)
 {
-  $query = 'SELECT DATE_FORMAT(date_created, "%M") FROM dr_sales WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 MONTH) GROUP BY DATE_FORMAT(date_created, "%M") ORDER BY sales_id ASC';
+  $query = 'SELECT DATE_FORMAT(date_created, "%M") FROM dr_sales WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 MONTH) GROUP BY DATE_FORMAT(date_created, "%M")';
 
   $result = SelectCondFree($query, 'dr_sales', $db);
 
@@ -1346,7 +1346,7 @@ function getExpenseTotalMonth($db)
 
 function getExpenseDatesMonth($db)
 {
-  $query = 'SELECT DATE_FORMAT(date_created, "%M") FROM dr_expenses WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 MONTH) GROUP BY DATE_FORMAT(date_created, "%M") ORDER BY expense_id ASC';
+  $query = 'SELECT DATE_FORMAT(date_created, "%M") FROM dr_expenses WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 MONTH) GROUP BY DATE_FORMAT(date_created, "%M")';
 
   $result = SelectCondFree($query, 'dr_expenses', $db);
 
@@ -1613,7 +1613,7 @@ function getNetTotalMonth($db)
 
 function getNetDatesMonth($db)
 {
-  $query = 'SELECT DATE_FORMAT(date_created, "%M") FROM dr_nettotal WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 MONTH) GROUP BY DATE_FORMAT(date_created, "%M") ORDER BY sales_id ASC';
+  $query = 'SELECT DATE_FORMAT(date_created, "%M") FROM dr_nettotal WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 MONTH) GROUP BY DATE_FORMAT(date_created, "%M")';
 
   $result = SelectCondFree($query, 'dr_nettotal', $db);
 
@@ -1937,7 +1937,7 @@ function getPsTotalMonth($db)
 
 function getPsDatesMonth($db)
 {
-  $query = 'SELECT DATE_FORMAT(date_created, "%M") FROM dr_playstation WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 MONTH) GROUP BY DATE_FORMAT(date_created, "%M") ORDER BY record_id ASC';
+  $query = 'SELECT DATE_FORMAT(date_created, "%M") FROM dr_playstation WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 MONTH) GROUP BY DATE_FORMAT(date_created, "%M")';
 
   $result = SelectCondFree($query, 'dr_playstation', $db);
 
@@ -2276,7 +2276,7 @@ function getCyberTotalMonth($db)
 
 function getCyberDatesMonth($db)
 {
-  $query = 'SELECT DATE_FORMAT(date_created, "%M") FROM dr_cybershop WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 MONTH) GROUP BY DATE_FORMAT(date_created, "%M") ORDER BY record_id ASC';
+  $query = 'SELECT DATE_FORMAT(date_created, "%M") FROM dr_cybershop WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 MONTH) GROUP BY DATE_FORMAT(date_created, "%M")';
 
   $result = SelectCondFree($query, 'dr_cybershop', $db);
 
@@ -2597,7 +2597,7 @@ function getMovieshopTotalMonth($db)
 
 function getMovieshopDatesMonth($db)
 {
-  $query = 'SELECT DATE_FORMAT(date_created, "%M") FROM dr_movieshop WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 MONTH) GROUP BY DATE_FORMAT(date_created, "%M") ORDER BY record_id ASC';
+  $query = 'SELECT DATE_FORMAT(date_created, "%M") FROM dr_movieshop WHERE date_created > DATE_SUB(NOW(), INTERVAL 1 MONTH) GROUP BY DATE_FORMAT(date_created, "%M")';
 
   $result = SelectCondFree($query, 'dr_movieshop', $db);
 
