@@ -2,7 +2,6 @@
 
 
 <body class="home __home site-wrap">
-    <div class="loading" id="fullpageloading">Loading&#8230;</div>
     <?php require(APPROOT . '/views/inc/navbar.php'); ?>
     <main>
 
