@@ -182,8 +182,6 @@ for (var i = 0; i < instock.length; i++) {
         sum += isNaN(instock[i].innerHTML) ? 0 : parseInt(instock[i].innerHTML);
     }
 }
-
-
 document.getElementById("instock-out").innerHTML = sum + " items in stock";
 
 var sold = document.querySelector(".order-table").getElementsByTagName("td");
@@ -194,4 +192,44 @@ for (var i = 0; i < sold.length; i++) {
     }
 }
 document.getElementById("sold-out").innerHTML = sumsold + " items sold";
+
+var quantity = document.querySelector(".order-table").getElementsByTagName("td");
+var qty = 0;
+for (var i = 0; i < quantity.length; i++) {
+    if (quantity[i].className == "quantity") {
+        qty += isNaN(quantity[i].innerHTML) ? 0 : parseInt(quantity[i].innerHTML);
+    }
+}
+document.getElementById("qt-out").innerHTML = qty + " items sold";
+
+//push in stock to array
+var instockCol = document.querySelectorAll('.instock');
+var instockArr = [];
+instockCol.forEach(function(singleCell) {
+    instockArr.push(singleCell.innerText);
+});
+//count elements with the value zero, the count==out of stock values
+var numberOfZeros = function(arry) {
+    var i = 0;
+    arry.forEach(function(v) {
+        if (v === 0) i++;
+    });
+    return i;
+}
+instockArrNum = instockArr.map(Number);
+outStock = numberOfZeros(instockArrNum);
+
+//xhr to put in stock & out of stock
+$.ajax({
+    url: `<?php echo URLROOT; ?>/pages/saveStock`,
+    type: "POST",
+    data: {
+        in: sum,
+        out: outStock,
+    },
+    dataType: "json",
+    success: function(dataResult) {
+        console.log(dataResult.statusCode);
+    }
+})
 </script>

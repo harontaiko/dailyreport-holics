@@ -8,6 +8,37 @@ class Pages extends Controller
       $this->pageModel = $this->model('Page'); 
     }
 
+    public function saveStock()
+    {
+      if (!isset($_SESSION["user_id"])) {
+        $data = [
+          "title" => "Daily Report",  
+        ];
+        redirect("users/index");
+      } 
+
+      $data = ['title'=>'Daily Report'];
+
+      if($_SERVER['REQUEST_METHOD'] == 'POST')
+      {
+          $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+
+          $data = ['title'=>'stock', 'in'=>$_POST['in'], 'out'=>$_POST['out']];
+
+          if($this->pageModel->addStock($data))
+          {
+            echo json_encode(array('statusCode'=>200));
+          }else{
+            echo json_encode(array('statusCode'=>317));
+          }
+      }else{
+        http_response_code(404);
+        include('../app/404.php');
+        die();
+      }
+      
+    }
+
     public function receipts($for, $val)
     {
       //unset cash
@@ -287,7 +318,7 @@ class Pages extends Controller
           $itemsinventory = $this->pageModel->getItemsInventory();
           $itemsinventoryWeek = $this->pageModel->getItemsInventoryWeek();
           $itemsInStock = $this->pageModel->getItemsInStock();
-          $itemsoutStock = $itemsinventory - $itemssold;
+          $itemsoutStock = $this->pageModel->getItemsOutStock();
   
           $data = ['title'=>'Trends', 'row'=>$users, 'weeklycount'=>$itemsinventoryWeek, 'out'=>$itemsoutStock, 'sold'=>$itemssold, 'allitems'=>$itemsinventory, 'stock'=>$itemsInStock, 'db'=>$db, 'inventory'=>$inventoryData, 'row'=>$arr, 'avgsales'=>$avgsales, 'avgcash'=>$avgcash, 'avgtill'=>$avgtill, 'avgincome'=>$avgincome];
   

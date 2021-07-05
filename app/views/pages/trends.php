@@ -15,8 +15,8 @@
                 </strong></h3>
         </li>
         <li>
-            <h3>Removed: <strong>
-                    <p class="highlight">N/A</p>
+            <h3>Out of Stock: <strong>
+                    <p class="highlight"><?php echo number_format($data['out']); ?></p>
                 </strong></h3>
         </li>
         <li>

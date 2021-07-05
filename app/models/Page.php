@@ -14,6 +14,49 @@ class Page
       return $this->db;
     }
 
+    public function addStock($data)
+    {
+        $query = 'SELECT stock_id FROM dr_stock';
+
+        $result = SelectCondFree($query, 'dr_stock', $this->db);
+
+        $row = $result->get_result();
+
+        if($row->num_rows > 0)
+        {
+            //update
+            $q = 'UPDATE dr_stock SET in_stock=?, out_stock=?';
+
+            $binders = "ss";
+
+            $param = array($data['in'], $data['out']);
+            try {
+                Update($q, $binders, $param, 'dr_stock', $this->db);
+                return true;
+            } catch (Error $e) {
+                return false;
+            } 
+        }
+        else{
+            //insert
+            $fields = array('in_stock', 'out_stock');
+
+            $placeholders = array('?', '?');
+
+            $b = "ss";
+
+            $values = array($data['in'], $data['out']);
+
+            try {
+                Insert($fields, $placeholders, $b, $values, 'dr_stock', $this->db);
+                return true;
+            } catch (Error $e) {
+                return false;
+            } 
+        }
+
+    }
+
     public function getHighestExpense()
     {
         //weekly
@@ -252,23 +295,28 @@ class Page
 
     public function getItemsInStock()
     {
-        $query2 = 'SELECT COUNT(*) AS count_total FROM dr_sales';
+        $query = 'SELECT in_stock AS stock FROM dr_stock';
 
-        $result2 = SelectCondFree($query2, 'dr_sales', $this->db);
+        $result = SelectCondFree($query, 'dr_stock', $this->db);
 
-        $row2 = $result2->get_result();
+        $row = $result->get_result();
 
-        $rowItem2 = $row2->fetch_assoc();
+        $rowItem = $row->fetch_assoc();
         
-        $countsales = isset($rowItem2['count_total']) ? $rowItem2['count_total'] : 'N/A';
+        $instock = isset($rowItem['stock']) ? $rowItem['stock'] : 'N/A';
 
-        $query = 'SELECT SUM(item_quantity - ?) AS stock FROM dr_inventory';
+        try {
+            return $instock;
+        } catch (Error $e) {
+            return false;
+        } 
+    }
 
-        $binders = "s";
+    public function getItemsOutStock()
+    {
+        $query = 'SELECT out_stock AS stock FROM dr_stock';
 
-        $param = array($countsales);
-
-        $result = SelectCond($query, $binders, $param, $this->db);
+        $result = SelectCondFree($query, 'dr_stock', $this->db);
 
         $row = $result->get_result();
 
