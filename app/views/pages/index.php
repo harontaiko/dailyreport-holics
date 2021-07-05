@@ -4,7 +4,7 @@
 <body class="home __home site-wrap">
     <?php require(APPROOT . '/views/inc/navbar.php'); ?>
     <main>
-
+        <?php require(APPROOT . '/views/inc/startuploader.php'); ?>
         <input type="hidden" value="<?php echo isset($_SESSION['anime']) ?  $_SESSION['anime']: '';?>" id="anime">
         <a id="add-record" style="float: left;" title="see inventory" href="<?php echo URLROOT; ?>/pages/list"><i
                 class="fas fa-dolly fa-2x"></i></a>

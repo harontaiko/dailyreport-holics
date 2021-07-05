@@ -173,3 +173,14 @@ cash_receipt_number varchar(64) NULL,
 date_created varchar(64) NOT NULL
 )ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci
 ';
+
+$stock =
+'
+CREATE TABLE ' .
+  $this->DB_PREFIX .
+  '_stock( 
+stock_id int(11) AUTO_INCREMENT PRIMARY KEY NOT NULL,
+in_stock varchar(64) NOT NULL,
+out_stock varchar(64) NULL
+)ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci
+';

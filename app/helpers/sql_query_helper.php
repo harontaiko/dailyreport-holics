@@ -643,6 +643,48 @@ function getSalesTotalCount($date, $db)
     } 
 }
 
+function ItemSold($db)
+{
+  $query1 = 'SELECT COUNT(sales_id) AS salescount FROM dr_sales GROUP BY sales_item';
+
+  $result1 = SelectCondFree($query1, 'dr_sales', $db);
+
+  $row1 = $result1->get_result();
+
+  $rowItem1 = $row1->fetch_assoc();
+
+  $salescount = isset($rowItem1['salescount']) ? $rowItem1['salescount'] : '0';
+
+  try {
+      return $row1->num_rows;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
+function ItemCount($db)
+{
+  $query2 = 'SELECT SUM(item_quantity) AS cnt FROM dr_inventory WHERE item_name !=?';
+
+  $binders = "s";
+
+  $param = array('NONE');
+
+  $result2 = SelectCond($query2, $binders, $param, $db);
+
+  $row2 = $result2->get_result();
+
+  $rowItem2 = $row2->fetch_assoc();
+
+  $itemcount = isset($rowItem2['cnt']) ? $rowItem2['cnt'] : '0';
+
+  try {
+      return $itemcount;
+  } catch (Error $e) {
+      return false;
+  } 
+}
+
 function getSaleTotal($date, $db)
 {
     //mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);

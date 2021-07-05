@@ -44,13 +44,14 @@
                                     <td><?php echo isset($inventory['item_name']) ? $inventory['item_name']: ''; ?></td>
                                     <td>DR0<?php echo isset($inventory['item_id']) ? $inventory['item_id']: ''; ?>
                                     </td>
-                                    <td><?php echo isset($inventory['item_quantity']) ? $inventory['item_quantity']: ''; ?>
+                                    <td class="quantity">
+                                        <?php echo isset($inventory['item_quantity']) ? $inventory['item_quantity']: ''; ?>
                                     </td>
                                     <td><?php echo isset($inventory['item_model']) ? $inventory['item_model']: '';; ?>
                                     </td>
-                                    <td><?php echo ($instock - $sold); ?>
+                                    <td class="instock"><?php echo ($instock - $sold); ?>
                                     </td>
-                                    <td><?php echo $sold ?>
+                                    <td class="sold"><?php echo $sold ?>
                                     </td>
                                     <td> <?php echo date(
                                   'jS M Y',
@@ -76,6 +77,14 @@
                                     </td>
                                 </tr>
                                 <?php endwhile ?>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td id="qt-out"></td>
+                                    <td></td>
+                                    <td id="instock-out"></td>
+                                    <td id="sold-out"></td>
+                                </tr>
                             </tbody>
                         </table>
                     </section>
@@ -149,10 +158,9 @@
         </li>
         <?php if (strpos($_SERVER['REQUEST_URI'], "pages/index") !== false) :  ?>
         <?php else: ?>
-        <form action="<?php echo URLROOT; ?>/users/logout" method="POST">
-            <button id="add-record" type="submit" name="logout" title="logout"><i title="logout"
+        <a href="<?php echo URLROOT; ?>/users/logout"><button id="add-record" title="logout"><i title="logout"
                     class="fas fa-sign-out-alt"></i></button>
-        </form>
+        </a>
         <?php endif; ?>
     </ul>
 
@@ -162,3 +170,28 @@
     </div>
 
 </nav>
+
+<script>
+//sum sold & instock, store in localstorage
+var instock = document
+    .querySelector(".order-table")
+    .getElementsByTagName("td");
+var sum = 0;
+for (var i = 0; i < instock.length; i++) {
+    if (instock[i].className == "instock") {
+        sum += isNaN(instock[i].innerHTML) ? 0 : parseInt(instock[i].innerHTML);
+    }
+}
+
+
+document.getElementById("instock-out").innerHTML = sum + " items in stock";
+
+var sold = document.querySelector(".order-table").getElementsByTagName("td");
+var sumsold = 0;
+for (var i = 0; i < sold.length; i++) {
+    if (sold[i].className == "sold") {
+        sumsold += isNaN(sold[i].innerHTML) ? 0 : parseInt(sold[i].innerHTML);
+    }
+}
+document.getElementById("sold-out").innerHTML = sumsold + " items sold";
+</script>

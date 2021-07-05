@@ -7,10 +7,7 @@
         <a id="add-record" title="inventory" href="<?php echo URLROOT; ?>/pages/list"><i
                 class="fas fa-dolly fa-2x"></i></a>
         <?php flash('add-error'); ?>
-        <div class="loader">
-            <div class="loading">
-            </div>
-        </div>
+        <?php require(APPROOT . '/views/inc/loader.php'); ?>
         <div class="alert alert_success"
             style="color:#fff !important; font-size:x-large; background-color:#4CAF50!important">
             <p id="inventory-alert"></p>

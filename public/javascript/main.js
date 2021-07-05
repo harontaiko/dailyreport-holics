@@ -108,10 +108,14 @@ dailyreport = {
       //check for anime value
       if (document.getElementById("anime").value != "") {
         //show animation
-        document.getElementById("fullpageloading").style.display = "block";
-        sleep(4750).then(() => {
-          document.getElementById("fullpageloading").style.display = "none";
+        $("#preloader").delay(3).fadeIn();
+        sleep(3500).then(() => {
+          $("#status").fadeOut();
+          $("#preloader").delay(350).fadeOut("slow");
+          $("body").delay(350).css({ overflow: "visible" });
         });
+      } else {
+        document.getElementById("preloader").style.display = "none";
       }
       $("#latest-record").animate({ opacity: 0 }, 1000);
       $("#latest-record").animate({ opacity: 1 }, 1000);

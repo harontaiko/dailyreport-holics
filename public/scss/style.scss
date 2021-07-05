@@ -1505,34 +1505,6 @@ th {
   background: yellow;
 }
 
-.loader {
-  display: none;
-  top: 6.2%;
-  left: 50%;
-  position: absolute;
-  transform: translate(-50%, -50%);
-}
-
-.loading {
-  border: 2px solid #ccc;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  border-top-color: #1ecd97;
-  border-left-color: #1ecd97;
-  animation: spin 1s infinite ease-in;
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
 #sc {
   display: none;
 }
@@ -2958,23 +2930,6 @@ input:checked + .slider:before {
   background-color: #4b9cdb;
 }
 
-.load-5 .ball-holder {
-  animation: loadingE 1.3s linear infinite;
-}
-
-.l-5 {
-  animation-delay: 0.96s;
-}
-
-@keyframes loadingE {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
 #list-inventory {
   padding: 0.5vw;
   font-size: 0;
@@ -3402,243 +3357,14 @@ input:checked + .slider:before {
 }
 
 /* Absolute Center Spinner */
-.loading {
-  position: fixed;
-  z-index: 999;
-  height: 2em;
-  width: 2em;
-  overflow: visible;
-  margin: auto;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-}
 
-/* Transparent Overlay */
-.loading:before {
-  content: "";
-  display: block;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.3);
-}
-
-/* :not(:required) hides these rules from IE9 and below */
-.loading:not(:required) {
-  /* hide "loading..." text */
-  font: 0/0 a;
-  color: transparent;
-  text-shadow: none;
-  background-color: transparent;
-  border: 0;
-}
-
-.loading:not(:required):after {
-  content: "";
-  display: block;
-  font-size: 10px;
-  width: 1em;
-  height: 1em;
-  margin-top: -0.5em;
-  -webkit-animation: spinner 1500ms infinite linear;
-  -moz-animation: spinner 1500ms infinite linear;
-  -ms-animation: spinner 1500ms infinite linear;
-  -o-animation: spinner 1500ms infinite linear;
-  animation: spinner 1500ms infinite linear;
-  border-radius: 0.5em;
-  -webkit-box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0,
-    rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) 0 1.5em 0 0,
-    rgba(0, 0, 0, 0.75) -1.1em 1.1em 0 0, rgba(0, 0, 0, 0.5) -1.5em 0 0 0,
-    rgba(0, 0, 0, 0.5) -1.1em -1.1em 0 0, rgba(0, 0, 0, 0.75) 0 -1.5em 0 0,
-    rgba(0, 0, 0, 0.75) 1.1em -1.1em 0 0;
-  box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0,
-    rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) 0 1.5em 0 0,
-    rgba(0, 0, 0, 0.75) -1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) -1.5em 0 0 0,
-    rgba(0, 0, 0, 0.75) -1.1em -1.1em 0 0, rgba(0, 0, 0, 0.75) 0 -1.5em 0 0,
-    rgba(0, 0, 0, 0.75) 1.1em -1.1em 0 0;
-}
-
-/* Animation */
-
-@-webkit-keyframes spinner {
-  0% {
-    -webkit-transform: rotate(0deg);
-    -moz-transform: rotate(0deg);
-    -ms-transform: rotate(0deg);
-    -o-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-    -moz-transform: rotate(360deg);
-    -ms-transform: rotate(360deg);
-    -o-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
-}
-@-moz-keyframes spinner {
-  0% {
-    -webkit-transform: rotate(0deg);
-    -moz-transform: rotate(0deg);
-    -ms-transform: rotate(0deg);
-    -o-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-    -moz-transform: rotate(360deg);
-    -ms-transform: rotate(360deg);
-    -o-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
-}
-@-o-keyframes spinner {
-  0% {
-    -webkit-transform: rotate(0deg);
-    -moz-transform: rotate(0deg);
-    -ms-transform: rotate(0deg);
-    -o-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-    -moz-transform: rotate(360deg);
-    -ms-transform: rotate(360deg);
-    -o-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
-}
-@keyframes spinner {
-  0% {
-    -webkit-transform: rotate(0deg);
-    -moz-transform: rotate(0deg);
-    -ms-transform: rotate(0deg);
-    -o-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-    -moz-transform: rotate(360deg);
-    -ms-transform: rotate(360deg);
-    -o-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
-}
 #innermost {
   width: 35px !important;
   height: 35px !important;
   top: -155px;
 }
 
-.spinner {
-  box-sizing: content-box;
-  background-color: transparent;
-  border: 5px solid #2589db;
-  opacity: 1;
-  border-radius: 50px;
-  margin: 0 auto;
-}
-
-.spinner-right {
-  position: relative;
-  border-right: 5px solid rgba(0, 0, 0, 0);
-  border-left: 5px solid rgba(0, 0, 0, 0);
-  animation: spin 2s infinite;
-  -webkit-animation: spin 2s infinite;
-  -ms-animation: spin 2s infinite;
-  -o-animation: spin 2s infinite;
-}
-.spinner-left {
-  position: relative;
-  border-top: 5px solid rgba(0, 0, 0, 0);
-  border-bottom: 5px solid rgba(0, 0, 0, 0);
-  animation: spinoff 1s infinite;
-  -webkit-animation: spinoff 1s infinite;
-  -ms-animation: spinoff 1s infinite;
-  -o-animation: spinoff 1s infinite;
-}
-.spinnertext {
-  position: relative;
-  color: #adadad;
-  top: -50px;
-  animation: spinnertext-opacity 2s linear 0s infinite normal;
-}
-
-@-moz-keyframes spin {
-  0% {
-    -moz-transform: rotate(0deg);
-  }
-  20% {
-    -moz-transform: rotate(-50deg);
-  }
-
-  80% {
-    -moz-transform: rotate(780deg);
-  }
-
-  100% {
-    -moz-transform: rotate(720deg);
-  }
-}
-@-moz-keyframes spinoff {
-  0% {
-    -moz-transform: rotate(0deg);
-  }
-  100% {
-    -moz-transform: rotate(-360deg);
-  }
-}
-@-webkit-keyframes spin {
-  0% {
-    -webkit-transform: rotate(0deg);
-  }
-  20% {
-    -webkit-transform: rotate(-50deg);
-  }
-  80% {
-    -webkit-transform: rotate(780deg);
-  }
-  100% {
-    -webkit-transform: rotate(720deg);
-  }
-}
-@-webkit-keyframes spinoff {
-  0% {
-    -webkit-transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(-360deg);
-  }
-}
-
-@-ms-keyframes spin {
-  0% {
-    -ms-transform: rotate(0deg);
-  }
-  20% {
-    -ms-transform: rotate(-50deg);
-  }
-  80% {
-    -ms-transform: rotate(780deg);
-  }
-  100% {
-    -ms-transform: rotate(720deg);
-  }
-}
-@-ms-keyframes spinoff {
-  0% {
-    -ms-transform: rotate(0deg);
-  }
-  100% {
-    -ms-transform: rotate(-360deg);
-  }
-}
-
-@-o-keyframes spin {
+@keyframes spin {
   0% {
     -o-transform: rotate(0deg);
   }
@@ -3790,4 +3516,56 @@ input:checked + .slider:before {
 /* Samsung Galaxy S7 Edge ----------- */
 @media only screen and (min-resolution: 192dpi) and (max-width: 640px) {
   /* Styles */
+}
+
+.loader {
+  position: absolute;
+  top: 58%;
+  left: 72%;
+  margin: 0 0 2em;
+  height: 100px;
+  width: 20%;
+  text-align: center;
+  padding: 1em;
+  margin: 0 auto 1em;
+  display: inline-block;
+  vertical-align: top;
+  display: none;
+}
+
+/*
+  Set the color of the icon
+*/
+svg path,
+svg rect {
+  fill: #ff6700;
+}
+
+/* Preloader */
+
+#preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #fff;
+  z-index: 99;
+  display: none;
+}
+
+#status {
+  width: 200px;
+  height: 200px;
+  position: absolute;
+  left: 50%;
+  /* centers the loading animation horizontally one the screen */
+  top: 50%;
+  /* centers the loading animation vertically one the screen */
+  background-image: url(https://raw.githubusercontent.com/niklausgerber/PreLoadMe/master/img/status.gif);
+  /* path to your loading animation */
+  background-repeat: no-repeat;
+  background-position: center;
+  margin: -100px 0 0 -100px;
+  /* is width and height divided by two */
 }
